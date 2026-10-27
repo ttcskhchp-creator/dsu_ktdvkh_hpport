@@ -111,7 +111,7 @@
       gap: 6px;
     }
 
-    /* NAVIGATION TABS (HƯỚNG DẪN XẾP CUỐI BÊN PHẢI) */
+    /* NAVIGATION TABS */
     .nav-tabs-bar {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -424,15 +424,15 @@
       font-weight: 600;
       display: none;
     }
-    
+
     @keyframes chatNotificationBlink {
-  0%, 100% { border-color: var(--border-color); box-shadow: 0 0 0px transparent; }
-  50% { border-color: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.8); background: rgba(0, 230, 118, 0.08); }
-}
-.chat-tab-alert {
-  animation: chatNotificationBlink 1s infinite ease-in-out !important;
-  color: #00e676 !important;
-}
+      0%, 100% { border-color: var(--border-color); box-shadow: 0 0 0px transparent; }
+      50% { border-color: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.8); background: rgba(0, 230, 118, 0.08); }
+    }
+    .chat-tab-alert {
+      animation: chatNotificationBlink 1s infinite ease-in-out !important;
+      color: #00e676 !important;
+    }
   </style>
 </head>
 <body>
@@ -980,7 +980,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V20.0                     -->
+  <!-- JAVASCRIPT LOGIC V21.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1077,22 +1077,19 @@
         console.warn("Realtime warning:", err);
       }
     }
-// Kích hoạt cảnh báo khi có tin nhắn mới đến mà không phải do chính mình gửi
+
+    // CẢNH BÁO TIN NHẮN MỚI NHẤP NHÁY
     function triggerChatNotification(senderId) {
       if (String(senderId) === String(currentUserId)) return;
 
-      // 1. Nếu đang ở tab khác, làm nhấp nháy nút tab Chat
       const chatTabBtn = document.getElementById('tabBtn-chat');
       if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
         chatTabBtn.classList.add('chat-tab-alert');
-        chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span class="notif-badge">MỚI</span>';
+        chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span style="background:var(--danger-red);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:4px;">MỚI</span>';
       }
-
-      // 2. Phát âm thanh thông báo nhẹ (tuỳ chọn) hoặc hiển thị tiêu đề chớp sáng
       document.title = "💬 Có tin nhắn mới trong DSU!";
     }
 
-    // Khi người dùng bấm vào tab Chat, tự động tắt cảnh báo
     const originalSwitchTab = window.switchMainTab;
     window.switchMainTab = function(tabId) {
       if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
@@ -1105,6 +1102,7 @@
         document.title = "TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng";
       }
     };
+
     // CHAT LIVE & 1-1 LOGIC
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
@@ -1152,10 +1150,12 @@
         box.appendChild(b);
       });
     }
+
     async function loadChatMessages() {
       const area = document.getElementById('chatMessages');
       if (!area || !currentUserId) return;
       const room = chatRoomKey();
+      
       const { data, error } = await supabaseClient.from('chat_messages').select('*').eq('room_key', room).order('created_at', { ascending: true }).limit(300);
       if (error) {
         document.getElementById('chatConnectionState').textContent = 'Chưa cấu hình bảng chat';
@@ -1164,16 +1164,23 @@
       }
       chatMessagesCache = data || [];
       renderChatMessages();
+
+      // ĐĂNG KÝ REALTIME CHO BẢNG CHAT_MỚI NGAY LẬP TỨC
       if (chatRealtimeChannel) await supabaseClient.removeChannel(chatRealtimeChannel);
-      chatRealtimeChannel = supabaseClient.channel('chat-' + room).on('postgres_changes', { event: '*', schema: 'public', table: 'chat_messages', filter: 'room_key=eq.' + room }, p => {
-        if (p.eventType === 'INSERT' && !chatMessagesCache.some(m => String(m.id) === String(p.new.id))) {
-          chatMessagesCache.push(p.new);
-          renderChatMessages();
-        }
-      }).subscribe(st => {
-        document.getElementById('chatConnectionState').textContent = st === 'SUBSCRIBED' ? '● Trực tuyến' : 'Đang kết nối…';
-      });
+      
+      chatRealtimeChannel = supabaseClient.channel('chat-room-' + room)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `room_key=eq.${room}` }, p => {
+          if (p.new && !chatMessagesCache.some(m => String(m.id) === String(p.new.id))) {
+            chatMessagesCache.push(p.new);
+            renderChatMessages();
+            triggerChatNotification(p.new.sender_id);
+          }
+        })
+        .subscribe(st => {
+          document.getElementById('chatConnectionState').textContent = st === 'SUBSCRIBED' ? '● Trực tuyến' : 'Đang kết nối…';
+        });
     }
+
     function renderChatMessages() {
       const area = document.getElementById('chatMessages');
       if (!area) return;
@@ -1183,14 +1190,30 @@
       }).join('');
       area.scrollTop = area.scrollHeight;
     }
+
     async function sendChatMessage(e) {
       e.preventDefault();
       const i = document.getElementById('chatMessageInput'), message = i.value.trim();
       if (!message) return;
-      const { error } = await supabaseClient.from('chat_messages').insert({ room_key: chatRoomKey(), sender_id: currentUserId, recipient_id: activeChatPeerId, message });
+      
+      const { data, error } = await supabaseClient.from('chat_messages').insert({
+        room_key: chatRoomKey(),
+        sender_id: currentUserId,
+        recipient_id: activeChatPeerId,
+        message
+      }).select();
+
       if (error) {
         alert('Không gửi được tin nhắn: ' + error.message);
         return;
+      }
+
+      // Đẩy trực tiếp vào mảng cache nếu realtime chậm trễ để UI phản hồi ngay lập tức
+      if (data && data.length > 0) {
+        if (!chatMessagesCache.some(m => String(m.id) === String(data[0].id))) {
+          chatMessagesCache.push(data[0]);
+          renderChatMessages();
+        }
       }
       i.value = '';
     }
@@ -1209,7 +1232,7 @@
     async function submitSignup() {
       const full_name = document.getElementById('signupName').value.trim();
       const phone = document.getElementById('signupPhone').value.trim();
-      const email = document.getElementById('signupEmail').value.trim();
+      const emailInput = document.getElementById('signupEmail').value.trim();
       const title = document.getElementById('signupTitle').value.trim();
       const role = document.getElementById('signupRole').value;
       const p = document.getElementById('signupPass').value;
@@ -1220,6 +1243,8 @@
         return;
       }
 
+      const email = emailInput ? emailInput : `${phone}@haiphongport.com.vn`;
+
       const { data: ex } = await supabaseClient.from('app_users').select('id').eq('phone', phone).limit(1);
       if (ex && ex.length > 0) {
         alert('Số điện thoại này đã tồn tại trong hệ thống.');
@@ -1227,7 +1252,7 @@
       }
 
       const { error } = await supabaseClient.from('app_users').insert({
-        full_name, phone, email: email || null, title, role, password_hash: p
+        full_name, phone, email, title, role, password_hash: p
       });
 
       if (error) {
@@ -1575,10 +1600,8 @@
         updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
       }
 
-      // Đóng modal ngay lập tức để tạo trải nghiệm mượt mà cho người dùng
       closeModal('modalTaskDetail');
 
-      // Gửi lệnh cập nhật lên Supabase ở chế độ nền
       const { error } = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
 
       if (!error) {
@@ -1590,7 +1613,6 @@
         renderScoreBoard();
       } else {
         alert("Lỗi khi lưu thay đổi lên cơ sở dữ liệu: " + error.message);
-        // Nếu lỗi, mở lại modal để người dùng kiểm tra
         openTaskDetailModal(task.id);
       }
     }
@@ -1662,7 +1684,7 @@
       });
     }
 
-   async function submitMyTaskResult() {
+    async function submitMyTaskResult() {
       if (!selectedTaskIdForDetail) {
         alert("Không tìm thấy mã công việc hiện tại!");
         return;
@@ -1697,7 +1719,6 @@
       let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
       currentSubs.push(newSub);
 
-      // Cập nhật lên Supabase
       const { error } = await supabaseClient.from('tasks').update({
         member_submissions: currentSubs,
         updated_at: new Date().toISOString()
@@ -1769,7 +1790,6 @@
         return;
       }
 
-      // Chuẩn hóa định dạng ngày giờ ISO string để tránh lỗi Supabase
       const dueIsoString = new Date(dueDateTimeVal).toISOString();
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
       const randomCode = 'TSK-' + dateStr + '-' + Math.floor(100 + Math.random() * 900);
@@ -1874,7 +1894,7 @@
       });
     }
 
-    // 9. QUẢN TRỊ NHÂN SỰ & CHỈNH SỬA TOÀN DIỆN THÔNG TIN (ADMIN/TRƯỞNG/PHÓ)
+    // 9. QUẢN TRỊ NHÂN SỰ
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
       if (!tbody) return;
@@ -2004,7 +2024,16 @@
 
       if (tabId === 'scoreTab') renderScoreBoard();
       if (tabId === 'adminTab') renderAdminUserTable();
-      if (tabId === 'chatTab') { renderChatUsers(); loadChatMessages(); }
+      if (tabId === 'chatTab') { 
+        const chatTabBtn = document.getElementById('tabBtn-chat');
+        if (chatTabBtn) {
+          chatTabBtn.classList.remove('chat-tab-alert');
+          chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1';
+        }
+        document.title = "TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng";
+        renderChatUsers(); 
+        loadChatMessages(); 
+      }
     }
 
     function updateCurrentUserUI() {
