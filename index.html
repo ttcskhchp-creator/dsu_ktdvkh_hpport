@@ -1054,10 +1054,19 @@
     }
 
     function setupRealtime() {
-      supabaseClient
-        .channel('dsu-realtime-v20')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
-        .subscribe();
+      try {
+        if (chatRealtimeChannel) {
+          supabaseClient.removeChannel(chatRealtimeChannel);
+        }
+        
+        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+            fetchTasks();
+          })
+          .subscribe();
+      } catch (err) {
+        console.warn("Realtime warning:", err);
+      }
     }
 
     // CHAT LIVE & 1-1 LOGIC
@@ -1589,35 +1598,55 @@
       });
     }
 
-    async function submitMyTaskResult() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      const driveUrl = document.getElementById('mySubDriveUrl').value.trim();
-      const note = document.getElementById('mySubNoteInput').value.trim();
-      const currentUser = users.find(u => u.id === currentUserId) || {};
+   async function submitMyTaskResult() {
+      if (!selectedTaskIdForDetail) {
+        alert("Không tìm thấy mã công việc hiện tại!");
+        return;
+      }
+      
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) {
+        alert("Không tìm thấy thông tin task trong bộ nhớ!");
+        return;
+      }
+
+      const driveUrlInput = document.getElementById('mySubDriveUrl');
+      const noteInput = document.getElementById('mySubNoteInput');
+      
+      const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : '';
+      const note = noteInput ? noteInput.value.trim() : '';
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || { full_name: "Thành viên" };
 
       if (!driveUrl && !note) {
-        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú!");
+        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú kết quả!");
         return;
       }
 
       const newSub = {
         userId: currentUserId,
-        userName: currentUser.full_name || "Nhân viên",
-        note,
-        driveUrl,
+        userName: currentUser.full_name || "Thành viên",
+        note: note || '(Không có ghi chú)',
+        driveUrl: driveUrl || '',
         time: new Date().toLocaleString('vi-VN')
       };
 
       let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
       currentSubs.push(newSub);
 
-      const { error } = await supabaseClient.from('tasks').update({ member_submissions: currentSubs }).eq('id', task.id);
+      // Cập nhật lên Supabase
+      const { error } = await supabaseClient.from('tasks').update({
+        member_submissions: currentSubs,
+        updated_at: new Date().toISOString()
+      }).eq('id', task.id);
+
       if (!error) {
         task.member_submissions = currentSubs;
-        document.getElementById('mySubDriveUrl').value = '';
-        document.getElementById('mySubNoteInput').value = '';
+        if (driveUrlInput) driveUrlInput.value = '';
+        if (noteInput) noteInput.value = '';
         renderSubmissionsTable(task);
-        alert("Đã lưu kết quả thành công!");
+        alert("Đã lưu và gửi báo cáo kết quả thành công!");
+      } else {
+        alert("Lỗi khi lưu kết quả lên Supabase: " + error.message);
       }
     }
 
