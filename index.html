@@ -424,6 +424,15 @@
       font-weight: 600;
       display: none;
     }
+    
+    @keyframes chatNotificationBlink {
+  0%, 100% { border-color: var(--border-color); box-shadow: 0 0 0px transparent; }
+  50% { border-color: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.8); background: rgba(0, 230, 118, 0.08); }
+}
+.chat-tab-alert {
+  animation: chatNotificationBlink 1s infinite ease-in-out !important;
+  color: #00e676 !important;
+}
   </style>
 </head>
 <body>
@@ -1068,7 +1077,34 @@
         console.warn("Realtime warning:", err);
       }
     }
+// Kích hoạt cảnh báo khi có tin nhắn mới đến mà không phải do chính mình gửi
+    function triggerChatNotification(senderId) {
+      if (String(senderId) === String(currentUserId)) return;
 
+      // 1. Nếu đang ở tab khác, làm nhấp nháy nút tab Chat
+      const chatTabBtn = document.getElementById('tabBtn-chat');
+      if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
+        chatTabBtn.classList.add('chat-tab-alert');
+        chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span class="notif-badge">MỚI</span>';
+      }
+
+      // 2. Phát âm thanh thông báo nhẹ (tuỳ chọn) hoặc hiển thị tiêu đề chớp sáng
+      document.title = "💬 Có tin nhắn mới trong DSU!";
+    }
+
+    // Khi người dùng bấm vào tab Chat, tự động tắt cảnh báo
+    const originalSwitchTab = window.switchMainTab;
+    window.switchMainTab = function(tabId) {
+      if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
+      if (tabId === 'chatTab') {
+        const chatTabBtn = document.getElementById('tabBtn-chat');
+        if (chatTabBtn) {
+          chatTabBtn.classList.remove('chat-tab-alert');
+          chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1';
+        }
+        document.title = "TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng";
+      }
+    };
     // CHAT LIVE & 1-1 LOGIC
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
