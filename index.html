@@ -1665,34 +1665,45 @@
       const title = document.getElementById('taskTitle').value.trim();
       const desc = document.getElementById('taskDesc').value.trim();
       const leaderId = document.getElementById('taskLeaderSelect').value;
-      const dueDateTime = document.getElementById('taskDueDateTime').value;
+      const dueDateTimeVal = document.getElementById('taskDueDateTime').value;
       const driveLink = document.getElementById('taskDriveLink').value.trim();
 
       const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
       const assigneeIds = Array.from(checkedBoxes).map(cb => cb.value);
 
-      if (!title || assigneeIds.length === 0 || !leaderId || !dueDateTime) {
-        alert("Vui lòng nhập tên việc, chọn người làm và hạn chót!");
+      if (!title || assigneeIds.length === 0 || !leaderId || !dueDateTimeVal) {
+        alert("Vui lòng nhập tên việc, chọn ít nhất 1 thành viên phối hợp, chỉ định Nhóm trưởng và chọn hạn chót!");
         return;
       }
 
-      const { error } = await supabaseClient.from('tasks').insert([{
-        title,
+      // Chuẩn hóa định dạng ngày giờ ISO string để tránh lỗi Supabase
+      const dueIsoString = new Date(dueDateTimeVal).toISOString();
+      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const randomCode = 'TSK-' + dateStr + '-' + Math.floor(100 + Math.random() * 900);
+
+      const newTaskPayload = {
+        task_code: randomCode,
+        title: title,
         description: desc,
         assignee_id: leaderId,
         leader_id: leaderId,
+        creator_id: currentUserId || null,
         assignees_json: assigneeIds,
         priority: 'medium',
         status: 'pending',
-        due_datetime: dueDateTime,
-        drive_link: driveLink,
+        due_datetime: dueIsoString,
+        drive_link: driveLink || null,
         member_submissions: []
-      }]);
+      };
+
+      const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
 
       if (!error) {
         closeModal('modalCreateTask');
         await fetchTasks();
-        alert("Đã tạo việc thành công!");
+        alert("Đã tạo công việc mới thành công!");
+      } else {
+        alert("Lỗi khi tạo việc trên cơ sở dữ liệu: " + error.message);
       }
     }
 
