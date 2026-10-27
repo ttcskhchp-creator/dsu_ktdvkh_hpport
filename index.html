@@ -1505,11 +1505,24 @@
     }
 
     async function saveTaskStatusFromDetail() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      if (!task) return;
-      const newStatus = document.getElementById('detailStatusSelect').value;
-      const newDueDateTime = document.getElementById('detailDueDateTimeInput').value;
-      const currentUser = users.find(u => u.id === currentUserId) || {};
+      if (!selectedTaskIdForDetail) {
+        alert("Không tìm thấy mã công việc!");
+        return;
+      }
+
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) {
+        alert("Không tìm thấy thông tin task trong bộ nhớ!");
+        return;
+      }
+
+      const statusSelect = document.getElementById('detailStatusSelect');
+      const dueInput = document.getElementById('detailDueDateTimeInput');
+
+      const newStatus = statusSelect ? statusSelect.value : task.status;
+      const newDueDateTimeVal = dueInput ? dueInput.value : '';
+
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
       const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
 
       if (task.status === 'completed' && newStatus !== 'completed' && !isLeaderRole) {
@@ -1517,17 +1530,32 @@
         return;
       }
 
-      let updateData = { status: newStatus, updated_at: new Date() };
-      if (newDueDateTime && isLeaderRole) updateData.due_datetime = newDueDateTime;
+      let updateData = { 
+        status: newStatus, 
+        updated_at: new Date().toISOString() 
+      };
 
+      if (newDueDateTimeVal && isLeaderRole) {
+        updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
+      }
+
+      // Đóng modal ngay lập tức để tạo trải nghiệm mượt mà cho người dùng
+      closeModal('modalTaskDetail');
+
+      // Gửi lệnh cập nhật lên Supabase ở chế độ nền
       const { error } = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
+
       if (!error) {
         task.status = newStatus;
-        if (newDueDateTime && isLeaderRole) task.due_datetime = newDueDateTime;
-        closeModal('modalTaskDetail');
+        if (newDueDateTimeVal && isLeaderRole) {
+          task.due_datetime = updateData.due_datetime;
+        }
         renderKanban();
         renderScoreBoard();
-        alert("Đã lưu cập nhật thành công!");
+      } else {
+        alert("Lỗi khi lưu thay đổi lên cơ sở dữ liệu: " + error.message);
+        // Nếu lỗi, mở lại modal để người dùng kiểm tra
+        openTaskDetailModal(task.id);
       }
     }
 
