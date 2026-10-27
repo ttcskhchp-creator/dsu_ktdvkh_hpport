@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSU Operations v5.0 - TT Khai thác & DVKH (Cảng Hải Phòng)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  
+  <!-- SUPABASE JS CLIENT -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0B1528;
+      --bg-card: #11203B;
+      --bg-surface: #182C4E;
+      --border-color: #263F6A;
+      --accent-blue: #2563C9;
+      --accent-light: #8DB8FF;
+      --warn-orange: #F08A24;
+      --succ-green: #1F8A55;
+      --danger-red: #D93838;
+      --text-main: #F4F6FA;
+      --text-muted: #9FB0C9;
+      --gold-star: #FFD700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-dark);
+      font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND CHIBI WATERMARK TRANG TRÍ */
+    body::before {
+      content: "";
+      position: fixed;
+      right: 15px;
+      bottom: 10px;
+      width: 140px;
+      height: 140px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="28" fill="%23ffd5b5"/><path d="M22,35 Q50,10 78,35 Q65,15 50,22 Q35,15 22,35 Z" fill="%232b2b2b"/><circle cx="40" cy="38" r="4" fill="%23111"/><circle cx="60" cy="38" r="4" fill="%23111"/><ellipse cx="36" cy="44" rx="4" ry="2" fill="%23ff9999"/><ellipse cx="64" cy="44" rx="4" ry="2" fill="%23ff9999"/><path d="M46,47 Q50,52 54,47" stroke="%23333" stroke-width="2" fill="none"/><path d="M25,68 L75,68 L70,95 L30,95 Z" fill="%232563C9"/><polygon points="45,68 55,68 52,85 48,85" fill="%23F08A24"/><rect x="35" y="75" width="30" height="18" rx="2" fill="%23eee"/><text x="40" y="87" font-size="7" fill="%232563C9" font-family="sans-serif" font-weight="bold">PORT</text></svg>');
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .badge-port {
+      background: var(--accent-blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .brand-title { font-size: 15px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .brand-sub { font-size: 11px; color: var(--accent-light); }
+    .header-user { display: flex; align-items: center; gap: 10px; }
+
+    /* TAB NAVIGATION */
+    .nav-tabs-bar {
+      background: #0f1c33;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      padding: 0 24px;
+      gap: 6px;
+      z-index: 10;
+    }
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .nav-tab-btn:hover { color: #fff; background: rgba(255,255,255,0.02); }
+    .nav-tab-btn.active {
+      color: var(--accent-light);
+      border-bottom-color: var(--accent-blue);
+      background: rgba(37, 99, 201, 0.08);
+    }
+
+    /* BUTTONS */
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--accent-blue); color: #fff; }
+    .btn-primary:hover { background: #1d4f9f; }
+    .btn-warning { background: var(--warn-orange); color: #fff; }
+    .btn-warning:hover { background: #d47317; }
+    .btn-success { background: var(--succ-green); color: #fff; }
+    .btn-danger { background: var(--danger-red); color: #fff; }
+    .btn-outline { background: transparent; border-color: var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { background: var(--bg-surface); border-color: var(--accent-light); }
+    .btn-drive { background: #1a73e8; color: #fff; }
+    .btn-drive:hover { background: #1558b0; }
+    .btn-sm { padding: 4px 8px; font-size: 11px; }
+
+    /* LAYOUT */
+    .container {
+      flex: 1;
+      padding: 20px 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 10px 0 0 10px;
+      background: var(--stat-color, var(--accent-blue));
+    }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display:flex; align-items:center; gap:5px; }
+    .stat-val { font-size: 24px; font-weight: 800; margin-top: 4px; color: #fff; }
+
+    /* HIỆU ỨNG SÉT ĐÁNH LIÊN TỤC VÀO Ô CẢNH BÁO */
+    @keyframes lightningFlash {
+      0%, 100% {
+        box-shadow: 0 0 0px transparent;
+        border-color: var(--border-color);
+      }
+      20%, 24%, 55% {
+        box-shadow: 0 0 25px rgba(217, 56, 56, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.4);
+        border-color: #ff4d4d;
+        background-color: rgba(217, 56, 56, 0.28);
+      }
+      22%, 57% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      }
+    }
+    @keyframes shakeCard {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-2px); }
+      40%, 80% { transform: translateX(2px); }
+    }
+    .lightning-alert-box {
+      animation: lightningFlash 2s infinite, shakeCard 3s infinite ease-in-out;
+      border: 1px solid var(--danger-red) !important;
+      position: relative;
+    }
+    .lightning-bolt-icon {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 26px;
+      filter: drop-shadow(0 0 8px #ffeb3b);
+      animation: bounceBolt 0.8s infinite alternate;
+    }
+    @keyframes bounceBolt {
+      from { transform: scale(0.9) rotate(-10deg); opacity: 0.8; }
+      to { transform: scale(1.2) rotate(10deg); opacity: 1; filter: drop-shadow(0 0 14px #ff3b3b); }
+    }
+
+    /* HIỆU ỨNG THIÊN THẦN BAY LƯỢN LẤP LÁNH */
+    @keyframes angelFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    @keyframes angelGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(240, 138, 36, 0.2); }
+      50% { box-shadow: 0 0 22px rgba(255, 215, 0, 0.6); }
+    }
+    .angel-alert-box {
+      animation: angelGlow 2.5s infinite;
+      border: 1px solid var(--warn-orange) !important;
+      position: relative;
+    }
+    .angel-wing-icon {
+      position: absolute;
+      right: 12px;
+      top: 6px;
+      font-size: 26px;
+      animation: angelFloat 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .form-control {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+    .form-control:focus { border-color: var(--accent-light); }
+
+    /* KANBAN BOARD */
+    .kanban-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) { .kanban-grid { grid-template-columns: 1fr; } }
+
+    .kanban-col {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 520px;
+      position: relative;
+    }
+    .col-header {
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .col-badge {
+      background: var(--bg-surface);
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      color: var(--accent-light);
+    }
+    .col-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      z-index: 1;
+    }
+
+    /* CHIBI ICON MỜ TRONG CỘT */
+    .col-chibi-watermark {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 65px;
+      height: 65px;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* TASK CARD VỚI GÓC CHIBI */
+    .task-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .task-card:hover { transform: translateY(-2px); border-color: var(--accent-light); }
+    
+    /* GÓC CHIBI MINH HỌA */
+    .card-corner-chibi {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      font-size: 20px;
+      opacity: 0.45;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .task-card:hover .card-corner-chibi {
+      opacity: 0.9;
+      transform: scale(1.15);
+    }
+
+    .card-overdue {
+      border: 1px solid var(--danger-red) !important;
+      background: linear-gradient(180deg, rgba(217,56,56,0.18) 0%, var(--bg-surface) 100%);
+      animation: lightningFlash 3s infinite;
+    }
+    .card-duesoon {
+      border: 1px solid var(--warn-orange) !important;
+      background: linear-gradient(180deg, rgba(240,138,36,0.18) 0%, var(--bg-surface) 100%);
+      animation: angelGlow 3s infinite;
+    }
+
+    .task-meta { display: flex; justify-content: space-between; align-items: center; }
+    .task-code { font-size: 11px; font-weight: 700; color: var(--accent-light); }
+    
+    .priority-chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .p-urgent { background: rgba(217, 56, 56, 0.25); color: #ff7b7b; border: 1px solid #d93838; }
+    .p-high { background: rgba(240, 138, 36, 0.25); color: #ffb469; border: 1px solid #F08A24; }
+    .p-medium { background: rgba(37, 99, 201, 0.25); color: #8DB8FF; border: 1px solid #2563C9; }
+    .p-low { background: rgba(31, 138, 85, 0.25); color: #6ce4a4; border: 1px solid #1F8A55; }
+
+    .deadline-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .dl-overdue { background: var(--danger-red); color: #fff; }
+    .dl-duesoon { background: var(--warn-orange); color: #fff; }
+    .dl-normal { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+
+    .kpi-tag {
+      font-size: 10px;
+      background: rgba(141, 184, 255, 0.12);
+      color: var(--accent-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(141, 184, 255, 0.3);
+      display: inline-block;
+      align-self: flex-start;
+    }
+
+    .task-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: #fff; }
+
+    .file-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      background: rgba(37, 99, 201, 0.2);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-light);
+      padding: 2px 6px;
+      border-radius: 10px;
+      align-self: flex-start;
+    }
+
+    .task-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .assignee-box { display: flex; align-items: center; gap: 6px; }
+    .avatar-circle {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+    }
+    .btn-quick-notify { display: flex; gap: 4px; }
+    .icon-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: #fff;
+      font-size: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .icon-btn:hover { background: var(--accent-blue); }
+
+    /* TABLE */
+    .data-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+    .dsu-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    .dsu-table th {
+      background: var(--bg-surface);
+      color: var(--accent-light);
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border-color);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .dsu-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: #fff;
+    }
+    .dsu-table tr:hover { background: rgba(255,255,255,0.02); }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 21, 40, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .modal-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .file-attach-list {
+      background: rgba(0,0,0,0.25);
+      border: 1px dashed var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-surface);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .lock-notice {
+      background: rgba(217, 56, 56, 0.15);
+      border: 1px solid var(--danger-red);
+      color: #ff9b9b;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand-wrap">
+      <span class="badge-port">HP PORT · DSU</span>
+      <div>
+        <div class="brand-title">
+          <span>🚢 TRUNG TÂM KHAI THÁC & DỊCH VỤ KHÁCH HÀNG</span>
+        </div>
+        <div class="brand-sub">Hệ thống Điều hành, Giao việc & Quản trị KPI (Cloud Supabase)</div>
+      </div>
+    </div>
+    <div class="header-user">
+      <div id="currentUserBadge" style="font-size: 12px; text-align: right;"></div>
+      <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc mới</button>
+      <button class="btn btn-outline btn-sm" onclick="logoutUser()">Đổi tài khoản</button>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="nav-tabs-bar">
+    <button class="nav-tab-btn active" onclick="switchMainTab('tasksTab')">
+      📋 Bảng Công việc (Kanban)
+    </button>
+    <button class="nav-tab-btn" onclick="switchMainTab('scoreTab')">
+      🏆 Thống kê & Tính điểm Hiệu suất
+    </button>
+    <button class="nav-tab-btn" id="kpiTabBtn" onclick="switchMainTab('kpiTab')">
+      🎯 Cài đặt Mảng KPI
+    </button>
+    <!-- Tab Quản trị có bảo vệ mật khẩu -->
+    <button class="nav-tab-btn" id="adminTabBtn" onclick="promptAdminPasswordAndOpen()">
+      🔒 Quản trị Nhân sự & Google Drive
+    </button>
+  </nav>
+
+  <!-- CONTAINER -->
+  <main class="container">
+
+    <!-- TAB 1: KANBAN -->
+    <div id="tasksTab" class="tab-content active">
+      <section class="stats-strip">
+        <div class="stat-card" style="--stat-color: var(--accent-light);">
+          <div class="stat-lbl">📊 Tổng số công việc</div>
+          <div class="stat-val" id="totalTasksCount">0</div>
+        </div>
+        
+        <!-- Ô CẢNH BÁO QUÁ HẠN: CÓ HIỆU ỨNG SÉT ĐÁNH LIÊN TỤC -->
+        <div class="stat-card lightning-alert-box" style="--stat-color: var(--danger-red);">
+          <div class="lightning-bolt-icon">⚡</div>
+          <div class="stat-lbl" style="color:#ff7b7b;">⚡ VIỆC QUÁ HẠN CHÓT</div>
+          <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
+        </div>
+
+        <!-- Ô CẢNH BÁO GẤP: CÓ THIÊN THẦN BAY LƯỢN -->
+        <div class="stat-card angel-alert-box" style="--stat-color: var(--warn-orange);">
+          <div class="angel-wing-icon">👼</div>
+          <div class="stat-lbl" style="color:#ffb469;">👼 SẮP ĐẾN HẠN (&lt; 2H)</div>
+          <div class="stat-val" id="dueSoonCount" style="color:#ffb469;">0</div>
+        </div>
+
+        <div class="stat-card" style="--stat-color: var(--succ-green);">
+          <div class="stat-lbl">✅ Đã hoàn thành</div>
+          <div class="stat-val" id="completedCount">0</div>
+        </div>
+      </section>
+
+      <section class="filter-bar">
+        <div class="filter-group">
+          <label style="font-size:12px; color:var(--text-muted);">Lọc việc:</label>
+          <select id="filterAssignee" class="form-control" onchange="renderKanban()">
+            <option value="ALL">-- Tất cả nhân viên --</option>
+          </select>
+          <select id="filterKpi" class="form-control" onchange="renderKanban()">
+            <option value="ALL">-- Tất cả Mảng KPI --</option>
+          </select>
+          <select id="filterPriority" class="form-control" onchange="renderKanban()">
+            <option value="ALL">-- Mọi mức ưu tiên --</option>
+            <option value="urgent">Khẩn cấp</option>
+            <option value="high">Ưu tiên cao</option>
+            <option value="medium">Trung bình</option>
+            <option value="low">Thấp</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">
+            📂 Kho Google Drive TT (100GB)
+          </button>
+        </div>
+      </section>
+
+      <!-- KANBAN COLUMNS CÓ CHIBI WATERMARK -->
+      <section class="kanban-grid">
+        <div class="kanban-col">
+          <div class="col-header">
+            <span>📥 1. CHỜ TIẾP NHẬN</span>
+            <span class="col-badge" id="badge-pending">0</span>
+          </div>
+          <div class="col-body" id="col-pending"></div>
+          <div class="col-chibi-watermark">☕📑</div>
+        </div>
+
+        <div class="kanban-col">
+          <div class="col-header">
+            <span>⚙️ 2. ĐANG THỰC HIỆN</span>
+            <span class="col-badge" id="badge-in_progress">0</span>
+          </div>
+          <div class="col-body" id="col-in_progress"></div>
+          <div class="col-chibi-watermark">💻🚢</div>
+        </div>
+
+        <div class="kanban-col">
+          <div class="col-header">
+            <span>⏳ 3. CHỜ DUYỆT BÁO CÁO</span>
+            <span class="col-badge" id="badge-review">0</span>
+          </div>
+          <div class="col-body" id="col-review"></div>
+          <div class="col-chibi-watermark">🧐📊</div>
+        </div>
+
+        <div class="kanban-col">
+          <div class="col-header">
+            <span>🎉 4. ĐÃ HOÀN THÀNH</span>
+            <span class="col-badge" id="badge-completed">0</span>
+          </div>
+          <div class="col-body" id="col-completed"></div>
+          <div class="col-chibi-watermark">🏆⭐</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 2: TÍNH ĐIỂM -->
+    <div id="scoreTab" class="tab-content">
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:16px;">Bảng Đánh Giá Điểm Hiệu Suất DSU & Thi Đua Nội Bộ</h3>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+            Quy tắc: Đúng hạn (+10đ) | Hoàn thành trễ (+5đ) | Việc hỏa tốc (+5đ thưởng)
+          </p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="renderScoreBoard()">🔄 Tính lại điểm</button>
+      </div>
+
+      <div class="data-card">
+        <table class="dsu-table">
+          <thead>
+            <tr>
+              <th style="width: 60px; text-align: center;">Hạng</th>
+              <th>Nhân viên</th>
+              <th>Chức danh</th>
+              <th style="text-align: center;">Tổng việc</th>
+              <th style="text-align: center;">Đúng hạn</th>
+              <th style="text-align: center;">Quá hạn</th>
+              <th style="width: 140px;">Tỷ lệ hoàn thành</th>
+              <th style="text-align: center; color:var(--gold-star);">Tổng điểm DSU</th>
+              <th style="text-align: center;">Xếp loại</th>
+            </tr>
+          </thead>
+          <tbody id="scoreTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: MẢNG KPI -->
+    <div id="kpiTab" class="tab-content">
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:16px;">Thiết lập Danh Mục Mảng KPI Hoạt Động Trung Tâm</h3>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+            Lãnh đạo có thể thêm mới hoặc sửa đổi các chỉ tiêu KPI hàng ngày.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateKpiModal()">+ Thêm Mảng KPI mới</button>
+      </div>
+
+      <div class="data-card">
+        <table class="dsu-table">
+          <thead>
+            <tr>
+              <th>Mã KPI</th>
+              <th>Tên Mảng KPI / Nghiệp Vụ</th>
+              <th>Đơn vị tính</th>
+              <th>Chỉ tiêu ngày</th>
+              <th>Mô tả phạm vi</th>
+              <th style="text-align: right;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="kpiTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: QUẢN TRỊ NHÂN SỰ & GOOGLE DRIVE (CÓ THÊM / SỬA / XÓA) -->
+    <div id="adminTab" class="tab-content">
+      <div class="data-card" style="margin-bottom:20px;">
+        <h3 style="font-size:15px; color:#fff; margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">
+          Thư mục Google Drive chung phục vụ tải lên/tải xuống tài liệu dung lượng lớn của đơn vị:
+        </p>
+        <div style="display:flex; gap:10px; max-width: 800px;">
+          <input type="url" id="cfgDriveUrl" class="form-control" style="flex:1;" readonly>
+          <button class="btn btn-drive" onclick="openDriveFolder()">Mở Google Drive ngay</button>
+        </div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:16px;">⚙️ Quản Trị Nhân Sự (Thêm / Sửa / Xóa khi đăng ký sai)</h3>
+          <span style="font-size:12px; color:var(--succ-green);">Đã xác thực quyền Quản trị viên</span>
+        </div>
+        <button class="btn btn-primary" onclick="openRegisterModal()">+ Thêm nhân sự mới</button>
+      </div>
+
+      <div class="data-card">
+        <table class="dsu-table">
+          <thead>
+            <tr>
+              <th>Họ và Tên</th>
+              <th>Số điện thoại (Zalo)</th>
+              <th>Email</th>
+              <th>Chức danh</th>
+              <th>Vai trò</th>
+              <th style="text-align: right;">Thao tác Quản trị</th>
+            </tr>
+          </thead>
+          <tbody id="adminUserTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODALS -->
+  <!-- ========================================== -->
+
+  <!-- MODAL: GIAO VIỆC MỚI -->
+  <div class="modal-backdrop" id="modalCreateTask">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">Giao công việc mới</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalCreateTask')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Tên công việc / Yêu cầu cụ thể *</label>
+          <input type="text" id="taskTitle" class="form-control" placeholder="VD: Kiểm tra giải phóng hàng container lạnh Tân Vũ..." required>
+        </div>
+        <div class="form-group">
+          <label>Nội dung chi tiết / Hướng dẫn nghiệp vụ</label>
+          <textarea id="taskDesc" class="form-control" rows="3" placeholder="Ghi chú số bill, yêu cầu đặc biệt..."></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Phân công cho nhân viên *</label>
+            <select id="taskAssignee" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>Mức độ ưu tiên</label>
+            <select id="taskPriority" class="form-control">
+              <option value="medium">Trung bình</option>
+              <option value="high">Ưu tiên cao</option>
+              <option value="urgent">Khẩn cấp (Hỏa tốc +5đ)</option>
+              <option value="low">Thấp</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Hạn chót hoàn thành (Ngày & Giờ chính xác) *</label>
+            <input type="datetime-local" id="taskDueDateTime" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Mảng KPI liên quan *</label>
+            <select id="taskKpiSelect" class="form-control"></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>🔗 Đường dẫn Google Drive đính kèm (Nếu có):</label>
+          <div style="display:flex; gap:8px;">
+            <input type="url" id="taskDriveLink" class="form-control" placeholder="Dán link file/thư mục Google Drive vào đây..." style="flex:1;">
+            <button class="btn btn-drive btn-sm" type="button" onclick="openDriveFolder()">Mở Drive 100GB</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>📎 Đính kèm tệp văn bản (Đẩy trực tiếp lên Supabase Storage Bucket):</label>
+          <input type="file" id="createTaskFileInput" class="form-control" multiple>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalCreateTask')">Hủy bỏ</button>
+        <button class="btn btn-primary" id="btnSubmitCreateTask" onclick="submitCreateTask()">Tạo việc & Lưu Cloud</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CÀI ĐẶT MẢNG KPI MỚI -->
+  <div class="modal-backdrop" id="modalCreateKpi">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">Thêm Mảng KPI Mới</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalCreateKpi')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Mã KPI (Viết hoa, không dấu) *</label>
+          <input type="text" id="kpiCodeInput" class="form-control" placeholder="VD: PORT_OPS, CRM_TICKET..." required>
+        </div>
+        <div class="form-group">
+          <label>Tên Mảng KPI / Nghiệp vụ *</label>
+          <input type="text" id="kpiNameInput" class="form-control" placeholder="VD: Điều độ hiện trường Tân Vũ" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Đơn vị tính</label>
+            <input type="text" id="kpiUnitInput" class="form-control" placeholder="lượt, TEU, phút" value="lượt">
+          </div>
+          <div class="form-group">
+            <label>Chỉ tiêu ngày</label>
+            <input type="number" id="kpiTargetInput" class="form-control" value="20">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mô tả phạm vi thực hiện</label>
+          <textarea id="kpiDescInput" class="form-control" rows="2" placeholder="Ghi chú quy chuẩn tiếp nhận..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalCreateKpi')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitCreateKpi()">Lưu Mảng KPI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC, TẢI VỀ & NỘP BÁO CÁO -->
+  <div class="modal-backdrop" id="modalTaskDetail">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <span id="detailTaskCode" class="task-code"></span>
+          <span id="detailKpiTag" class="kpi-tag" style="margin-left:6px;"></span>
+          <h3 id="detailTaskTitle" style="font-size:16px; margin-top:4px;"></h3>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalTaskDetail')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="permissionWarning" class="lock-notice" style="display:none;">
+          ⚠️ <b>Khóa thao tác:</b> Bạn không phải người phụ trách việc này và không thuộc Ban Lãnh đạo nên chỉ có quyền xem!
+        </div>
+
+        <div class="grid-2">
+          <div style="font-size:13px;">
+            <span style="color:var(--text-muted);">Người phụ trách: </span>
+            <b id="detailAssigneeName"></b>
+          </div>
+          <div style="font-size:13px;">
+            <span style="color:var(--text-muted);">Hạn chót: </span>
+            <b id="detailDueDateTime"></b>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nội dung chỉ đạo:</label>
+          <div id="detailTaskDesc" style="background:var(--bg-surface); padding:10px; border-radius:6px; font-size:13px; line-height:1.5;"></div>
+        </div>
+
+        <!-- LINK GOOGLE DRIVE -->
+        <div id="detailDriveLinkWrap" class="form-group" style="display:none;">
+          <label>🌐 Đường dẫn Google Drive đính kèm:</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <a id="detailDriveLinkTag" href="#" target="_blank" class="btn btn-drive btn-sm">Mở tệp trên Google Drive</a>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH FILE ĐÍNH KÈM TRÊN BUCKET -->
+        <div class="form-group">
+          <label>📁 Tệp đính kèm & Báo cáo đã nộp (Lưu trên Supabase Storage):</label>
+          <div class="file-attach-list" id="detailFileList"></div>
+        </div>
+
+        <!-- NỘP THÊM FILE LÊN BUCKET -->
+        <div class="form-group" id="detailUploadSection" style="border-top:1px solid var(--border-color); padding-top:12px;">
+          <label>📤 Tải lên báo cáo mới (Đẩy lên Bucket Storage):</label>
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <input type="file" id="detailNewFileInput" class="form-control" multiple style="flex:1;">
+            <button class="btn btn-warning" id="btnUploadBucketFile" onclick="uploadMoreFilesToCurrentTask()">Tải lên Bucket</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="url" id="detailAddDriveLink" class="form-control" placeholder="Hoặc dán link Google Drive nộp báo cáo..." style="flex:1;">
+            <button class="btn btn-drive" onclick="saveDriveLinkToTask()">Lưu link Drive</button>
+          </div>
+        </div>
+
+        <!-- ĐỔI TRẠNG THÁI -->
+        <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:12px;">
+          <label>🔄 Chuyển trạng thái công việc:</label>
+          <select id="detailStatusSelect" class="form-control" style="font-weight:700;">
+            <option value="pending">1. Chờ tiếp nhận</option>
+            <option value="in_progress">2. Đang thực hiện</option>
+            <option value="review">3. Chờ Lãnh đạo duyệt báo cáo</option>
+            <option value="completed" id="optStatusCompleted">4. Đã hoàn thành (Chỉ Lãnh đạo)</option>
+          </select>
+          <span id="detailStatusNotice" style="font-size:11px; color:var(--text-muted); margin-top:4px;"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
+        <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Cập nhật trạng thái</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ĐỔI NHÂN SỰ ĐĂNG NHẬP -->
+  <div class="modal-backdrop" id="modalAuth" style="display:none;">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">Chọn Tài Khoản Đăng Nhập</h3>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nhân viên / Lãnh đạo:</label>
+          <select id="loginSelectUser" class="form-control" style="font-weight:700;"></select>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu:</label>
+          <input type="password" id="loginPassword" class="form-control" value="123456">
+          <span style="font-size:11px; color:var(--text-muted);">Mặc định: 123456</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitLogin()">Đăng nhập</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: XÁC THỰC MẬT KHẨU QUẢN TRỊ -->
+  <div class="modal-backdrop" id="modalAdminPassword" style="display:none;">
+    <div class="modal-box" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">🔒 Xác thực Quyền Quản Trị</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalAdminPassword')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--text-muted);">Vui lòng nhập Mật khẩu Quản trị để mở khóa quyền thêm, xóa, sửa nhân sự:</p>
+        <div class="form-group">
+          <input type="password" id="adminPasswordInput" class="form-control" placeholder="Nhập mật khẩu quản trị..." autofocus>
+          <span style="font-size:11px; color:var(--accent-light);">Mật khẩu mặc định: <b>admin@canghp</b></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalAdminPassword')">Hủy</button>
+        <button class="btn btn-primary" onclick="verifyAdminPassword()">Mở Khóa Quản Trị</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: THÊM / CHỈNH SỬA NHÂN SỰ -->
+  <div class="modal-backdrop" id="modalRegister">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalRegisterTitle" style="font-size:16px;">Thêm nhân sự mới vào Trung tâm</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalRegister')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editUserId">
+        <div class="form-group">
+          <label>Họ và tên nhân viên *</label>
+          <input type="text" id="regFullName" class="form-control" placeholder="VD: Hoàng Văn Bình" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Số điện thoại (Có Zalo) *</label>
+            <input type="tel" id="regPhone" class="form-control" placeholder="VD: 0912345678" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="regEmail" class="form-control" placeholder="VD: binh.hv@haiphongport.com.vn" required>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Chức danh công tác</label>
+            <input type="text" id="regTitle" class="form-control" value="Chuyên viên Khai thác">
+          </div>
+          <div class="form-group">
+            <label>Vai trò hệ thống</label>
+            <select id="regRole" class="form-control">
+              <option value="staff">Nhân viên Trung tâm</option>
+              <option value="hod">Trưởng / Phó Trung tâm (Lãnh đạo)</option>
+              <option value="admin">Quản trị viên (Admin)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalRegister')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitSaveUser()">Lưu Thông Tin</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: BẮN TIN ZALO/EMAIL -->
+  <div class="modal-backdrop" id="modalNotifyPrompt">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size:16px; color:#fff;">⚡ Giao việc thành công! Gửi thông báo ngay:</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalNotifyPrompt')">✕</button>
+      </div>
+      <div class="modal-body" id="notifyPromptBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('modalNotifyPrompt')">Hoàn tất</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT KẾT NỐI SUPABASE & GOOGLE DRIVE -->
+  <!-- ========================================== -->
+  <script>
+    // 1. CẤU HÌNH API SUPABASE VÀ GOOGLE DRIVE
+    const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_kPe1NJ-q0VDoh-aDwE6Bvw_01NUQSnt";
+    const BUCKET_NAME = "dsu-attachments";
+    const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1-6aAvCaw_akwXmNBw6SxWTmdDi0PekDN?usp=drive_link";
+    const ADMIN_SECRET_KEY = "admin@canghp"; // Mật khẩu truy cập tab Quản trị
+
+    // Danh sách icon Chibi ngẫu nhiên ở góc thẻ việc
+    const CHIBI_CORNER_ICONS = ["👨‍💼", "👩‍💼", "🚢", "🏗️", "📦", "☕", "💻", "📑", "⚡"];
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let users = [];
+    let tasks = [];
+    let kpis = [];
+    let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || null;
+    let selectedTaskIdForDetail = null;
+    let isAdminUnlocked = false; // Cờ kiểm tra mật khẩu admin
+
+    // 2. KHỞI TẠO VÀ TẢI DỮ LIỆU
+    async function initApp() {
+      document.getElementById('cfgDriveUrl').value = DRIVE_FOLDER_URL;
+      
+      const today = new Date();
+      today.setHours(17, 0, 0, 0);
+      document.getElementById('taskDueDateTime').value = today.toISOString().slice(0, 16);
+
+      await loadInitialData();
+      setupRealtimeListeners();
+    }
+
+    async function loadInitialData() {
+      try {
+        const { data: userData, error: userErr } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
+        if (!userErr && userData && userData.length > 0) {
+          users = userData;
+          if (!currentUserId || !users.find(u => u.id === currentUserId)) {
+            currentUserId = users[0].id;
+            localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
+          }
+        }
+
+        const { data: kpiData, error: kpiErr } = await supabaseClient.from('kpi_categories').select('*').order('created_at', { ascending: true });
+        if (!kpiErr && kpiData) {
+          kpis = kpiData;
+        }
+
+        await fetchTasks();
+
+        updateCurrentUserUI();
+        renderUserSelectors();
+        renderKpiSelectors();
+        renderScoreBoard();
+        renderKpiTable();
+        renderAdminUserTable();
+      } catch (err) {
+        console.error("Lỗi khởi tạo dữ liệu:", err);
+      }
+    }
+
+    async function fetchTasks() {
+      const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
+      if (!error && data) {
+        tasks = data;
+        renderKanban();
+        renderScoreBoard();
+      }
+    }
+
+    function setupRealtimeListeners() {
+      supabaseClient
+        .channel('dsu-realtime-tasks-v5')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+          fetchTasks();
+        })
+        .subscribe();
+    }
+
+    // 3. XÁC THỰC MẬT KHẨU QUẢN TRỊ KHI BẤM TAB QUẢN TRỊ
+    function promptAdminPasswordAndOpen() {
+      if (isAdminUnlocked) {
+        switchMainTab('adminTab');
+        return;
+      }
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('modalAdminPassword').style.display = 'flex';
+    }
+
+    function verifyAdminPassword() {
+      const pass = document.getElementById('adminPasswordInput').value.trim();
+      if (pass === ADMIN_SECRET_KEY) {
+        isAdminUnlocked = true;
+        closeModal('modalAdminPassword');
+        switchMainTab('adminTab');
+        alert("Xác thực Quản trị thành công! Bạn có thể thêm, sửa, xóa thông tin nhân sự.");
+      } else {
+        alert("Sai mật khẩu Quản trị!");
+      }
+    }
+
+    // 4. CHUYỂN TAB CHỨC NĂNG
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      
+      const activeBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabId === 'scoreTab') renderScoreBoard();
+      if (tabId === 'kpiTab') renderKpiTable();
+      if (tabId === 'adminTab') renderAdminUserTable();
+    }
+
+    function updateCurrentUserUI() {
+      const user = users.find(u => u.id === currentUserId);
+      if (!user) return;
+
+      const badge = document.getElementById('currentUserBadge');
+      let roleLabel = user.role === 'hod' ? 'Lãnh đạo TT' : (user.role === 'admin' ? 'Admin' : 'Nhân viên');
+      badge.innerHTML = `
+        <div style="font-weight:700; color:#fff;">${user.full_name}</div>
+        <div style="font-size:11px; color:var(--accent-light);">${user.title} (${roleLabel})</div>
+      `;
+
+      const kpiBtn = document.getElementById('kpiTabBtn');
+      if (user.role === 'staff') {
+        kpiBtn.style.display = 'none';
+      } else {
+        kpiBtn.style.display = 'inline-flex';
+      }
+    }
+
+    function renderUserSelectors() {
+      const taskAssignee = document.getElementById('taskAssignee');
+      const filterAssignee = document.getElementById('filterAssignee');
+      const loginSelect = document.getElementById('loginSelectUser');
+
+      taskAssignee.innerHTML = '';
+      filterAssignee.innerHTML = '<option value="ALL">-- Tất cả nhân viên --</option>';
+      loginSelect.innerHTML = '';
+
+      users.forEach(u => {
+        const opt1 = document.createElement('option');
+        opt1.value = u.id;
+        opt1.textContent = `${u.full_name} - ${u.phone} (${u.title})`;
+        taskAssignee.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = u.id;
+        opt2.textContent = u.full_name;
+        filterAssignee.appendChild(opt2);
+
+        const opt3 = document.createElement('option');
+        opt3.value = u.id;
+        opt3.textContent = `${u.full_name} [${u.title}]`;
+        if (u.id === currentUserId) opt3.selected = true;
+        loginSelect.appendChild(opt3);
+      });
+    }
+
+    function renderKpiSelectors() {
+      const taskKpiSelect = document.getElementById('taskKpiSelect');
+      const filterKpi = document.getElementById('filterKpi');
+
+      taskKpiSelect.innerHTML = '';
+      filterKpi.innerHTML = '<option value="ALL">-- Tất cả Mảng KPI --</option>';
+
+      kpis.forEach(k => {
+        const opt1 = document.createElement('option');
+        opt1.value = k.code;
+        opt1.textContent = `[${k.code}] ${k.name}`;
+        taskKpiSelect.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = k.code;
+        opt2.textContent = k.name;
+        filterKpi.appendChild(opt2);
+      });
+    }
+
+    function logoutUser() {
+      document.getElementById('modalAuth').style.display = 'flex';
+    }
+
+    function submitLogin() {
+      currentUserId = document.getElementById('loginSelectUser').value;
+      localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
+      updateCurrentUserUI();
+      renderKanban();
+      closeModal('modalAuth');
+    }
+
+    function canUserModifyTask(task) {
+      const currentUser = users.find(u => u.id === currentUserId);
+      if (!currentUser) return false;
+      if (currentUser.role === 'hod' || currentUser.role === 'admin') return true;
+      return task.assignee_id === currentUser.id;
+    }
+
+    function isLeaderOrAdmin() {
+      const currentUser = users.find(u => u.id === currentUserId);
+      return currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
+    }
+
+    // 5. TÍNH TOÁN CẢNH BÁO HẠN CHÓT (SÉT ĐÁNH / THIÊN THẦN)
+    function getDeadlineStatus(dueDateTimeStr, status) {
+      if (status === 'completed') {
+        return { type: 'completed', text: '✅ Đã hoàn thành', badgeClass: 'dl-normal', cardClass: '' };
+      }
+      if (!dueDateTimeStr) return { type: 'normal', text: 'Không giới hạn', badgeClass: 'dl-normal', cardClass: '' };
+
+      const now = new Date().getTime();
+      const deadline = new Date(dueDateTimeStr).getTime();
+      const diffHours = (deadline - now) / (1000 * 60 * 60);
+      const formatted = new Date(dueDateTimeStr).toLocaleString('vi-VN', { hour: '2-digit', minute:'2-digit', day:'2-digit', month:'2-digit' });
+
+      if (diffHours < 0) {
+        return { type: 'overdue', text: `⚡ QUÁ HẠN (${formatted})`, badgeClass: 'dl-overdue', cardClass: 'card-overdue' };
+      } else if (diffHours <= 2) {
+        const diffMins = Math.max(1, Math.round((deadline - now) / (1000 * 60)));
+        return { type: 'duesoon', text: `👼 CÒN ${diffMins} PHÚT`, badgeClass: 'dl-duesoon', cardClass: 'card-duesoon' };
+      } else {
+        return { type: 'normal', text: `Hạn: ${formatted}`, badgeClass: 'dl-normal', cardClass: '' };
+      }
+    }
+
+    // 6. RENDER KANBAN
+    function renderKanban() {
+      const filterWho = document.getElementById('filterAssignee').value;
+      const filterPri = document.getElementById('filterPriority').value;
+      const filterKpiVal = document.getElementById('filterKpi').value;
+
+      const cols = {
+        pending: document.getElementById('col-pending'),
+        in_progress: document.getElementById('col-in_progress'),
+        review: document.getElementById('col-review'),
+        completed: document.getElementById('col-completed')
+      };
+
+      Object.keys(cols).forEach(k => cols[k].innerHTML = '');
+      let counts = { pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, dueSoon: 0 };
+
+      tasks.forEach((t, idx) => {
+        if (filterWho !== 'ALL' && t.assignee_id !== filterWho) return;
+        if (filterPri !== 'ALL' && t.priority !== filterPri) return;
+        if (filterKpiVal !== 'ALL' && t.kpi_code !== filterKpiVal) return;
+
+        counts[t.status]++;
+        const dlInfo = getDeadlineStatus(t.due_datetime, t.status);
+        if (dlInfo.type === 'overdue') counts.overdue++;
+        if (dlInfo.type === 'duesoon') counts.dueSoon++;
+
+        const assignee = users.find(u => u.id === t.assignee_id) || { full_name: 'Chưa gán', phone: '', email: '' };
+        const kpiItem = kpis.find(k => k.code === t.kpi_code) || { name: t.kpi_code || 'Khác' };
+        const fileCount = (t.files && Array.isArray(t.files)) ? t.files.length : 0;
+        const hasPermission = canUserModifyTask(t);
+        const cornerChibi = CHIBI_CORNER_ICONS[idx % CHIBI_CORNER_ICONS.length];
+
+        const formattedTime = new Date(t.due_datetime).toLocaleString('vi-VN');
+        const zaloMsg = encodeURIComponent(`[DSU CẢNG HẢI PHÒNG - GIAO VIỆC]\n• Mã: ${t.task_code}\n• Nhiệm vụ: ${t.title}\n• Hạn chót: ${formattedTime}\n• Mảng KPI: ${kpiItem.name}\n• Mức ưu tiên: ${t.priority.toUpperCase()}\nNhân viên vui lòng cập nhật tiến độ trước giờ chót!`);
+        const zaloUrl = `https://zalo.me/${assignee.phone}`;
+        const mailUrl = `mailto:${assignee.email}?subject=${encodeURIComponent('[DSU TT KTDVKH] ' + t.title)}&body=${zaloMsg}`;
+
+        const card = document.createElement('div');
+        card.className = `task-card ${dlInfo.cardClass}`;
+        card.innerHTML = `
+          <div class="card-corner-chibi">${cornerChibi}</div>
+          <div class="task-meta">
+            <span class="task-code">${t.task_code || 'TSK'}</span>
+            <span class="priority-chip p-${t.priority}">${t.priority}</span>
+          </div>
+          <span class="kpi-tag">🏷️ ${kpiItem.name}</span>
+          <div class="task-title" onclick="openTaskDetailModal('${t.id}')">${t.title}</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.4;" onclick="openTaskDetailModal('${t.id}')">${t.description || ''}</div>
+          
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+            <span class="deadline-chip ${dlInfo.badgeClass}">${dlInfo.text}</span>
+            ${fileCount > 0 ? `<div class="file-pill-tag" onclick="openTaskDetailModal('${t.id}')">📎 ${fileCount} tệp</div>` : ''}
+            ${t.drive_link ? `<a href="${t.drive_link}" target="_blank" class="icon-btn" style="background:#1a73e8;" onclick="event.stopPropagation()">🌐 Drive</a>` : ''}
+          </div>
+
+          <div class="task-footer">
+            <div class="assignee-box">
+              <div class="avatar-circle">${assignee.full_name ? assignee.full_name.charAt(0) : 'U'}</div>
+              <span>${assignee.full_name}</span>
+            </div>
+            <div class="btn-quick-notify" onclick="event.stopPropagation()">
+              <a href="${zaloUrl}" target="_blank" class="icon-btn" title="Gửi Zalo">💬 Zalo</a>
+              <a href="${mailUrl}" class="icon-btn" title="Gửi Mail">✉️ Mail</a>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;" onclick="event.stopPropagation()">
+            <span style="font-size:11px; color:var(--text-muted);">Trạng thái:</span>
+            ${hasPermission ? `
+              <select class="form-control" style="padding:2px 6px; font-size:11px; width:auto;" onchange="changeTaskStatusDirect('${t.id}', this.value)">
+                <option value="pending" ${t.status === 'pending' ? 'selected' : ''}>Chờ nhận</option>
+                <option value="in_progress" ${t.status === 'in_progress' ? 'selected' : ''}>Đang làm</option>
+                <option value="review" ${t.status === 'review' ? 'selected' : ''}>Chờ duyệt</option>
+                ${isLeaderOrAdmin() ? `<option value="completed" ${t.status === 'completed' ? 'selected' : ''}>Hoàn thành</option>` : (t.status === 'completed' ? `<option value="completed" selected>Hoàn thành</option>` : '')}
+              </select>
+            ` : `
+              <span style="font-size:11px; color:var(--text-muted); font-style:italic;">🔒 Khóa</span>
+            `}
+          </div>
+        `;
+        cols[t.status].appendChild(card);
+      });
+
+      document.getElementById('badge-pending').textContent = counts.pending;
+      document.getElementById('badge-in_progress').textContent = counts.in_progress;
+      document.getElementById('badge-review').textContent = counts.review;
+      document.getElementById('badge-completed').textContent = counts.completed;
+
+      document.getElementById('totalTasksCount').textContent = tasks.length;
+      document.getElementById('overdueCount').textContent = counts.overdue;
+      document.getElementById('dueSoonCount').textContent = counts.dueSoon;
+      document.getElementById('completedCount').textContent = counts.completed;
+    }
+
+    async function changeTaskStatusDirect(taskId, newStatus) {
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      if (!canUserModifyTask(task)) {
+        alert("Bạn không có quyền chuyển trạng thái công việc này!");
+        renderKanban();
+        return;
+      }
+
+      if (newStatus === 'completed' && !isLeaderOrAdmin()) {
+        alert("Chỉ có Trưởng / Phó Trung tâm mới có quyền nghiệm thu 'Hoàn thành'!");
+        renderKanban();
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from('tasks')
+        .update({ status: newStatus, updated_at: new Date() })
+        .eq('id', taskId);
+
+      if (error) {
+        alert("Lỗi cập nhật trạng thái lên Supabase: " + error.message);
+      } else {
+        await fetchTasks();
+      }
+    }
+
+    // 7. GIAO VIỆC & UPLOAD FILE LÊN BUCKET
+    function openCreateTaskModal() {
+      document.getElementById('taskTitle').value = '';
+      document.getElementById('taskDesc').value = '';
+      document.getElementById('taskDriveLink').value = '';
+      document.getElementById('createTaskFileInput').value = '';
+      document.getElementById('modalCreateTask').style.display = 'flex';
+    }
+
+    async function submitCreateTask() {
+      const btn = document.getElementById('btnSubmitCreateTask');
+      const title = document.getElementById('taskTitle').value.trim();
+      const desc = document.getElementById('taskDesc').value.trim();
+      const assigneeId = document.getElementById('taskAssignee').value;
+      const priority = document.getElementById('taskPriority').value;
+      const dueDateTime = document.getElementById('taskDueDateTime').value;
+      const kpi = document.getElementById('taskKpiSelect').value;
+      const driveLink = document.getElementById('taskDriveLink').value.trim();
+      const fileInput = document.getElementById('createTaskFileInput');
+
+      if (!title || !dueDateTime) {
+        alert("Vui lòng điền tên công việc và giờ chót hoàn thành!");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Đang đẩy dữ liệu lên Cloud...";
+
+      try {
+        let attachedFiles = [];
+        if (fileInput.files.length > 0) {
+          for (let i = 0; i < fileInput.files.length; i++) {
+            const file = fileInput.files[i];
+            const fileInfo = await uploadFileToSupabaseBucket(file);
+            if (fileInfo) attachedFiles.push(fileInfo);
+          }
+        }
+
+        const { data, error } = await supabaseClient.from('tasks').insert([{
+          title,
+          description: desc,
+          assignee_id: assigneeId,
+          creator_id: currentUserId,
+          priority,
+          status: 'pending',
+          due_datetime: dueDateTime,
+          kpi_code: kpi,
+          drive_link: driveLink,
+          files: attachedFiles
+        }]).select();
+
+        if (error) {
+          alert("Lỗi tạo công việc: " + error.message);
+        } else {
+          closeModal('modalCreateTask');
+          await fetchTasks();
+          if (data && data[0]) showNotifyPrompt(data[0]);
+        }
+      } catch (err) {
+        alert("Lỗi upload: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Tạo việc & Lưu Cloud";
+      }
+    }
+
+    async function uploadFileToSupabaseBucket(file) {
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filePath = `tasks/${Date.now()}_${cleanFileName}`;
+
+      const { data, error } = await supabaseClient.storage
+        .from(BUCKET_NAME)
+        .upload(filePath, file, { cacheControl: '3600', upsert: true });
+
+      if (error) {
+        console.error("Lỗi upload file lên bucket:", error);
+        return null;
+      }
+
+      const { data: publicData } = supabaseClient.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+      const currentUser = users.find(u => u.id === currentUserId);
+      return {
+        name: file.name,
+        size: (file.size / 1024).toFixed(1) + ' KB',
+        path: filePath,
+        url: publicData.publicUrl,
+        uploadedBy: currentUser ? currentUser.full_name : "N/A",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute:'2-digit' })
+      };
+    }
+
+    function showNotifyPrompt(task) {
+      const assignee = users.find(u => u.id === task.assignee_id);
+      const promptBody = document.getElementById('notifyPromptBody');
+      const formattedTime = new Date(task.due_datetime).toLocaleString('vi-VN');
+
+      const msg = encodeURIComponent(`[DSU CẢNG HẢI PHÒNG - GIAO VIỆC MỚI]\nKính gửi anh/chị ${assignee.full_name},\nBạn được phân công nhiệm vụ:\n• Nhiệm vụ: ${task.title}\n• Hạn chót: ${formattedTime}\n• Mức ưu tiên: ${task.priority.toUpperCase()}\nĐề nghị kiểm tra văn bản và nộp báo cáo đúng giờ chót!`);
+      const zaloLink = `https://zalo.me/${assignee.phone}`;
+      const mailLink = `mailto:${assignee.email}?subject=${encodeURIComponent('[DSU CẢNG HẢI PHÒNG] Giao việc mới: ' + task.title)}&body=${msg}`;
+
+      promptBody.innerHTML = `
+        <p style="font-size:14px; margin-bottom:12px;">Đã phân công cho <b>${assignee.full_name}</b> (SĐT: ${assignee.phone}) - Hạn chót: <b>${formattedTime}</b>. Chọn kênh gửi báo ngay:</p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <a href="${zaloLink}" target="_blank" class="btn btn-primary" style="justify-content:center; background:#0068FF;">
+            💬 Mở Zalo để gửi tới số ${assignee.phone}
+          </a>
+          <a href="${mailLink}" class="btn btn-warning" style="justify-content:center;">
+            ✉️ Mở Email gửi tới ${assignee.email}
+          </a>
+        </div>
+      `;
+      document.getElementById('modalNotifyPrompt').style.display = 'flex';
+    }
+
+    // 8. POPUP CHI TIẾT CÔNG VIỆC
+    function openTaskDetailModal(taskId) {
+      selectedTaskIdForDetail = taskId;
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const assignee = users.find(u => u.id === task.assignee_id) || { full_name: 'Chưa gán' };
+      const kpiItem = kpis.find(k => k.code === task.kpi_code) || { name: task.kpi_code || 'Khác' };
+      const hasPermission = canUserModifyTask(task);
+      const isLeader = isLeaderOrAdmin();
+
+      document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
+      document.getElementById('detailKpiTag').textContent = kpiItem.name;
+      document.getElementById('detailTaskTitle').textContent = task.title;
+      document.getElementById('detailAssigneeName').textContent = assignee.full_name;
+      document.getElementById('detailDueDateTime').textContent = new Date(task.due_datetime).toLocaleString('vi-VN');
+      document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú thêm)';
+      document.getElementById('detailStatusSelect').value = task.status;
+      document.getElementById('detailNewFileInput').value = '';
+      document.getElementById('detailAddDriveLink').value = '';
+
+      const driveWrap = document.getElementById('detailDriveLinkWrap');
+      const driveTag = document.getElementById('detailDriveLinkTag');
+      if (task.drive_link) {
+        driveWrap.style.display = 'block';
+        driveTag.href = task.drive_link;
+      } else {
+        driveWrap.style.display = 'none';
+      }
+
+      const permWarning = document.getElementById('permissionWarning');
+      const statusSelect = document.getElementById('detailStatusSelect');
+      const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
+      const uploadSection = document.getElementById('detailUploadSection');
+      const optCompleted = document.getElementById('optStatusCompleted');
+      const statusNotice = document.getElementById('detailStatusNotice');
+
+      if (!hasPermission) {
+        permWarning.style.display = 'flex';
+        statusSelect.disabled = true;
+        btnSaveStatus.disabled = true;
+        uploadSection.style.display = 'none';
+        statusNotice.textContent = "Chỉ người thực hiện hoặc Lãnh đạo mới có quyền nộp báo cáo.";
+      } else {
+        permWarning.style.display = 'none';
+        statusSelect.disabled = false;
+        btnSaveStatus.disabled = false;
+        uploadSection.style.display = 'block';
+
+        if (!isLeader) {
+          optCompleted.disabled = true;
+          statusNotice.textContent = "Nhân viên chọn 'Chờ Lãnh đạo duyệt' sau khi nộp báo cáo. Lãnh đạo sẽ chốt 'Hoàn thành'.";
+        } else {
+          optCompleted.disabled = false;
+          statusNotice.textContent = "Lãnh đạo có toàn quyền kiểm duyệt và nghiệm thu công việc.";
+        }
+      }
+
+      renderDetailFileList(task);
+      document.getElementById('modalTaskDetail').style.display = 'flex';
+    }
+
+    function renderDetailFileList(task) {
+      const listEl = document.getElementById('detailFileList');
+      listEl.innerHTML = '';
+
+      if (!task.files || task.files.length === 0) {
+        listEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:10px;">Chưa có tệp đính kèm nào được tải lên.</div>';
+        return;
+      }
+
+      task.files.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>📄</span>
+            <div>
+              <b style="color:#fff;">${f.name}</b>
+              <div style="font-size:10px; color:var(--text-muted);">Cỡ: ${f.size} · Gửi bởi: ${f.uploadedBy} lúc ${f.time}</div>
+            </div>
+          </div>
+          <a href="${f.url}" target="_blank" download="${f.name}" class="btn btn-primary btn-sm">📥 Tải về</a>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    async function uploadMoreFilesToCurrentTask() {
+      const fileInput = document.getElementById('detailNewFileInput');
+      const btn = document.getElementById('btnUploadBucketFile');
+
+      if (fileInput.files.length === 0) {
+        alert("Vui lòng chọn file từ máy tính!");
+        return;
+      }
+
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task || !canUserModifyTask(task)) return;
+
+      btn.disabled = true;
+      btn.textContent = "Đang tải lên...";
+
+      try {
+        let currentFiles = Array.isArray(task.files) ? [...task.files] : [];
+        for (let i = 0; i < fileInput.files.length; i++) {
+          const fileInfo = await uploadFileToSupabaseBucket(fileInput.files[i]);
+          if (fileInfo) currentFiles.push(fileInfo);
+        }
+
+        const { error } = await supabaseClient
+          .from('tasks')
+          .update({ files: currentFiles, updated_at: new Date() })
+          .eq('id', task.id);
+
+        if (error) {
+          alert("Lỗi lưu file: " + error.message);
+        } else {
+          task.files = currentFiles;
+          fileInput.value = '';
+          renderDetailFileList(task);
+          renderKanban();
+          alert("Đã tải tệp lên Storage Bucket thành công!");
+        }
+      } catch (err) {
+        alert("Lỗi upload: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Tải lên Bucket";
+      }
+    }
+
+    async function saveDriveLinkToTask() {
+      const url = document.getElementById('detailAddDriveLink').value.trim();
+      if (!url) {
+        alert("Vui lòng dán link Google Drive hợp lệ!");
+        return;
+      }
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+
+      const { error } = await supabaseClient
+        .from('tasks')
+        .update({ drive_link: url, updated_at: new Date() })
+        .eq('id', task.id);
+
+      if (error) {
+        alert("Lỗi lưu link Drive: " + error.message);
+      } else {
+        task.drive_link = url;
+        document.getElementById('detailDriveLinkWrap').style.display = 'block';
+        document.getElementById('detailDriveLinkTag').href = url;
+        document.getElementById('detailAddDriveLink').value = '';
+        renderKanban();
+        alert("Đã lưu liên kết Google Drive vào công việc!");
+      }
+    }
+
+    async function saveTaskStatusFromDetail() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+      const newStatus = document.getElementById('detailStatusSelect').value;
+      await changeTaskStatusDirect(task.id, newStatus);
+      closeModal('modalTaskDetail');
+    }
+
+    // 9. CÀI ĐẶT MẢNG KPI (TAB 3)
+    function renderKpiTable() {
+      const tbody = document.getElementById('kpiTableBody');
+      tbody.innerHTML = '';
+
+      kpis.forEach(k => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code>${k.code}</code></td>
+          <td><b>${k.name}</b></td>
+          <td>${k.unit}</td>
+          <td><b style="color:var(--accent-light);">${k.daily_target} ${k.unit}/ngày</b></td>
+          <td><span style="font-size:12px; color:var(--text-muted);">${k.description || ''}</span></td>
+          <td style="text-align: right;">
+            <button class="btn btn-outline btn-sm" onclick="deleteKpi('${k.id}')">Xóa</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openCreateKpiModal() {
+      document.getElementById('kpiCodeInput').value = '';
+      document.getElementById('kpiNameInput').value = '';
+      document.getElementById('kpiDescInput').value = '';
+      document.getElementById('modalCreateKpi').style.display = 'flex';
+    }
+
+    async function submitCreateKpi() {
+      const code = document.getElementById('kpiCodeInput').value.trim().toUpperCase();
+      const name = document.getElementById('kpiNameInput').value.trim();
+      const unit = document.getElementById('kpiUnitInput').value.trim();
+      const target = document.getElementById('kpiTargetInput').value;
+      const desc = document.getElementById('kpiDescInput').value.trim();
+
+      if (!code || !name) {
+        alert("Vui lòng điền Mã KPI và Tên Mảng KPI!");
+        return;
+      }
+
+      const { data, error } = await supabaseClient.from('kpi_categories').insert([{
+        code, name, unit: unit || 'lượt', daily_target: Number(target) || 0, description: desc
+      }]).select();
+
+      if (error) {
+        alert("Lỗi thêm KPI: " + error.message);
+      } else {
+        if (data) kpis.push(data[0]);
+        renderKpiSelectors();
+        renderKpiTable();
+        closeModal('modalCreateKpi');
+        alert(`Đã thêm Mảng KPI: [${code}] ${name}`);
+      }
+    }
+
+    async function deleteKpi(kpiId) {
+      if (!confirm("Bạn có chắc chắn muốn xóa Mảng KPI này?")) return;
+      const { error } = await supabaseClient.from('kpi_categories').delete().eq('id', kpiId);
+      if (error) {
+        alert("Lỗi xóa KPI: " + error.message);
+      } else {
+        kpis = kpis.filter(k => k.id !== kpiId);
+        renderKpiSelectors();
+        renderKpiTable();
+      }
+    }
+
+    // 10. TÍNH ĐIỂM HIỆU SUẤT DSU (TAB 2)
+    function renderScoreBoard() {
+      const tbody = document.getElementById('scoreTableBody');
+      tbody.innerHTML = '';
+
+      const userScores = users.map(user => {
+        const assignedTasks = tasks.filter(t => t.assignee_id === user.id);
+        const total = assignedTasks.length;
+        let onTime = 0;
+        let overdue = 0;
+        let totalScore = 0;
+
+        assignedTasks.forEach(t => {
+          if (t.status === 'completed') {
+            onTime++;
+            totalScore += 10;
+            if (t.priority === 'urgent') totalScore += 5;
+          } else {
+            const dl = getDeadlineStatus(t.due_datetime, t.status);
+            if (dl.type === 'overdue') overdue++;
+          }
+        });
+
+        const rate = total > 0 ? Math.round((onTime / total) * 100) : 0;
+        let rankTitle = "Chưa xếp loại";
+        if (total > 0) {
+          if (rate >= 90) rankTitle = "Xuất sắc (A+)";
+          else if (rate >= 75) rankTitle = "Tốt (A)";
+          else if (rate >= 50) rankTitle = "Đạt (B)";
+          else rankTitle = "Cần cải thiện (C)";
+        }
+
+        return { user, total, onTime, overdue, rate, totalScore, rankTitle };
+      });
+
+      userScores.sort((a, b) => b.totalScore - a.totalScore);
+
+      userScores.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align: center;"><span style="font-weight:800;">${index + 1}</span></td>
+          <td><b>${item.user.full_name}</b></td>
+          <td><span style="font-size:12px; color:var(--text-muted);">${item.user.title}</span></td>
+          <td style="text-align: center; font-weight:700;">${item.total}</td>
+          <td style="text-align: center; color:var(--succ-green); font-weight:700;">${item.onTime}</td>
+          <td style="text-align: center; color:var(--danger-red);">${item.overdue}</td>
+          <td>
+            <div style="font-size:11px;">${item.rate}%</div>
+            <div style="width:100%; height:6px; background:var(--bg-surface); border-radius:3px; overflow:hidden;">
+              <div style="width:${item.rate}%; height:100%; background:var(--succ-green);"></div>
+            </div>
+          </td>
+          <td style="text-align: center; font-size:16px; font-weight:800; color:var(--gold-star);">${item.totalScore}</td>
+          <td style="text-align: center;">
+            <span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; background:var(--bg-surface);">
+              ${item.rankTitle}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 11. TAB 4: QUẢN TRỊ NHÂN SỰ (THÊM / SỬA / XÓA)
+    function openDriveFolder() {
+      window.open(DRIVE_FOLDER_URL, '_blank');
+    }
+
+    function renderAdminUserTable() {
+      const tbody = document.getElementById('adminUserTableBody');
+      tbody.innerHTML = '';
+
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        let roleName = u.role === 'hod' ? 'Lãnh đạo TT' : (u.role === 'admin' ? 'Quản trị' : 'Nhân viên');
+        tr.innerHTML = `
+          <td><b>${u.full_name}</b></td>
+          <td><a href="https://zalo.me/${u.phone}" target="_blank" style="color:var(--accent-light); text-decoration:none;">💬 ${u.phone}</a></td>
+          <td>${u.email}</td>
+          <td>${u.title}</td>
+          <td><span style="font-size:11px; padding:2px 8px; border-radius:4px; background:var(--bg-surface); font-weight:700;">${roleName}</span></td>
+          <td style="text-align: right;">
+            <button class="btn btn-primary btn-sm" onclick="openEditUserModal('${u.id}')">✏️ Sửa</button>
+            ${u.id !== currentUserId ? `<button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">🗑️ Xóa</button>` : `<span style="font-size:11px; color:var(--text-muted); margin-left:4px;">(Đang dùng)</span>`}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openRegisterModal() {
+      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới vào Trung tâm";
+      document.getElementById('editUserId').value = '';
+      document.getElementById('regFullName').value = '';
+      document.getElementById('regPhone').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
+      document.getElementById('regRole').value = 'staff';
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    // Mở popup sửa thông tin khi nhân viên đăng ký sai
+    function openEditUserModal(userId) {
+      const user = users.find(u => u.id === userId);
+      if (!user) return;
+
+      document.getElementById('modalRegisterTitle').textContent = `✏️ Chỉnh sửa thông tin nhân sự: ${user.full_name}`;
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('regFullName').value = user.full_name;
+      document.getElementById('regPhone').value = user.phone;
+      document.getElementById('regEmail').value = user.email;
+      document.getElementById('regTitle').value = user.title;
+      document.getElementById('regRole').value = user.role;
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    async function submitSaveUser() {
+      const editId = document.getElementById('editUserId').value;
+      const name = document.getElementById('regFullName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const title = document.getElementById('regTitle').value.trim();
+      const role = document.getElementById('regRole').value;
+
+      if (!name || !phone || !email) {
+        alert("Vui lòng điền đủ Họ tên, SĐT Zalo và Email!");
+        return;
+      }
+
+      if (editId) {
+        // CẬP NHẬT THÔNG TIN ĐÃ ĐĂNG KÝ SAI
+        const { error } = await supabaseClient.from('app_users').update({
+          full_name: name,
+          phone,
+          email,
+          title: title || 'Chuyên viên',
+          role
+        }).eq('id', editId);
+
+        if (error) {
+          alert("Lỗi sửa nhân sự: " + error.message);
+        } else {
+          const userIdx = users.findIndex(u => u.id === editId);
+          if (userIdx !== -1) {
+            users[userIdx] = { ...users[userIdx], full_name: name, phone, email, title, role };
+          }
+          alert("Đã cập nhật thông tin nhân sự thành công!");
+        }
+      } else {
+        // THÊM MỚI
+        const { data, error } = await supabaseClient.from('app_users').insert([{
+          full_name: name,
+          phone,
+          email,
+          title: title || 'Chuyên viên Khai thác',
+          role
+        }]).select();
+
+        if (error) {
+          alert("Lỗi thêm nhân sự: " + error.message);
+        } else {
+          if (data) users.push(data[0]);
+          alert(`Đã cấp tài khoản thành công cho: ${name}`);
+        }
+      }
+
+      renderUserSelectors();
+      renderAdminUserTable();
+      renderScoreBoard();
+      updateCurrentUserUI();
+      closeModal('modalRegister');
+    }
+
+    async function deleteUser(userId) {
+      if (!confirm("Bạn có chắc chắn muốn xóa nhân sự này khỏi hệ thống?")) return;
+      const { error } = await supabaseClient.from('app_users').delete().eq('id', userId);
+      if (error) {
+        alert("Lỗi xóa nhân sự: " + error.message);
+      } else {
+        users = users.filter(u => u.id !== userId);
+        renderUserSelectors();
+        renderAdminUserTable();
+        renderScoreBoard();
+        renderKanban();
+        alert("Đã xóa nhân sự thành công!");
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
