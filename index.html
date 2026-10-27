@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DSU Operations v10.0 - TT Khai thác & DVKH (Cảng Hải Phòng)</title>
+  <title>TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   
@@ -11,7 +11,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* BIẾN THEME TỐI (MẶC ĐỊNH) */
+    /* ======================================================== */
+    /* THEME SYSTEM (DARK & LIGHT DSU)                         */
+    /* ======================================================== */
     html[data-theme="dark"] {
       --bg-dark: #0B1528;
       --bg-card: #11203B;
@@ -28,7 +30,6 @@
       --shadow-color: rgba(0,0,0,0.4);
     }
 
-    /* BIẾN THEME SÁNG (LIGHT THEME THEO CHUẨN DSU) */
     html[data-theme="light"] {
       --bg-dark: #EAEFF8;
       --bg-card: #FFFFFF;
@@ -58,6 +59,18 @@
       transition: background 0.25s, color 0.25s;
     }
 
+    /* DECORATIVE CHIBI WATERMARKS TRÊN GÓC NỀN TRANG WEB */
+    .bg-decor-chibi {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.16;
+      transition: opacity 0.3s;
+    }
+    .bg-chibi-left { left: 10px; bottom: 10px; width: 120px; height: 120px; }
+    .bg-chibi-right { right: 10px; bottom: 10px; width: 130px; height: 130px; }
+    .bg-chibi-top { right: 300px; top: 70px; width: 85px; height: 85px; opacity: 0.09; }
+
     /* HEADER */
     header {
       background: var(--bg-card);
@@ -81,11 +94,10 @@
       border-radius: 4px;
       letter-spacing: 1px;
     }
-    .brand-title { font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-    .brand-sub { font-size: 11px; color: var(--accent-light); }
+    .brand-title { font-size: 14.5px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+    .brand-sub { font-size: 11px; color: var(--accent-light); font-weight: 600; letter-spacing: 0.3px; }
     .header-user { display: flex; align-items: center; gap: 8px; }
 
-    /* NÚT TOGGLE THEME SÁNG / TỐI */
     .theme-toggle-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -100,10 +112,7 @@
       gap: 6px;
       transition: all 0.2s;
     }
-    .theme-toggle-btn:hover {
-      border-color: var(--accent-blue);
-      transform: scale(1.03);
-    }
+    .theme-toggle-btn:hover { border-color: var(--accent-blue); transform: scale(1.03); }
 
     /* TAB NAVIGATION */
     .nav-tabs-bar {
@@ -170,6 +179,8 @@
       max-width: 1440px;
       margin: 0 auto;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -258,6 +269,7 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 8px var(--shadow-color);
+      position: relative;
     }
     .col-header {
       padding: 12px 16px;
@@ -300,6 +312,21 @@
     .task-card:hover { transform: translateY(-2px); border-color: var(--accent-blue); }
     .task-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text-main); }
 
+    /* GÓC CHIBI CÔNG NGHỆ ROBOT ĐÁNG YÊU */
+    .card-corner-robot {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      font-size: 20px;
+      opacity: 0.55;
+      pointer-events: none;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .task-card:hover .card-corner-robot {
+      opacity: 1;
+      transform: scale(1.2) rotate(6deg);
+    }
+
     .leader-badge {
       font-size: 10px;
       background: rgba(255, 215, 0, 0.15);
@@ -338,12 +365,7 @@
       font-weight: 600;
     }
 
-    /* SUB-TABS HỘP THƯ: THƯ ĐẾN & THƯ ĐÃ GỬI */
-    .mailbox-nav {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
+    .mailbox-nav { display: flex; gap: 8px; margin-bottom: 14px; }
     .mail-tab-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -354,11 +376,7 @@
       font-weight: 700;
       cursor: pointer;
     }
-    .mail-tab-btn.active {
-      background: var(--accent-blue);
-      color: #fff;
-      border-color: var(--accent-blue);
-    }
+    .mail-tab-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
 
     /* CHAT & MINI WIDGET */
     .chat-layout { display: grid; grid-template-columns: 260px 1fr; gap: 16px; height: 580px; }
@@ -393,21 +411,8 @@
     .dot-online { background: #00e676; box-shadow: 0 0 8px #00e676; }
     .dot-offline { background: #9e9e9e; }
 
-    .chat-messages-area {
-      flex: 1;
-      padding: 16px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .chat-bubble {
-      max-width: 75%;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.4;
-    }
+    .chat-messages-area { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .chat-bubble { max-width: 75%; padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; }
     .bubble-me { align-self: flex-end; background: var(--accent-blue); color: #fff; }
     .bubble-other { align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); }
 
@@ -454,17 +459,46 @@
 </head>
 <body>
 
+  <!-- HÌNH CHIBI CÔNG NGHỆ VĂN PHÒNG ROBOT TRANG TRÍ NỀN TRANG WEB -->
+  <div class="bg-decor-chibi bg-chibi-left">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="25" y="30" width="50" height="40" rx="8" fill="#2563C9"/>
+      <circle cx="40" cy="45" r="5" fill="#8DB8FF"/>
+      <circle cx="60" cy="45" r="5" fill="#8DB8FF"/>
+      <rect x="38" y="58" width="24" height="4" rx="2" fill="#fff"/>
+      <line x1="50" y1="30" x2="50" y2="15" stroke="#F08A24" stroke-width="4"/>
+      <circle cx="50" cy="12" r="6" fill="#F08A24"/>
+      <rect x="30" y="72" width="40" height="22" rx="4" fill="#182C4E"/>
+      <text x="35" y="86" font-size="9" fill="#FFD700" font-weight="bold">AI PORT</text>
+    </svg>
+  </div>
+
+  <div class="bg-decor-chibi bg-chibi-right">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="35" r="22" fill="#ffd5b5"/>
+      <path d="M28,25 Q50,5 72,25" fill="#2b2b2b"/>
+      <circle cx="42" cy="34" r="3" fill="#111"/>
+      <circle cx="58" cy="34" r="3" fill="#111"/>
+      <ellipse cx="38" cy="40" rx="3" ry="1.5" fill="#ff9999"/>
+      <ellipse cx="62" cy="40" rx="3" ry="1.5" fill="#ff9999"/>
+      <path d="M25,58 L75,58 L70,95 L30,95 Z" fill="#2563C9"/>
+      <polygon points="46,58 54,58 51,75 49,75" fill="#F08A24"/>
+      <rect x="42" y="68" width="16" height="12" fill="#fff" rx="2"/>
+    </svg>
+  </div>
+
   <!-- HEADER -->
   <header>
     <div class="brand-wrap">
       <span class="badge-port">HP PORT · DSU</span>
       <div>
-        <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG</div>
-        <div class="brand-sub">Hộp Thư Bảo Mật Tuyệt Đối · Theme Sáng Tối · Cảnh Báo 12H</div>
+        <div class="brand-title">
+          <span>🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</span>
+        </div>
+        <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
       </div>
     </div>
     <div class="header-user">
-      <!-- NÚT CHUYỂN ĐỔI THEME SÁNG / TỐI -->
       <button class="theme-toggle-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span> <span id="themeLabel">Giao diện Sáng</span>
       </button>
@@ -498,13 +532,11 @@
   <!-- CONTAINER -->
   <main class="container">
 
-    <!-- ========================================== -->
-    <!-- TAB 1: KANBAN BOARD                        -->
-    <!-- ========================================== -->
+    <!-- TAB 1: KANBAN -->
     <div id="tasksTab" class="tab-content active">
       <section class="stats-strip">
         <div class="stat-card" style="--stat-color: var(--accent-light);">
-          <div class="stat-lbl">Tổng số công việc</div>
+          <div class="stat-lbl">📊 Tổng số công việc</div>
           <div class="stat-val" id="totalTasksCount">0</div>
         </div>
         <div class="stat-card" style="--stat-color: var(--danger-red);">
@@ -516,7 +548,7 @@
           <div class="stat-val" id="warn12hCount" style="color:#ffb469;">0</div>
         </div>
         <div class="stat-card" style="--stat-color: var(--succ-green);">
-          <div class="stat-lbl">Đã hoàn thành</div>
+          <div class="stat-lbl">✅ Đã hoàn thành</div>
           <div class="stat-val" id="completedCount">0</div>
         </div>
       </section>
@@ -540,7 +572,6 @@
         </button>
       </section>
 
-      <!-- KANBAN BOARD -->
       <section class="kanban-grid">
         <div class="kanban-col">
           <div class="col-header">
@@ -576,12 +607,10 @@
       </section>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- TAB 2: HỘP THƯ BẢO MẬT TUYỆT ĐỐI (CHỈ 2 NGƯỜI ĐƯỢC XEM) -->
-    <!-- ======================================================== -->
+    <!-- TAB 2: HỘP THƯ RIÊNG TƯ -->
     <div id="messagesTab" class="tab-content">
       <div class="privacy-shield-box">
-        🛡️ <b>Chế độ bảo mật tuyệt đối:</b> Tiêu đề người gửi tự động lấy tài khoản đang đăng nhập. Chỉ có người gửi và người nhận mới có quyền đọc thư này. Kể cả Lãnh đạo và Admin cũng không thể xem trộm!
+        🛡️ <b>Chế độ bảo mật riêng tư:</b> Chỉ người gửi và người nhận mới có thể mở đọc thư này. Kể cả Lãnh đạo hay Admin cũng không xem được nếu không liên quan.
       </div>
 
       <div class="filter-bar" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
@@ -608,9 +637,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 3: CHAT LIVE TRỰC TUYẾN               -->
-    <!-- ========================================== -->
+    <!-- TAB 3: CHAT LIVE -->
     <div id="chatTab" class="tab-content">
       <div class="chat-layout" id="chatFullWindow">
         <div class="user-list-card">
@@ -622,7 +649,7 @@
 
         <div class="chat-main-card">
           <div class="chat-list-header">
-            <span>💬 Kênh Trao Đổi Nghiệp Vụ Trực Tuyến</span>
+            <span>💬 Kênh Trao Đổi Trực Tuyến</span>
             <button class="btn btn-outline btn-sm" onclick="minimizeChat()">➖ Thu gọn chat</button>
           </div>
           <div class="chat-messages-area" id="groupChatMessagesArea"></div>
@@ -634,9 +661,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 4: BẢNG TÍNH ĐIỂM                      -->
-    <!-- ========================================== -->
+    <!-- TAB 4: BẢNG TÍNH ĐIỂM -->
     <div id="scoreTab" class="tab-content">
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
         <table class="dsu-table">
@@ -656,9 +681,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 5: QUẢN TRỊ & GOOGLE DRIVE             -->
-    <!-- ========================================== -->
+    <!-- TAB 5: QUẢN TRỊ NHÂN SỰ -->
     <div id="adminTab" class="tab-content">
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px; margin-bottom:16px;">
         <h3 style="font-size:15px; color:var(--text-main); margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
@@ -667,8 +690,11 @@
 
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3>Danh Sách Nhân Sự</h3>
-          <button class="btn btn-primary btn-sm" onclick="openRegisterModal()">+ Thêm nhân sự</button>
+          <div>
+            <h3>Quản Trị Nhân Sự & Cấp Quyền Lãnh Đạo</h3>
+            <span style="font-size:11px; color:var(--warn-orange);">* Chỉ Admin mới có quyền cấp hoặc chuyển chức vụ Trưởng / Phó Trung tâm.</span>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự</button>
         </div>
         <table class="dsu-table">
           <thead>
@@ -687,7 +713,7 @@
 
   </main>
 
-  <!-- WIDGET THU GỌN CHAT LIVE GÓC PHẢI DƯỚI -->
+  <!-- WIDGET THU GỌN CHAT LIVE GÓC PHẢI -->
   <div id="floatingChatWidget" class="floating-chat-pill" onclick="restoreChat()">
     <span>💬 Chat Trực Tuyến</span>
     <span id="floatingChatBadge" class="notif-badge">0</span>
@@ -696,38 +722,6 @@
   <!-- ========================================== -->
   <!-- MODALS                                     -->
   <!-- ========================================== -->
-
-  <!-- MODAL: SOẠN THƯ RIÊNG TƯ (TỰ ĐỘNG GẮN TÊN NGƯỜI GỬI) -->
-  <div class="modal-backdrop" id="modalSendMessage">
-    <div class="modal-box" style="max-width: 520px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px;">🔒 Soạn Thư Mật Nội Bộ</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalSendMessage')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Người gửi thư (Tự động theo tài khoản của bạn):</label>
-          <input type="text" id="msgSenderNameStatic" class="form-control" readonly style="font-weight:700; opacity:0.85;">
-        </div>
-        <div class="form-group">
-          <label>Người nhận thư (Chỉ người này mới mở đọc được) *:</label>
-          <select id="msgReceiverSelect" class="form-control" required></select>
-        </div>
-        <div class="form-group">
-          <label>Tiêu đề thư *:</label>
-          <input type="text" id="msgTitleInput" class="form-control" placeholder="Nhập tiêu đề thư..." required>
-        </div>
-        <div class="form-group">
-          <label>Nội dung thư riêng tư *:</label>
-          <textarea id="msgContentInput" class="form-control" rows="5" placeholder="Nhập nội dung thư chỉ 2 người đọc được..." required></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalSendMessage')">Hủy</button>
-        <button class="btn btn-primary" onclick="submitSendMessage()">Gửi thư bảo mật</button>
-      </div>
-    </div>
-  </div>
 
   <!-- MODAL: GIAO VIỆC MỚI -->
   <div class="modal-backdrop" id="modalCreateTask">
@@ -773,7 +767,7 @@
         </div>
 
         <div class="form-group">
-          <label>🌐 Ưu tiên dán Link Google Drive (Kho 100GB):</label>
+          <label>🌐 Dán Link Google Drive (Kho 100GB):</label>
           <div style="display:flex; gap:8px;">
             <input type="url" id="taskDriveLink" class="form-control" placeholder="https://drive.google.com/..." style="flex:1;">
             <button class="btn btn-drive btn-sm" type="button" onclick="openDriveFolder()">Mở Drive</button>
@@ -781,7 +775,7 @@
         </div>
 
         <div class="form-group">
-          <label>📎 Hoặc đính kèm tệp trực tiếp lên Supabase Storage:</label>
+          <label>📎 Đính kèm tệp trực tiếp lên Storage Bucket:</label>
           <input type="file" id="createTaskFileInput" class="form-control" multiple>
         </div>
       </div>
@@ -792,7 +786,7 @@
     </div>
   </div>
 
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC -->
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC (CÓ NÚT ĐỔI LEADER / ĐỔI THÀNH VIÊN) -->
   <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
@@ -813,20 +807,33 @@
           <div id="detailTaskDesc" style="background:var(--bg-surface); padding:8px; border-radius:6px; font-size:12px;"></div>
         </div>
 
-        <div id="detailDriveLinkWrap" class="form-group" style="display:none;">
-          <label>🌐 Link Google Drive:</label>
-          <a id="detailDriveLinkTag" href="#" target="_blank" class="btn btn-drive btn-sm">Mở tệp Google Drive</a>
-        </div>
-
+        <!-- BẢNG PHÂN CÔNG THÀNH VIÊN VÀ QUYỀN ĐỔI LEADER TRONG QUÁ TRÌNH THỰC HIỆN -->
         <div class="form-group">
-          <label>📋 Bảng phân công thành viên & Nhóm trưởng:</label>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label>📋 Bảng phân công thành viên & Nhóm trưởng:</label>
+            <!-- Nút đổi Leader dành cho Trưởng / Phó / Admin -->
+            <button class="btn btn-warning btn-sm" id="btnOpenChangeLeader" onclick="openChangeLeaderSection()" style="display:none;">
+              🔄 Đổi Leader / Điều chỉnh nhóm
+            </button>
+          </div>
+
+          <!-- KHUNG ĐỔI LEADER TRỰC TIẾP -->
+          <div id="changeLeaderSection" style="display:none; background:rgba(240,138,36,0.12); border:1px dashed var(--warn-orange); padding:10px; border-radius:6px; margin-bottom:8px;">
+            <div style="font-size:12px; font-weight:700; color:var(--warn-orange); margin-bottom:6px;">Chọn Leader mới cho công việc:</div>
+            <div style="display:flex; gap:8px;">
+              <select id="selectNewLeader" class="form-control" style="flex:1;"></select>
+              <button class="btn btn-primary btn-sm" onclick="saveNewTaskLeader(false)">Chỉ đổi Leader (Cũ làm thành viên)</button>
+              <button class="btn btn-danger btn-sm" onclick="saveNewTaskLeader(true)">Đổi Leader & Xóa Leader cũ</button>
+            </div>
+          </div>
+
           <table class="dsu-table" style="font-size:12px;">
             <thead>
               <tr>
                 <th style="width:40px;">STT</th>
                 <th>Thành viên</th>
                 <th>SĐT (Zalo)</th>
-                <th>Vai trò</th>
+                <th>Vai trò hiện tại</th>
               </tr>
             </thead>
             <tbody id="detailAssigneeTableBody"></tbody>
@@ -874,7 +881,173 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐỔI MẬT KHẨU -->
+  <!-- MODAL: ĐĂNG NHẬP ĐẦU NGÀY (CÓ NÚT ĐĂNG KÝ VÀ QUÊN MẬT KHẨU) -->
+  <div class="modal-backdrop" id="modalAuth" style="display:none;">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">Đăng Nhập Hàng Ngày DSU</h3>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:11px; color:var(--warn-orange);">* Hệ thống tự động đăng xuất sau nửa đêm để điểm danh ngày làm việc mới.</p>
+        <div class="form-group">
+          <label>Số điện thoại Zalo:</label>
+          <input type="tel" id="loginPhoneInput" class="form-control" placeholder="Nhập SĐT..." required>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu:</label>
+          <input type="password" id="loginPasswordInput" class="form-control" placeholder="Mật khẩu..." required>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:2px;">
+          <a href="javascript:void(0)" onclick="openForgotPasswordModal()" style="color:var(--accent-light);">Quên mật khẩu?</a>
+          <a href="javascript:void(0)" onclick="openPublicRegisterModal()" style="color:var(--succ-green); font-weight:700;">Đăng ký tài khoản mới</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitLogin()">Đăng nhập</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QUÊN MẬT KHẨU (ĐỔI BẰNG SĐT ZALO) -->
+  <div class="modal-backdrop" id="modalForgotPassword" style="display:none;">
+    <div class="modal-box" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">🔑 Lấy lại Mật Khẩu Qua SĐT</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalForgotPassword')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted);">Nhập chính xác Số điện thoại Zalo bạn đã đăng ký để tạo mật khẩu mới:</p>
+        <div class="form-group">
+          <label>Số điện thoại Zalo *:</label>
+          <input type="tel" id="forgotPhoneInput" class="form-control" placeholder="Nhập SĐT đã đăng ký..." required>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu mới cần đặt *:</label>
+          <input type="password" id="forgotNewPassInput" class="form-control" placeholder="Mật khẩu mới..." required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalForgotPassword')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitResetPassword()">Đặt lại mật khẩu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN CÔNG KHAI (CHỈ CẤP NHÂN VIÊN, KHÔNG CHO TỰ CHỌN TRƯỞNG PHÓ) -->
+  <div class="modal-backdrop" id="modalPublicRegister" style="display:none;">
+    <div class="modal-box" style="max-width: 460px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">📝 Đăng Ký Nhân Sự Trung Tâm</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalPublicRegister')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Họ và tên nhân viên *:</label>
+          <input type="text" id="pubRegFullName" class="form-control" placeholder="VD: Nguyễn Văn An" required>
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại (Có Zalo) *:</label>
+          <input type="tel" id="pubRegPhone" class="form-control" placeholder="VD: 0912345678" required>
+        </div>
+        <div class="form-group">
+          <label>Email *:</label>
+          <input type="email" id="pubRegEmail" class="form-control" placeholder="VD: an.nv@haiphongport.com.vn" required>
+        </div>
+        <div class="form-group">
+          <label>Chức danh:</label>
+          <input type="text" id="pubRegTitle" class="form-control" value="Chuyên viên Khai thác & DVKH">
+          <span style="font-size:10px; color:var(--text-muted);">* Lưu ý: Tài khoản tự đăng ký mặc định là Nhân viên. Chức danh Trưởng/Phó Trung tâm sẽ do Admin phê duyệt.</span>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu đăng nhập *:</label>
+          <input type="password" id="pubRegPass" class="form-control" value="123456" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalPublicRegister')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitPublicRegister()">Tạo tài khoản ngay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN THÊM / SỬA NHÂN SỰ & CHỨC DANH TRƯỞNG PHÓ -->
+  <div class="modal-backdrop" id="modalRegister">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalRegisterTitle" style="font-size:16px;">Quản trị nhân sự</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalRegister')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editUserId">
+        <div class="form-group">
+          <label>Họ và tên *</label>
+          <input type="text" id="regFullName" class="form-control" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Số điện thoại Zalo *</label>
+            <input type="tel" id="regPhone" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="regEmail" class="form-control" required>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Chức danh công tác</label>
+            <input type="text" id="regTitle" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Vai trò hệ thống (Admin phê chuẩn) *</label>
+            <select id="regRole" class="form-control">
+              <option value="staff">Nhân viên Trung tâm</option>
+              <option value="hod">Trưởng / Phó Trung tâm (Lãnh đạo)</option>
+              <option value="admin">Quản trị viên (Admin)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalRegister')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitSaveUserAdmin()">Lưu thông tin</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SOẠN THƯ RIÊNG TƯ -->
+  <div class="modal-backdrop" id="modalSendMessage">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">🔒 Soạn Thư Mật Nội Bộ</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalSendMessage')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Người gửi thư (Tự động):</label>
+          <input type="text" id="msgSenderNameStatic" class="form-control" readonly style="font-weight:700; opacity:0.85;">
+        </div>
+        <div class="form-group">
+          <label>Người nhận thư *:</label>
+          <select id="msgReceiverSelect" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label>Tiêu đề thư *:</label>
+          <input type="text" id="msgTitleInput" class="form-control" placeholder="Tiêu đề..." required>
+        </div>
+        <div class="form-group">
+          <label>Nội dung thư riêng tư *:</label>
+          <textarea id="msgContentInput" class="form-control" rows="5" placeholder="Nội dung chỉ 2 người đọc được..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalSendMessage')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitSendMessage()">Gửi thư</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ĐỔI MẬT KHẨU CÁ NHÂN -->
   <div class="modal-backdrop" id="modalChangePassword">
     <div class="modal-box" style="max-width:440px;">
       <div class="modal-header">
@@ -884,7 +1057,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Mật khẩu cũ (Cách 1):</label>
-          <input type="password" id="oldPasswordInput" class="form-control" placeholder="Nhập mật khẩu cũ...">
+          <input type="password" id="oldPasswordInput" class="form-control" placeholder="Mật khẩu cũ...">
         </div>
         <div style="text-align:center; font-size:11px; color:var(--accent-light);">-- HOẶC --</div>
         <div class="form-group">
@@ -904,29 +1077,6 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐĂNG NHẬP -->
-  <div class="modal-backdrop" id="modalAuth" style="display:none;">
-    <div class="modal-box" style="max-width: 400px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px;">Đăng Nhập Hàng Ngày DSU</h3>
-      </div>
-      <div class="modal-body">
-        <p style="font-size:11px; color:var(--warn-orange);">* Phiên làm việc tự động hết hạn sau nửa đêm để điểm danh ngày mới.</p>
-        <div class="form-group">
-          <label>Số điện thoại Zalo:</label>
-          <input type="tel" id="loginPhoneInput" class="form-control" placeholder="Nhập SĐT..." required>
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu:</label>
-          <input type="password" id="loginPasswordInput" class="form-control" placeholder="Mật khẩu..." required>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitLogin()">Đăng nhập</button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: MẬT KHẨU QUẢN TRỊ -->
   <div class="modal-backdrop" id="modalAdminPassword" style="display:none;">
     <div class="modal-box" style="max-width: 400px;">
@@ -937,7 +1087,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Mật khẩu quản trị:</label>
-          <input type="password" id="adminPasswordInput" class="form-control" placeholder="Nhập mật khẩu...">
+          <input type="password" id="adminPasswordInput" class="form-control" placeholder="Mật khẩu...">
           <span style="font-size:11px; color:var(--accent-light);">Mặc định: <b>admin@canghp</b></span>
         </div>
       </div>
@@ -949,7 +1099,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V10.0                     -->
+  <!-- JAVASCRIPT LOGIC V11.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -957,6 +1107,9 @@
     const BUCKET_NAME = "dsu-attachments";
     const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1-6aAvCaw_akwXmNBw6SxWTmdDi0PekDN?usp=drive_link";
     const ADMIN_SECRET_KEY = "admin@canghp";
+
+    // Danh sách biểu tượng robot Chibi công nghệ cho góc các thẻ việc
+    const ROBOT_CHIBI_ICONS = ["🤖", "🦾", "🚢", "🦿", "⚡", "🛰️", "🛸", "💻", "📦"];
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -968,39 +1121,27 @@
     let selectedTaskIdForDetail = null;
     let isAdminUnlocked = false;
 
-    // Quản lý view hộp thư: 'inbox' (Thư nhận) hoặc 'sent' (Thư đã gửi)
     let currentMailboxView = 'inbox';
-
     let isChatMinimized = true;
     let unreadChatCount = 0;
 
-    // 1. QUẢN LÝ THEME SÁNG / TỐI
+    // 1. THEME SYSTEM
     function initTheme() {
       const savedTheme = localStorage.getItem("DSU_APP_THEME") || "dark";
       setTheme(savedTheme);
     }
-
     function toggleTheme() {
       const current = document.documentElement.getAttribute("data-theme");
-      const target = current === "dark" ? "light" : "dark";
-      setTheme(target);
+      setTheme(current === "dark" ? "light" : "dark");
     }
-
     function setTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("DSU_APP_THEME", theme);
-      const icon = document.getElementById("themeIcon");
-      const label = document.getElementById("themeLabel");
-      if (theme === "dark") {
-        icon.textContent = "☀️";
-        label.textContent = "Giao diện Sáng";
-      } else {
-        icon.textContent = "🌙";
-        label.textContent = "Giao diện Tối";
-      }
+      document.getElementById("themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
+      document.getElementById("themeLabel").textContent = theme === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
 
-    // 2. KIỂM TRA ĐĂNG XUẤT SAU NỬA ĐÊM
+    // 2. CHECK DAILY EXPIRY (TỰ LOGOUT SAU NỬA ĐÊM)
     function checkDailySessionExpiry() {
       const todayStr = new Date().toISOString().split('T')[0];
       const lastLoginDate = localStorage.getItem("DSU_LAST_LOGIN_DATE");
@@ -1012,7 +1153,7 @@
       return true;
     }
 
-    // 3. KHỞI TẠO ỨNG DỤNG
+    // 3. KHỞI TẠO HỆ THỐNG
     async function initApp() {
       initTheme();
       if (!checkDailySessionExpiry()) return;
@@ -1048,7 +1189,6 @@
       }
     }
 
-    // Lấy tin nhắn riêng tư bảo mật (chỉ lấy thư liên quan đến currentUserId)
     async function fetchMessages() {
       if (!currentUserId) return;
       const { data } = await supabaseClient
@@ -1056,7 +1196,6 @@
         .select('*')
         .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
         .order('created_at', { ascending: false });
-
       if (data) {
         messages = data;
         renderMessages();
@@ -1073,7 +1212,7 @@
 
     function setupRealtimeListeners() {
       supabaseClient
-        .channel('dsu-realtime-v10')
+        .channel('dsu-realtime-v11')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
         .on('postgres_changes', { event: '*', schema: 'public', table: 'internal_messages' }, () => fetchMessages())
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'group_chat_messages' }, payload => {
@@ -1086,124 +1225,7 @@
         .subscribe();
     }
 
-    // 4. HỘP THƯ BẢO MẬT TUYỆT ĐỐI (NGƯỜI GỬI TỰ ĐỘNG + LỌC NGHIÊM NGẶT)
-    function switchMailboxView(view) {
-      currentMailboxView = view;
-      document.getElementById('btnMailInbox').classList.toggle('active', view === 'inbox');
-      document.getElementById('btnMailSent').classList.toggle('active', view === 'sent');
-      document.getElementById('thMailUserColumn').textContent = view === 'inbox' ? 'Người gửi' : 'Người nhận';
-      renderMessages();
-    }
-
-    function renderMessages() {
-      const tbody = document.getElementById('messagesTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      // BẢO MẬT: Chỉ lọc đúng những thư do currentUserId nhận hoặc gửi
-      let displayList = [];
-      if (currentMailboxView === 'inbox') {
-        displayList = messages.filter(m => m.receiver_id === currentUserId);
-      } else {
-        displayList = messages.filter(m => m.sender_id === currentUserId);
-      }
-
-      // Đếm số thư chưa đọc ở hòm thư đến
-      const unreadCount = messages.filter(m => m.receiver_id === currentUserId && !m.is_read).length;
-      const badge = document.getElementById('unreadMsgCount');
-      if (unreadCount > 0) {
-        badge.textContent = unreadCount;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
-      }
-
-      if (displayList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">Không có thư riêng tư nào trong mục này.</td></tr>`;
-        return;
-      }
-
-      displayList.forEach(m => {
-        const time = new Date(m.created_at).toLocaleString('vi-VN');
-        const userObj = currentMailboxView === 'inbox' 
-          ? users.find(u => u.id === m.sender_id) 
-          : users.find(u => u.id === m.receiver_id);
-        const userName = userObj ? userObj.full_name : 'Hệ thống DSU';
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><span style="font-size:11px; color:var(--accent-light);">${time}</span></td>
-          <td><b>${userName}</b></td>
-          <td>
-            <div style="font-weight:700; color:var(--text-main);">${m.title}</div>
-            <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${m.content}</div>
-          </td>
-          <td style="text-align: center;">
-            <span style="font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700; background:${m.is_read ? 'var(--bg-surface)' : 'var(--danger-red)'}; color:${m.is_read ? 'var(--text-muted)' : '#fff'};">
-              ${m.is_read ? 'Đã xem' : 'MỚI'}
-            </span>
-          </td>
-          <td style="text-align: right;">
-            ${(currentMailboxView === 'inbox' && !m.is_read) ? `<button class="btn btn-outline btn-sm" onclick="markMessageAsRead('${m.id}')">Đã đọc</button>` : ''}
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function openSendMessageModal() {
-      const currentUser = users.find(u => u.id === currentUserId);
-      document.getElementById('msgSenderNameStatic').value = currentUser ? `${currentUser.full_name} (${currentUser.title})` : 'Tài khoản của bạn';
-      document.getElementById('msgTitleInput').value = '';
-      document.getElementById('msgContentInput').value = '';
-      
-      const receiverSelect = document.getElementById('msgReceiverSelect');
-      receiverSelect.innerHTML = '';
-      users.forEach(u => {
-        if (u.id !== currentUserId) {
-          const opt = document.createElement('option');
-          opt.value = u.id;
-          opt.textContent = `${u.full_name} - ${u.title}`;
-          receiverSelect.appendChild(opt);
-        }
-      });
-
-      document.getElementById('modalSendMessage').style.display = 'flex';
-    }
-
-    async function submitSendMessage() {
-      const receiverId = document.getElementById('msgReceiverSelect').value;
-      const title = document.getElementById('msgTitleInput').value.trim();
-      const content = document.getElementById('msgContentInput').value.trim();
-
-      if (!receiverId || !title || !content) {
-        alert("Vui lòng điền đủ người nhận, tiêu đề và nội dung thư!");
-        return;
-      }
-
-      // Người gửi luôn luôn là tài khoản đang đăng nhập
-      const { error } = await supabaseClient.from('internal_messages').insert([{
-        sender_id: currentUserId,
-        receiver_id: receiverId,
-        title,
-        content
-      }]);
-
-      if (error) {
-        alert("Lỗi gửi thư: " + error.message);
-      } else {
-        closeModal('modalSendMessage');
-        await fetchMessages();
-        alert("Thư mật đã được gửi thành công! Chỉ người nhận mới có thể mở đọc.");
-      }
-    }
-
-    async function markMessageAsRead(msgId) {
-      await supabaseClient.from('internal_messages').update({ is_read: true }).eq('id', msgId);
-      await fetchMessages();
-    }
-
-    // 5. CẢNH BÁO DEADLINE & RENDER KANBAN
+    // 4. KIỂM TRA HẠN CHÓT: VÀNG < 12H VÀ ĐỎ SÉT ĐÁNH KHI QUÁ HẠN
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') return { text: '✅ Đã hoàn thành', badgeClass: 'tag-normal', cardClass: '', type: 'completed' };
       if (!dueDateTimeStr) return { text: 'Không giới hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
@@ -1226,6 +1248,7 @@
       return { text: `Hạn: ${formatted}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
     }
 
+    // 5. RENDER BẢNG KANBAN
     function renderKanban() {
       const filterWho = document.getElementById('filterAssignee').value;
       const filterPri = document.getElementById('filterPriority').value;
@@ -1240,7 +1263,7 @@
       Object.keys(cols).forEach(k => cols[k].innerHTML = '');
       let counts = { pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, warn12h: 0 };
 
-      tasks.forEach(t => {
+      tasks.forEach((t, idx) => {
         if (filterWho !== 'ALL' && t.assignee_id !== filterWho) return;
         if (filterPri !== 'ALL' && t.priority !== filterPri) return;
 
@@ -1251,17 +1274,20 @@
 
         const leader = users.find(u => u.id === t.leader_id) || { full_name: 'N/A' };
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : [t.assignee_id];
+        const robotIcon = ROBOT_CHIBI_ICONS[idx % ROBOT_CHIBI_ICONS.length];
 
         const card = document.createElement('div');
         card.className = `task-card ${alertInfo.cardClass}`;
         card.onclick = () => openTaskDetailModal(t.id);
         card.innerHTML = `
+          <div class="card-corner-robot">${robotIcon}</div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
-            <span class="leader-badge">⭐ ${leader.full_name}</span>
+            <span class="leader-badge">⭐ Leader: ${leader.full_name}</span>
           </div>
           <div class="task-title">${t.title}</div>
           <div style="font-size:11px; color:var(--text-muted);">${t.description || ''}</div>
+          
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
             <span class="countdown-tag ${alertInfo.badgeClass}">${alertInfo.text}</span>
             <div style="display:flex; align-items:center; gap:2px;">
@@ -1278,7 +1304,7 @@
       document.getElementById('completedCount').textContent = counts.completed;
     }
 
-    // 6. GIAO VIỆC & UPLOAD FILE
+    // 6. GIAO VIỆC MỚI
     function openCreateTaskModal() {
       document.getElementById('taskTitle').value = '';
       document.getElementById('taskDesc').value = '';
@@ -1392,7 +1418,7 @@
       }
     }
 
-    // 7. CHI TIẾT & NỘP BÁO CÁO
+    // 7. CHI TIẾT CÔNG VIỆC & ĐỔI LEADER TRONG QUÁ TRÌNH THỰC HIỆN
     function openTaskDetailModal(taskId) {
       selectedTaskIdForDetail = taskId;
       const task = tasks.find(t => t.id === taskId);
@@ -1407,30 +1433,25 @@
       const alertInfo = calculateDeadlineAlert(task.due_datetime, task.status);
       document.getElementById('detailCountdownBadgeWrap').innerHTML = `<span class="countdown-tag ${alertInfo.badgeClass}">${alertInfo.text}</span>`;
 
-      // Render bảng thành viên
-      const assigneeTable = document.getElementById('detailAssigneeTableBody');
-      assigneeTable.innerHTML = '';
-      const memberIds = Array.isArray(task.assignees_json) ? task.assignees_json : [task.assignee_id];
+      // Ẩn khung đổi leader ban đầu
+      document.getElementById('changeLeaderSection').style.display = 'none';
 
-      memberIds.forEach((uid, index) => {
-        const member = users.find(u => u.id === uid) || { full_name: 'N/A', phone: '' };
-        const isLeader = uid === task.leader_id;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-weight:700;">${index + 1}</td>
-          <td><b>${member.full_name}</b></td>
-          <td>${member.phone}</td>
-          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
-        `;
-        assigneeTable.appendChild(tr);
-      });
+      // Nút đổi leader: Chỉ Lãnh đạo (Trưởng/Phó) hoặc Admin mới được đổi
+      const currentUser = users.find(u => u.id === currentUserId);
+      const isLeaderRole = currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
+      const btnChangeLeader = document.getElementById('btnOpenChangeLeader');
 
+      if (isLeaderRole) {
+        btnChangeLeader.style.display = 'inline-flex';
+      } else {
+        btnChangeLeader.style.display = 'none';
+      }
+
+      renderDetailAssigneeTable(task);
       renderSubmissionsTable(task);
 
-      const currentUser = users.find(u => u.id === currentUserId);
+      // Quyền đổi trạng thái việc: Chỉ Leader hiện tại hoặc Lãnh đạo/Admin
       const isLeader = task.leader_id === currentUserId;
-      const isLeaderRole = currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
-
       const selectStatus = document.getElementById('detailStatusSelect');
       const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
 
@@ -1443,6 +1464,82 @@
       }
 
       document.getElementById('modalTaskDetail').style.display = 'flex';
+    }
+
+    function renderDetailAssigneeTable(task) {
+      const assigneeTable = document.getElementById('detailAssigneeTableBody');
+      assigneeTable.innerHTML = '';
+      const memberIds = Array.isArray(task.assignees_json) ? task.assignees_json : [task.assignee_id];
+
+      memberIds.forEach((uid, index) => {
+        const member = users.find(u => u.id === uid) || { full_name: 'N/A', phone: '' };
+        const isLeader = uid === task.leader_id;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700;">${index + 1}</td>
+          <td><b>${member.full_name}</b></td>
+          <td>${member.phone}</td>
+          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng (Leader)</span>' : 'Thành viên'}</td>
+        `;
+        assigneeTable.appendChild(tr);
+      });
+    }
+
+    function openChangeLeaderSection() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+
+      const section = document.getElementById('changeLeaderSection');
+      const select = document.getElementById('selectNewLeader');
+      select.innerHTML = '';
+
+      users.forEach(u => {
+        if (u.id !== task.leader_id) {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.textContent = `${u.full_name} (${u.title})`;
+          select.appendChild(opt);
+        }
+      });
+
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Lưu Leader mới: có thể giữ lại Leader cũ làm thành viên hoặc xóa hẳn khỏi việc
+    async function saveNewTaskLeader(removeOldLeader) {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const newLeaderId = document.getElementById('selectNewLeader').value;
+      if (!task || !newLeaderId) return;
+
+      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
+      const oldLeaderId = task.leader_id;
+
+      if (removeOldLeader) {
+        memberIds = memberIds.filter(id => id !== oldLeaderId);
+      }
+      if (!memberIds.includes(newLeaderId)) {
+        memberIds.push(newLeaderId);
+      }
+
+      const { error } = await supabaseClient.from('tasks').update({
+        leader_id: newLeaderId,
+        assignee_id: newLeaderId,
+        assignees_json: memberIds,
+        updated_at: new Date()
+      }).eq('id', task.id);
+
+      if (error) {
+        alert("Lỗi đổi Leader: " + error.message);
+      } else {
+        task.leader_id = newLeaderId;
+        task.assignee_id = newLeaderId;
+        task.assignees_json = memberIds;
+
+        document.getElementById('changeLeaderSection').style.display = 'none';
+        renderDetailAssigneeTable(task);
+        renderKanban();
+        alert("Đã cập nhật Nhóm trưởng mới thành công!");
+      }
     }
 
     function renderSubmissionsTable(task) {
@@ -1523,7 +1620,114 @@
       await fetchTasks();
     }
 
-    // 8. CHAT LIVE TRỰC TUYẾN
+    // 8. HỘP THƯ RIÊNG TƯ
+    function switchMailboxView(view) {
+      currentMailboxView = view;
+      document.getElementById('btnMailInbox').classList.toggle('active', view === 'inbox');
+      document.getElementById('btnMailSent').classList.toggle('active', view === 'sent');
+      document.getElementById('thMailUserColumn').textContent = view === 'inbox' ? 'Người gửi' : 'Người nhận';
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const tbody = document.getElementById('messagesTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let displayList = currentMailboxView === 'inbox' 
+        ? messages.filter(m => m.receiver_id === currentUserId) 
+        : messages.filter(m => m.sender_id === currentUserId);
+
+      const unreadCount = messages.filter(m => m.receiver_id === currentUserId && !m.is_read).length;
+      const badge = document.getElementById('unreadMsgCount');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      if (displayList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">Không có thư nào.</td></tr>`;
+        return;
+      }
+
+      displayList.forEach(m => {
+        const time = new Date(m.created_at).toLocaleString('vi-VN');
+        const userObj = currentMailboxView === 'inbox' 
+          ? users.find(u => u.id === m.sender_id) 
+          : users.find(u => u.id === m.receiver_id);
+        const userName = userObj ? userObj.full_name : 'Hệ thống';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span style="font-size:11px; color:var(--accent-light);">${time}</span></td>
+          <td><b>${userName}</b></td>
+          <td>
+            <div style="font-weight:700; color:var(--text-main);">${m.title}</div>
+            <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${m.content}</div>
+          </td>
+          <td style="text-align: center;">
+            <span style="font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700; background:${m.is_read ? 'var(--bg-surface)' : 'var(--danger-red)'}; color:${m.is_read ? 'var(--text-muted)' : '#fff'};">
+              ${m.is_read ? 'Đã xem' : 'MỚI'}
+            </span>
+          </td>
+          <td style="text-align: right;">
+            ${(currentMailboxView === 'inbox' && !m.is_read) ? `<button class="btn btn-outline btn-sm" onclick="markMessageAsRead('${m.id}')">Đã đọc</button>` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openSendMessageModal() {
+      const currentUser = users.find(u => u.id === currentUserId);
+      document.getElementById('msgSenderNameStatic').value = currentUser ? `${currentUser.full_name} (${currentUser.title})` : 'Tài khoản của bạn';
+      document.getElementById('msgTitleInput').value = '';
+      document.getElementById('msgContentInput').value = '';
+      
+      const receiverSelect = document.getElementById('msgReceiverSelect');
+      receiverSelect.innerHTML = '';
+      users.forEach(u => {
+        if (u.id !== currentUserId) {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.textContent = `${u.full_name} - ${u.title}`;
+          receiverSelect.appendChild(opt);
+        }
+      });
+
+      document.getElementById('modalSendMessage').style.display = 'flex';
+    }
+
+    async function submitSendMessage() {
+      const receiverId = document.getElementById('msgReceiverSelect').value;
+      const title = document.getElementById('msgTitleInput').value.trim();
+      const content = document.getElementById('msgContentInput').value.trim();
+
+      if (!receiverId || !title || !content) {
+        alert("Vui lòng điền đủ người nhận, tiêu đề và nội dung thư!");
+        return;
+      }
+
+      await supabaseClient.from('internal_messages').insert([{
+        sender_id: currentUserId,
+        receiver_id: receiverId,
+        title,
+        content
+      }]);
+
+      closeModal('modalSendMessage');
+      await fetchMessages();
+      alert("Thư mật đã được gửi thành công!");
+    }
+
+    async function markMessageAsRead(msgId) {
+      await supabaseClient.from('internal_messages').update({ is_read: true }).eq('id', msgId);
+      await fetchMessages();
+    }
+
+    // 9. CHAT LIVE TRỰC TUYẾN
     function renderGroupChat() {
       const chatArea = document.getElementById('groupChatMessagesArea');
       if (!chatArea) return;
@@ -1578,11 +1782,80 @@
       pill.classList.remove('has-new-msg');
       pill.style.display = 'none';
       document.getElementById('chatTabBadge').style.display = 'none';
-
       switchMainTab('chatTab');
     }
 
-    // 9. ĐỔI MẬT KHẨU
+    // 10. ĐĂNG KÝ CÔNG KHAI VÀ QUÊN MẬT KHẨU
+    function openPublicRegisterModal() {
+      document.getElementById('pubRegFullName').value = '';
+      document.getElementById('pubRegPhone').value = '';
+      document.getElementById('pubRegEmail').value = '';
+      document.getElementById('pubRegPass').value = '123456';
+      document.getElementById('modalPublicRegister').style.display = 'flex';
+    }
+
+    async function submitPublicRegister() {
+      const name = document.getElementById('pubRegFullName').value.trim();
+      const phone = document.getElementById('pubRegPhone').value.trim();
+      const email = document.getElementById('pubRegEmail').value.trim();
+      const title = document.getElementById('pubRegTitle').value.trim();
+      const pass = document.getElementById('pubRegPass').value.trim();
+
+      if (!name || !phone || !email || !pass) {
+        alert("Vui lòng điền đủ Họ tên, SĐT Zalo, Email và Mật khẩu!");
+        return;
+      }
+
+      // TÀI KHOẢN TỰ ĐĂNG KÝ LUÔN LÀ STAFF (NHÂN VIÊN), KHÔNG CHO TỰ LÊN TRƯỞNG PHÓ
+      const { data, error } = await supabaseClient.from('app_users').insert([{
+        full_name: name,
+        phone,
+        email,
+        title: title || 'Chuyên viên Khai thác & DVKH',
+        role: 'staff',
+        password_hash: pass
+      }]).select();
+
+      if (error) {
+        alert("Lỗi đăng ký: " + error.message);
+      } else {
+        alert(`Đăng ký thành công tài khoản cho ${name}! Bạn có thể đăng nhập ngay.`);
+        closeModal('modalPublicRegister');
+        await loadInitialData();
+      }
+    }
+
+    function openForgotPasswordModal() {
+      document.getElementById('forgotPhoneInput').value = '';
+      document.getElementById('forgotNewPassInput').value = '';
+      document.getElementById('modalForgotPassword').style.display = 'flex';
+    }
+
+    async function submitResetPassword() {
+      const phone = document.getElementById('forgotPhoneInput').value.trim();
+      const newPass = document.getElementById('forgotNewPassInput').value.trim();
+
+      if (!phone || !newPass) {
+        alert("Vui lòng nhập SĐT Zalo và Mật khẩu mới!");
+        return;
+      }
+
+      const { data } = await supabaseClient.from('app_users').select('*').eq('phone', phone);
+      if (!data || data.length === 0) {
+        alert("Không tìm thấy tài khoản nào khớp với số điện thoại này!");
+        return;
+      }
+
+      const { error } = await supabaseClient.from('app_users').update({ password_hash: newPass }).eq('phone', phone);
+      if (!error) {
+        alert("Đặt lại mật khẩu thành công! Hãy dùng mật khẩu mới để đăng nhập.");
+        closeModal('modalForgotPassword');
+      } else {
+        alert("Lỗi: " + error.message);
+      }
+    }
+
+    // 11. ĐỔI MẬT KHẨU CÁ NHÂN KHI ĐÃ ĐĂNG NHẬP
     function openChangePasswordModal() {
       document.getElementById('oldPasswordInput').value = '';
       document.getElementById('verifyPhoneInput').value = '';
@@ -1596,10 +1869,7 @@
       const newPass = document.getElementById('newPasswordInput').value.trim();
 
       const currentUser = users.find(u => u.id === currentUserId);
-      if (!currentUser || !newPass) {
-        alert("Vui lòng nhập mật khẩu mới!");
-        return;
-      }
+      if (!currentUser || !newPass) return;
 
       const isOldCorrect = oldPass && (currentUser.password_hash === oldPass);
       const isPhoneCorrect = verifyPhone && (currentUser.phone === verifyPhone);
@@ -1615,7 +1885,7 @@
       alert("Đổi mật khẩu thành công!");
     }
 
-    // 10. ĐĂNG NHẬP / ĐĂNG XUẤT
+    // 12. ĐĂNG NHẬP & ĐĂNG XUẤT
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
       localStorage.removeItem("DSU_LAST_LOGIN_DATE");
@@ -1637,6 +1907,77 @@
       } else {
         alert("Sai số điện thoại hoặc mật khẩu!");
       }
+    }
+
+    // 13. QUẢN TRỊ NHÂN SỰ ADMIN (DUYỆT CHỨC DANH TRƯỞNG PHÓ)
+    function openRegisterModalAdmin() {
+      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới (Admin)";
+      document.getElementById('editUserId').value = '';
+      document.getElementById('regFullName').value = '';
+      document.getElementById('regPhone').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
+      document.getElementById('regRole').value = 'staff';
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    function openEditUserModalAdmin(userId) {
+      const user = users.find(u => u.id === userId);
+      if (!user) return;
+
+      document.getElementById('modalRegisterTitle').textContent = `✏️ Cập nhật & Phê chuẩn chức danh: ${user.full_name}`;
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('regFullName').value = user.full_name;
+      document.getElementById('regPhone').value = user.phone;
+      document.getElementById('regEmail').value = user.email;
+      document.getElementById('regTitle').value = user.title;
+      document.getElementById('regRole').value = user.role;
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    async function submitSaveUserAdmin() {
+      const editId = document.getElementById('editUserId').value;
+      const name = document.getElementById('regFullName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const title = document.getElementById('regTitle').value.trim();
+      const role = document.getElementById('regRole').value;
+
+      if (!name || !phone || !email) return;
+
+      if (editId) {
+        await supabaseClient.from('app_users').update({
+          full_name: name, phone, email, title, role
+        }).eq('id', editId);
+        alert("Đã cập nhật thông tin và chức danh thành công!");
+      } else {
+        await supabaseClient.from('app_users').insert([{
+          full_name: name, phone, email, title, role, password_hash: '123456'
+        }]);
+        alert(`Đã cấp tài khoản thành công cho: ${name}`);
+      }
+
+      await loadInitialData();
+      closeModal('modalRegister');
+    }
+
+    function renderAdminUserTable() {
+      const tbody = document.getElementById('adminUserTableBody');
+      tbody.innerHTML = '';
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        let roleName = u.role === 'hod' ? 'Trưởng / Phó Trung tâm' : (u.role === 'admin' ? 'Quản trị viên' : 'Nhân viên');
+        tr.innerHTML = `
+          <td><b>${u.full_name}</b></td>
+          <td>${u.phone}</td>
+          <td>${u.title}</td>
+          <td><span style="font-size:11px; padding:2px 8px; border-radius:4px; background:var(--bg-surface); font-weight:700;">${roleName}</span></td>
+          <td style="text-align:right;">
+            <button class="btn btn-primary btn-sm" onclick="openEditUserModalAdmin('${u.id}')">✏️ Sửa / Đổi quyền</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function switchMainTab(tabId) {
@@ -1729,29 +2070,6 @@
         `;
         tbody.appendChild(tr);
       });
-    }
-
-    function renderAdminUserTable() {
-      const tbody = document.getElementById('adminUserTableBody');
-      tbody.innerHTML = '';
-      users.forEach(u => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${u.full_name}</b></td>
-          <td>${u.phone}</td>
-          <td>${u.title}</td>
-          <td>${u.role}</td>
-          <td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">Xóa</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function deleteUser(uid) {
-      if (!confirm("Xác nhận xóa nhân sự này?")) return;
-      await supabaseClient.from('app_users').delete().eq('id', uid);
-      users = users.filter(u => u.id !== uid);
-      renderAdminUserTable();
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
