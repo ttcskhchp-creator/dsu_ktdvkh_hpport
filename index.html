@@ -401,6 +401,7 @@
     <button class="nav-tab-btn active" id="tabBtn-tasks" onclick="switchMainTab('tasksTab')">
       📋 Bảng Công việc (Kanban)
     </button>
+    <button class="nav-tab-btn" id="tabBtn-chat" onclick="switchMainTab('chatTab')">💬 Chat Live & Chat 1-1</button>
     <button class="nav-tab-btn" id="tabBtn-score" onclick="switchMainTab('scoreTab')">
       🏆 Bảng Điểm Hiệu Suất
     </button>
@@ -487,6 +488,13 @@
       </section>
     </div>
 
+    <div id="chatTab" class="tab-content"><div class="chat-layout">
+      <section class="user-list-card"><div class="chat-list-header">👥 Nhân sự <span id="onlineCount">0 online</span></div>
+      <button class="user-presence-item" onclick="openGroupChat()">🌐 <b>Chat Nhóm chung</b></button><div id="chatUserList" style="overflow-y:auto;flex:1"></div></section>
+      <section class="chat-main-card"><div class="chat-list-header"><span id="chatRoomTitle">🌐 Chat Nhóm chung</span><span id="chatConnectionState">Đang kết nối…</span></div>
+      <div id="chatMessages" class="chat-messages-area"></div><form onsubmit="sendChatMessage(event)" style="display:flex;gap:8px;padding:12px;border-top:1px solid var(--border-color)">
+      <input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required><button class="btn btn-primary" type="submit">Gửi ➤</button></form></section>
+      </div><p style="font-size:11px;color:var(--text-muted);margin-top:8px">Chat yêu cầu bảng chat_messages và chính sách RLS trên Supabase; xem file SQL đi kèm.</p></div>
     <!-- TAB 2: BẢNG TÍNH ĐIỂM -->
     <div id="scoreTab" class="tab-content">
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
@@ -779,10 +787,20 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitLogin()">Đăng nhập</button>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:8px" onclick="openSignup()">📝 Đăng ký tài khoản mới</button>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:8px" onclick="changeOwnPassword()">🔑 Đổi mật khẩu</button>
       </div>
     </div>
   </div>
 
+  <div class="modal-backdrop" id="modalSignup"><div class="modal-box" style="max-width:520px">
+  <div class="modal-header"><h3>Đăng ký tài khoản DSU</h3><button class="btn btn-outline btn-sm" onclick="closeModal('modalSignup')">✕</button></div><div class="modal-body">
+  <div class="form-group"><label>Họ và tên *</label><input id="signupName" class="form-control" required></div>
+  <div class="grid-2"><div class="form-group"><label>Số điện thoại *</label><input id="signupPhone" class="form-control" required></div><div class="form-group"><label>Email</label><input id="signupEmail" type="email" class="form-control"></div></div>
+  <div class="form-group"><label>Chức danh *</label><input id="signupTitle" class="form-control" required placeholder="VD: Chuyên viên khai thác"></div>
+  <div class="form-group"><label>Loại tài khoản *</label><select id="signupRole" class="form-control"><option value="staff">Nhân viên</option><option value="hod">Trưởng/Phó Trung tâm</option><option value="admin">Admin</option></select><small style="color:var(--danger-red)">Đăng ký công khai được tạo quyền Nhân viên; quyền lãnh đạo/Admin phải do quản trị viên cấp.</small></div>
+  <div class="grid-2"><div class="form-group"><label>Mật khẩu *</label><input id="signupPass" type="password" class="form-control" minlength="6" required></div><div class="form-group"><label>Nhập lại mật khẩu *</label><input id="signupPass2" type="password" class="form-control" minlength="6" required></div></div>
+  </div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modalSignup')">Hủy</button><button class="btn btn-primary" onclick="submitSignup()">Tạo tài khoản</button></div></div></div>
   <!-- ========================================== -->
   <!-- JAVASCRIPT LOGIC V17.1                     -->
   <!-- ========================================== -->
@@ -805,6 +823,8 @@
     let tasks = [];
     let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || null;
     let selectedTaskIdForDetail = null;
+    let activeChatPeerId = null, chatRealtimeChannel = null, presenceChannel = null;
+    let onlineUserIds = new Set(), chatMessagesCache = [];
 
     // 1. THEME
     function initTheme() {
@@ -831,6 +851,9 @@
       }
       await loadInitialData();
       setupRealtime();
+      setupPresence();
+      await loadChatMessages();
+      cleanupOldCompletedTasks();
     }
 
     async function loadInitialData() {
@@ -867,6 +890,21 @@
         .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
         .subscribe();
     }
+
+
+    function chatRoomKey(){return activeChatPeerId===null?'group':[String(currentUserId),String(activeChatPeerId)].sort().join(':');}
+    function openGroupChat(){activeChatPeerId=null;document.getElementById('chatRoomTitle').textContent='🌐 Chat Nhóm chung';loadChatMessages();renderChatUsers();}
+    function openDirectChat(uid){if(String(uid)===String(currentUserId))return;activeChatPeerId=uid;const u=users.find(x=>String(x.id)===String(uid));document.getElementById('chatRoomTitle').textContent='🔒 Chat riêng — '+(u?.full_name||'Đồng nghiệp');loadChatMessages();renderChatUsers();}
+    function setupPresence(){if(!currentUserId)return;if(presenceChannel)supabaseClient.removeChannel(presenceChannel);presenceChannel=supabaseClient.channel('dsu-presence',{config:{presence:{key:String(currentUserId)}}});presenceChannel.on('presence',{event:'sync'},()=>{onlineUserIds=new Set(Object.keys(presenceChannel.presenceState()).map(String));renderChatUsers();const e=document.getElementById('onlineCount');if(e)e.textContent=onlineUserIds.size+' online';});presenceChannel.subscribe(async st=>{if(st==='SUBSCRIBED')await presenceChannel.track({user_id:String(currentUserId),online_at:new Date().toISOString()});});}
+    function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function renderChatUsers(){const box=document.getElementById('chatUserList');if(!box)return;box.innerHTML='';users.filter(u=>String(u.id)!==String(currentUserId)).forEach(u=>{const b=document.createElement('button');b.className='user-presence-item'+(String(activeChatPeerId)===String(u.id)?' active':'');b.style.width='100%';b.style.textAlign='left';b.innerHTML=`<span><i class="status-dot ${onlineUserIds.has(String(u.id))?'dot-online':'dot-offline'}"></i> ${escapeHtml(u.full_name)}</span><small>${onlineUserIds.has(String(u.id))?'Online':'Offline'}</small>`;b.onclick=()=>openDirectChat(u.id);box.appendChild(b);});}
+    async function loadChatMessages(){const area=document.getElementById('chatMessages');if(!area||!currentUserId)return;const room=chatRoomKey();const {data,error}=await supabaseClient.from('chat_messages').select('*').eq('room_key',room).order('created_at',{ascending:true}).limit(300);if(error){document.getElementById('chatConnectionState').textContent='Chưa cấu hình';area.innerHTML='<div style="color:var(--text-muted)">Không tải được tin nhắn. Hãy chạy SQL cấu hình chat và kiểm tra RLS.</div>';return;}chatMessagesCache=data||[];renderChatMessages();if(chatRealtimeChannel)await supabaseClient.removeChannel(chatRealtimeChannel);chatRealtimeChannel=supabaseClient.channel('chat-'+room).on('postgres_changes',{event:'*',schema:'public',table:'chat_messages',filter:'room_key=eq.'+room},p=>{if(p.eventType==='INSERT'&&!chatMessagesCache.some(m=>String(m.id)===String(p.new.id))){chatMessagesCache.push(p.new);renderChatMessages();}}).subscribe(st=>{document.getElementById('chatConnectionState').textContent=st==='SUBSCRIBED'?'● Trực tuyến':'Đang kết nối…';});}
+    function renderChatMessages(){const area=document.getElementById('chatMessages');if(!area)return;area.innerHTML=chatMessagesCache.map(m=>{const me=String(m.sender_id)===String(currentUserId),u=users.find(x=>String(x.id)===String(m.sender_id));return `<div class="chat-bubble ${me?'bubble-me':'bubble-other'}"><div style="font-size:10px;opacity:.8;margin-bottom:3px">${me?'Bạn':escapeHtml(u?.full_name||'Đồng nghiệp')} · ${m.created_at?new Date(m.created_at).toLocaleString('vi-VN'):''}</div>${escapeHtml(m.message).replace(/\n/g,'<br>')}</div>`;}).join('');area.scrollTop=area.scrollHeight;}
+    async function sendChatMessage(e){e.preventDefault();const i=document.getElementById('chatMessageInput'),message=i.value.trim();if(!message)return;const {error}=await supabaseClient.from('chat_messages').insert({room_key:chatRoomKey(),sender_id:currentUserId,recipient_id:activeChatPeerId,message});if(error){alert('Không gửi được tin nhắn. Kiểm tra bảng chat_messages/RLS.');return;}i.value='';}
+    function openSignup(){closeModal('modalAuth');document.getElementById('modalSignup').style.display='flex';}
+    async function submitSignup(){const full_name=document.getElementById('signupName').value.trim(),phone=document.getElementById('signupPhone').value.trim(),email=document.getElementById('signupEmail').value.trim(),title=document.getElementById('signupTitle').value.trim(),p=document.getElementById('signupPass').value,p2=document.getElementById('signupPass2').value;if(!full_name||!phone||!title||p.length<6||p!==p2){alert('Kiểm tra trường bắt buộc và mật khẩu (ít nhất 6 ký tự, phải trùng nhau).');return;}const {data:ex,error:ce}=await supabaseClient.from('app_users').select('id').eq('phone',phone).limit(1);if(ce){alert('Không kiểm tra được tài khoản: '+ce.message);return;}if(ex?.length){alert('Số điện thoại đã tồn tại.');return;}const {error}=await supabaseClient.from('app_users').insert({full_name,phone,email:email||null,title,role:'staff',password_hash:p});if(error){alert('Đăng ký thất bại: '+error.message);return;}alert('Đăng ký thành công với quyền Nhân viên. Trưởng/Phó hoặc Admin cần được quản trị viên cấp quyền.');closeModal('modalSignup');document.getElementById('modalAuth').style.display='flex';}
+    async function changeOwnPassword(){if(!currentUserId){alert('Đăng nhập trước để đổi mật khẩu.');return;}const old=prompt('Nhập mật khẩu hiện tại:');if(old===null)return;const next=prompt('Nhập mật khẩu mới (ít nhất 6 ký tự):');if(next===null)return;if(next.length<6){alert('Mật khẩu quá ngắn.');return;}const u=users.find(x=>String(x.id)===String(currentUserId));if(!u||u.password_hash!==old){alert('Mật khẩu hiện tại không đúng.');return;}const {error}=await supabaseClient.from('app_users').update({password_hash:next}).eq('id',currentUserId);if(error){alert('Đổi mật khẩu lỗi: '+error.message);return;}u.password_hash=next;alert('Đổi mật khẩu thành công.');}
+    async function cleanupOldCompletedTasks(){const cutoff=new Date(Date.now()-35*86400000).toISOString(),u=users.find(x=>String(x.id)===String(currentUserId));if(!u||!['admin','hod'].includes(u.role))return;const {data,error}=await supabaseClient.from('tasks').delete().eq('status','completed').lt('updated_at',cutoff).select('id');if(!error&&data?.length){tasks=tasks.filter(t=>!data.some(x=>String(x.id)===String(t.id)));renderKanban();}}
 
     // 3. TÍNH DEADLINE
     function calculateDeadlineAlert(dueDateTimeStr, status) {
@@ -1056,13 +1094,24 @@
           <td>${member.phone || 'N/A'}</td>
           <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
           <td style="text-align:right;">
-            ${(canManageMembers && !isLeader) ? `
-              <button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="removeMemberFromTask('${uid}')">🗑️ Xóa</button>
-            ` : (isLeader ? '<span style="font-size:10px; color:var(--text-muted);">(Leader)</span>' : '')}
+            ${(canManageMembers ? `<button class="btn btn-outline btn-sm" onclick="setTaskLeader('${uid}')">${isLeader ? '⭐ Leader' : 'Đặt Leader'}</button>` : '')}
+            ${(canManageMembers && !isLeader) ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="removeMemberFromTask('${uid}')">🗑️ Xóa</button>` : ''}
           </td>
         `;
         assigneeTable.appendChild(tr);
       });
+    }
+
+    async function setTaskLeader(uid){
+      const task=tasks.find(t=>String(t.id)===String(selectedTaskIdForDetail));if(!task)return;
+      const me=users.find(u=>String(u.id)===String(currentUserId))||{};
+      if(!['hod','admin'].includes(me.role)){alert('Chỉ Trưởng/Phó hoặc Admin được đổi Nhóm trưởng.');return;}
+      if(task.status==='completed'){alert('Việc đã hoàn thành đang khóa chỉnh sửa thành viên. Lãnh đạo/Admin cần mở lại việc trước.');return;}
+      const ids=Array.isArray(task.assignees_json)?[...task.assignees_json]:(task.assignee_id?[task.assignee_id]:[]);
+      if(!ids.includes(uid)){alert('Nhóm trưởng phải là thành viên được phân công.');return;}
+      const {error}=await supabaseClient.from('tasks').update({leader_id:uid,assignee_id:uid,updated_at:new Date().toISOString()}).eq('id',task.id);
+      if(error){alert('Không đổi được Nhóm trưởng: '+error.message);return;}
+      task.leader_id=uid;task.assignee_id=uid;renderDetailAssigneeTable(task,true);renderKanban();alert('Đã đổi Nhóm trưởng.');
     }
 
     async function removeMemberFromTask(userIdToRemove) {
@@ -1399,12 +1448,13 @@
           <td>${u.phone || 'N/A'}</td>
           <td>${u.email || 'N/A'}</td>
           <td>${u.role || 'staff'}</td>
-          <td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">Xóa</button></td>
+          <td style="text-align:right;white-space:nowrap;"><button class="btn btn-outline btn-sm" onclick="editUser('${u.id}')">✏️ Sửa</button> <button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">Xóa</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
+    async function editUser(uid){const u=users.find(x=>String(x.id)===String(uid));if(!u)return;const full_name=prompt('Họ và tên:',u.full_name||'');if(full_name===null)return;const phone=prompt('Số điện thoại:',u.phone||'');if(phone===null)return;const email=prompt('Email:',u.email||'');if(email===null)return;const title=prompt('Chức danh:',u.title||'');if(title===null)return;const role=prompt('Loại tài khoản: staff / hod / admin',u.role||'staff');if(role===null)return;if(!['staff','hod','admin'].includes(role)){alert('Loại tài khoản không hợp lệ.');return;}const {error}=await supabaseClient.from('app_users').update({full_name:full_name.trim(),phone:phone.trim(),email:email.trim(),title:title.trim(),role}).eq('id',uid);if(error){alert('Không cập nhật được: '+error.message);return;}Object.assign(u,{full_name:full_name.trim(),phone:phone.trim(),email:email.trim(),title:title.trim(),role});renderAdminUserTable();updateCurrentUserUI();renderChatUsers();alert('Đã cập nhật hồ sơ nhân sự.');}
     async function deleteUser(uid) {
       if (!confirm("Xác nhận xóa nhân sự này?")) return;
       await supabaseClient.from('app_users').delete().eq('id', uid);
@@ -1447,6 +1497,7 @@
 
       if (tabId === 'scoreTab') renderScoreBoard();
       if (tabId === 'adminTab') renderAdminUserTable();
+      if (tabId === 'chatTab') { renderChatUsers(); loadChatMessages(); }
     }
 
     function updateCurrentUserUI() {
