@@ -617,9 +617,16 @@
         </section>
         <section class="chat-main-card">
           <div class="chat-list-header">
-            <span id="chatRoomTitle">🌐 Chat Nhóm chung</span>
-            <span id="chatConnectionState" style="font-size:11px; color:var(--text-muted);">Đang kết nối…</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span id="chatRoomTitle">🌐 Chat Nhóm chung</span>
+              <span id="chatConnectionState" style="font-size:11px; color:var(--text-muted);">Đang kết nối…</span>
+            </div>
+            <!-- NÚT XÓA LỊCH SỬ CHAT (QUYỀN LÃNH ĐẠO / ADMIN) -->
+            <button class="btn btn-danger btn-sm" id="btnDeleteChatRange" onclick="openDeleteChatModal()" style="display:none; font-size:11px;">
+              🗑️ Xóa lịch sử chat
+            </button>
           </div>
+          
           <div id="chatMessages" class="chat-messages-area"></div>
           
           <!-- DÒNG THÔNG BÁO TIN NHẮN MỚI NGAY TRÊN KHUNG GÕ -->
@@ -746,6 +753,33 @@
   <!-- ========================================== -->
   <!-- MODALS                                     -->
   <!-- ========================================== -->
+
+  <!-- MODAL: XÓA LỊCH SỬ CHAT THEO KHOẢNG THỜI GIAN -->
+  <div class="modal-backdrop" id="modalDeleteChatRange">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px; color:var(--danger-red);">🗑️ Xóa Lịch Sử Chat Theo Khoảng Thời Gian</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalDeleteChatRange')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted);">
+          Chọn khoảng thời gian để dọn dẹp lịch sử trò chuyện của phòng chat hiện tại giúp giải phóng bộ nhớ và đỡ lẫn tầm nhìn:
+        </p>
+        <div class="form-group">
+          <label>Từ thời điểm (Bắt đầu) *:</label>
+          <input type="datetime-local" id="delChatStart" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Đến thời điểm (Kết thúc) *:</label>
+          <input type="datetime-local" id="delChatEnd" class="form-control" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalDeleteChatRange')">Hủy</button>
+        <button class="btn btn-danger" onclick="executeDeleteChatRange()">Xác nhận xóa vĩnh viễn</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: GIAO VIỆC MỚI -->
   <div class="modal-backdrop" id="modalCreateTask">
@@ -1030,7 +1064,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V21.2                     -->
+  <!-- JAVASCRIPT LOGIC V21.5                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1059,6 +1093,7 @@
     let chatRealtimeChannel = null, presenceChannel = null;
     let onlineUserIds = new Set(), chatMessagesCache = [];
     let chatPollingTimer = null;
+    let lastCheckedMessageTime = new Date().toISOString();
 
     // 1. THEME
     function initTheme() {
@@ -1133,7 +1168,7 @@
         if (chatRealtimeChannel) {
           supabaseClient.removeChannel(chatRealtimeChannel);
         }
-        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.2')
+        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.5')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -1198,6 +1233,12 @@
       const box = document.getElementById('chatUserList');
       if (!box) return;
       box.innerHTML = '';
+
+      // Kiểm tra quyền hiển thị nút Xóa lịch sử chat (Admin, Trưởng, Phó)
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const canDeleteChat = ['admin', 'hod'].includes(currentUser.role);
+      const btnDelChat = document.getElementById('btnDeleteChatRange');
+      if (btnDelChat) btnDelChat.style.display = canDeleteChat ? 'inline-flex' : 'none';
 
       // Nút Chat Nhóm chung
       const groupUnread = unreadChatCounts['group'] || 0;
@@ -1300,15 +1341,26 @@
       if (!area || !currentUserId) return;
       const room = chatRoomKey();
       
-      const { data, error } = await supabaseClient.from('chat_messages').select('*').eq('room_key', room).order('created_at', { ascending: true }).limit(300);
+      const { data, error } = await supabaseClient.from('chat_messages').select('*').eq('room_key', room).order('created_at', { ascending: true }).limit(500);
       if (error) {
         document.getElementById('chatConnectionState').textContent = 'Chưa cấu hình bảng chat';
         area.innerHTML = '<div style="color:var(--text-muted)">Không tải được tin nhắn. Hãy chắc chắn bảng chat_messages đã tạo và phân quyền RLS trên Supabase.</div>';
         return;
       }
       chatMessagesCache = data || [];
+      
+      // Giới hạn hiển thị tối đa 500 tin nhắn (tin cũ nhất sẽ bị cắt bỏ tự động)
+      if (chatMessagesCache.length > 500) {
+        chatMessagesCache = chatMessagesCache.slice(chatMessagesCache.length - 500);
+      }
+
       renderChatMessages();
 
+      if (chatMessagesCache.length > 0) {
+        lastCheckedMessageTime = chatMessagesCache[chatMessagesCache.length - 1].created_at;
+      }
+
+      // Đăng ký nhận tin nhắn realtime qua WebSocket
       if (chatRealtimeChannel) await supabaseClient.removeChannel(chatRealtimeChannel);
       
       chatRealtimeChannel = supabaseClient.channel('chat-room-' + room)
@@ -1321,6 +1373,7 @@
 
             if (matchesRoom && !chatMessagesCache.some(m => String(m.id) === String(incomingMsg.id))) {
               chatMessagesCache.push(incomingMsg);
+              if (chatMessagesCache.length > 500) chatMessagesCache.shift(); // Xóa 1 tin nhắn cũ nhất nếu vượt 500
               renderChatMessages();
             }
             triggerChatNotification(incomingMsg);
@@ -1331,22 +1384,41 @@
         });
     }
 
-    // Cơ chế Polling ngầm dự phòng (mỗi 3 giây tự động đồng bộ tin nhắn để không bao giờ bị mất tin nếu Supabase websocket ngắt)
+    // Cơ chế Polling dự phòng thông minh (Cập nhật lịch sử và thông báo kể cả khi vừa login/offline)
     function startChatPolling() {
       if (chatPollingTimer) clearInterval(chatPollingTimer);
       chatPollingTimer = setInterval(async () => {
         if (!currentUserId) return;
-        const room = chatRoomKey();
-        const { data } = await supabaseClient.from('chat_messages').select('*').eq('room_key', room).order('created_at', { ascending: true }).limit(300);
-        if (data && data.length !== chatMessagesCache.length) {
-          const lastId = chatMessagesCache.length > 0 ? chatMessagesCache[chatMessagesCache.length - 1].id : null;
-          chatMessagesCache = data;
-          renderChatMessages();
-          if (data.length > 0 && String(data[data.length - 1].id) !== String(lastId)) {
-            triggerChatNotification(data[data.length - 1]);
+        
+        const { data } = await supabaseClient.from('chat_messages')
+          .select('*')
+          .gt('created_at', lastCheckedMessageTime)
+          .order('created_at', { ascending: true });
+
+        if (data && data.length > 0) {
+          let hasNewForMe = false;
+          data.forEach(msg => {
+            if (String(msg.sender_id) !== String(currentUserId)) {
+              hasNewForMe = true;
+              triggerChatNotification(msg);
+            }
+            const room = chatRoomKey();
+            const matchesRoom = (msg.room_key === room) || 
+                                (msg.room_key === 'group' && room === 'group') ||
+                                (msg.room_key.includes(String(currentUserId)) && msg.room_key.includes(String(activeChatPeerId)));
+
+            if (matchesRoom && !chatMessagesCache.some(m => String(m.id) === String(msg.id))) {
+              chatMessagesCache.push(msg);
+              if (chatMessagesCache.length > 500) chatMessagesCache.shift();
+            }
+          });
+
+          if (hasNewForMe) {
+            renderChatMessages();
           }
+          lastCheckedMessageTime = data[data.length - 1].created_at;
         }
-      }, 3000);
+      }, 2500);
     }
 
     function renderChatMessages() {
@@ -1381,10 +1453,54 @@
       if (data && data.length > 0) {
         if (!chatMessagesCache.some(m => String(m.id) === String(data[0].id))) {
           chatMessagesCache.push(data[0]);
+          if (chatMessagesCache.length > 500) chatMessagesCache.shift();
           renderChatMessages();
         }
+        lastCheckedMessageTime = data[0].created_at;
       }
       i.value = '';
+    }
+
+    // XÓA LỊCH SỬ CHAT THEO KHOẢNG THỜI GIAN (QUYỀN LÃNH ĐẠO / ADMIN)
+    function openDeleteChatModal() {
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      if (!['admin', 'hod'].includes(currentUser.role)) {
+        alert("Chỉ có Lãnh đạo hoặc Admin mới có quyền xóa lịch sử chat!");
+        return;
+      }
+      document.getElementById('delChatStart').value = '';
+      document.getElementById('delChatEnd').value = '';
+      document.getElementById('modalDeleteChatRange').style.display = 'flex';
+    }
+
+    async function executeDeleteChatRange() {
+      const startVal = document.getElementById('delChatStart').value;
+      const endVal = document.getElementById('delChatEnd').value;
+
+      if (!startVal || !endVal) {
+        alert("Vui lòng chọn đầy đủ thời gian bắt đầu và kết thúc!");
+        return;
+      }
+
+      const startIso = new Date(startVal).toISOString();
+      const endIso = new Date(endVal).toISOString();
+
+      if (confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn toàn bộ tin nhắn từ [${new Date(startVal).toLocaleString('vi-VN')}] đến [${new Date(endVal).toLocaleString('vi-VN')}] của phòng chat này không?`)) {
+        const room = chatRoomKey();
+        const { error } = await supabaseClient.from('chat_messages')
+          .delete()
+          .eq('room_key', room)
+          .gte('created_at', startIso)
+          .lte('created_at', endIso);
+
+        if (!error) {
+          alert("Đã dọn dẹp và xóa lịch sử chat thành công!");
+          closeModal('modalDeleteChatRange');
+          loadChatMessages();
+        } else {
+          alert("Lỗi khi xóa lịch sử chat: " + error.message);
+        }
+      }
     }
 
     // ĐĂNG KÝ TÀI KHOẢN & ĐỔI MẬT KHẨU
