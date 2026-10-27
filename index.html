@@ -621,7 +621,7 @@
               <span id="chatRoomTitle">🌐 Chat Nhóm chung</span>
               <span id="chatConnectionState" style="font-size:11px; color:var(--text-muted);">Đang kết nối…</span>
             </div>
-            <!-- NÚT XÓA LỊCH SỬ CHAT (QUYỀN LÃNH ĐẠO / ADMIN) -->
+            <!-- NÚT XÓA LỊCH SỬ CHAT TỔNG (QUYỀN LÃNH ĐẠO / ADMIN) -->
             <button class="btn btn-danger btn-sm" id="btnDeleteChatRange" onclick="openDeleteChatModal()" style="display:none; font-size:11px;">
               🗑️ Xóa lịch sử chat
             </button>
@@ -754,16 +754,16 @@
   <!-- MODALS                                     -->
   <!-- ========================================== -->
 
-  <!-- MODAL: XÓA LỊCH SỬ CHAT THEO KHOẢNG THỜI GIAN -->
+  <!-- MODAL: XÓA LỊCH SỬ CHAT TỔNG HỢP (CHUNG & RIÊNG) -->
   <div class="modal-backdrop" id="modalDeleteChatRange">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 style="font-size:16px; color:var(--danger-red);">🗑️ Xóa Lịch Sử Chat Theo Khoảng Thời Gian</h3>
+        <h3 style="font-size:16px; color:var(--danger-red);">🗑️ Xóa Toàn Bộ Lịch Sử Chat (Chung & Riêng)</h3>
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalDeleteChatRange')">✕</button>
       </div>
       <div class="modal-body">
         <p style="font-size:12px; color:var(--text-muted);">
-          Chọn khoảng thời gian để dọn dẹp lịch sử trò chuyện của phòng chat hiện tại giúp giải phóng bộ nhớ và đỡ lẫn tầm nhìn:
+          Chọn khoảng thời gian để xóa sạch tất cả tin nhắn (cả Kênh chung và tất cả Chat 1-1) trong khoảng này trên toàn hệ thống:
         </p>
         <div class="form-group">
           <label>Từ thời điểm (Bắt đầu) *:</label>
@@ -776,7 +776,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal('modalDeleteChatRange')">Hủy</button>
-        <button class="btn btn-danger" onclick="executeDeleteChatRange()">Xác nhận xóa vĩnh viễn</button>
+        <button class="btn btn-danger" onclick="executeDeleteChatRange()">Xác nhận xóa sạch</button>
       </div>
     </div>
   </div>
@@ -1064,7 +1064,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V21.5                     -->
+  <!-- JAVASCRIPT LOGIC V21.6                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1168,7 +1168,7 @@
         if (chatRealtimeChannel) {
           supabaseClient.removeChannel(chatRealtimeChannel);
         }
-        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.5')
+        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.6')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -1349,7 +1349,7 @@
       }
       chatMessagesCache = data || [];
       
-      // Giới hạn hiển thị tối đa 500 tin nhắn (tin cũ nhất sẽ bị cắt bỏ tự động)
+      // Giới hạn hiển thị tối đa 500 tin nhắn (loại bỏ tin cũ nhất)
       if (chatMessagesCache.length > 500) {
         chatMessagesCache = chatMessagesCache.slice(chatMessagesCache.length - 500);
       }
@@ -1373,7 +1373,7 @@
 
             if (matchesRoom && !chatMessagesCache.some(m => String(m.id) === String(incomingMsg.id))) {
               chatMessagesCache.push(incomingMsg);
-              if (chatMessagesCache.length > 500) chatMessagesCache.shift(); // Xóa 1 tin nhắn cũ nhất nếu vượt 500
+              if (chatMessagesCache.length > 500) chatMessagesCache.shift();
               renderChatMessages();
             }
             triggerChatNotification(incomingMsg);
@@ -1384,7 +1384,7 @@
         });
     }
 
-    // Cơ chế Polling dự phòng thông minh (Cập nhật lịch sử và thông báo kể cả khi vừa login/offline)
+    // Cơ chế Polling dự phòng thông minh
     function startChatPolling() {
       if (chatPollingTimer) clearInterval(chatPollingTimer);
       chatPollingTimer = setInterval(async () => {
@@ -1461,7 +1461,7 @@
       i.value = '';
     }
 
-    // XÓA LỊCH SỬ CHAT THEO KHOẢNG THỜI GIAN (QUYỀN LÃNH ĐẠO / ADMIN)
+    // XÓA LỊCH SỬ CHAT TỔNG HỢP TOÀN BỘ (CHUNG & RIÊNG 1-1) THEO THỜI GIAN
     function openDeleteChatModal() {
       const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
       if (!['admin', 'hod'].includes(currentUser.role)) {
@@ -1485,20 +1485,22 @@
       const startIso = new Date(startVal).toISOString();
       const endIso = new Date(endVal).toISOString();
 
-      if (confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn toàn bộ tin nhắn từ [${new Date(startVal).toLocaleString('vi-VN')}] đến [${new Date(endVal).toLocaleString('vi-VN')}] của phòng chat này không?`)) {
-        const room = chatRoomKey();
+      if (confirm(`CẢNH BÁO: Bạn có chắc chắn muốn xóa vĩnh viễn TOÀN BỘ tin nhắn (cả Kênh chung và tất cả Chat 1-1 giữa mọi nhân sự) từ [${new Date(startVal).toLocaleString('vi-VN')}] đến [${new Date(endVal).toLocaleString('vi-VN')}] không?`)) {
+        
+        // Xóa tất cả bản ghi trong bảng chat_messages nằm trong khoảng thời gian (không cần lọc room_key để xóa sạch toàn hệ thống)
         const { error } = await supabaseClient.from('chat_messages')
           .delete()
-          .eq('room_key', room)
           .gte('created_at', startIso)
           .lte('created_at', endIso);
 
         if (!error) {
-          alert("Đã dọn dẹp và xóa lịch sử chat thành công!");
+          alert("Đã dọn dẹp và xóa sạch toàn bộ lịch sử chat thành công!");
           closeModal('modalDeleteChatRange');
+          chatMessagesCache = [];
+          renderChatMessages();
           loadChatMessages();
         } else {
-          alert("Lỗi khi xóa lịch sử chat: " + error.message);
+          alert("Lỗi khi xóa lịch sử chat từ Supabase: " + error.message + "\n(Hãy đảm bảo bạn đã tạo Policy DELETE cho phép xóa trên bảng chat_messages trong Supabase).");
         }
       }
     }
