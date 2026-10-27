@@ -299,7 +299,7 @@
       border: 1px solid var(--bg-card);
     }
 
-    /* CHAT LIVE VÀ CHAT 1-1 (TỐI ƯU MOBILE RESPONSIVE) */
+    /* CHAT LIVE VÀ CHAT 1-1 (TỐI ƯU MOBILE) */
     .chat-layout {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -407,7 +407,7 @@
       background: rgba(240, 138, 36, 0.2);
       border-left: 3px solid var(--warn-orange);
       color: #ffb469;
-      padding: 5px 12px;
+      padding: 6px 12px;
       font-size: 11.5px;
       font-weight: 700;
       display: none;
@@ -625,7 +625,7 @@
           <!-- DÒNG THÔNG BÁO TIN NHẮN MỚI NGAY TRÊN KHUNG GÕ -->
           <div id="chatLiveTicker" class="chat-live-ticker">
             <span id="chatTickerText">⚡ Chú ý có tin nhắn mới!</span>
-            <button class="btn btn-sm" style="background:transparent; color:#fff; padding:0 4px;" onclick="hideChatTicker()">✕</button>
+            <button class="btn btn-sm" style="background:transparent; color:#ffb469; padding:0 4px; font-weight:800;" onclick="hideChatTicker()">✕</button>
           </div>
 
           <form onsubmit="sendChatMessage(event)" style="display:flex; gap:8px; padding:12px; border-top:1px solid var(--border-color)">
@@ -688,7 +688,7 @@
       </div>
     </div>
 
-    <!-- TAB 5: HƯỚNG DẪN SỬ DỤNG (CUỐI CÙNG) -->
+    <!-- TAB 5: HƯỚNG DẪN SỬ DỤNG -->
     <div id="guideTab" class="tab-content">
       <div style="background:var(--bg-card); border:1px solid var(--gold-star); border-radius:10px; padding:18px; margin-bottom:18px; box-shadow:0 4px 14px rgba(255, 215, 0, 0.15);">
         <h3 style="font-size:16px; color:var(--gold-star); margin-bottom:10px;">
@@ -964,7 +964,7 @@
             <option value="hod">Trưởng / Phó Trung tâm</option>
             <option value="admin">Quản trị viên (Admin)</option>
           </select>
-          <small style="color:var(--text-muted);">* Đăng ký công khai thông thường tạo tài khoản Nhân viên; nếu chọn vai trò lãnh đạo/admin sẽ cần quyền quản trị phê duyệt thực tế trên DB.</small>
+          <small style="color:var(--text-muted);">* Đăng ký công khai thông thường tạo tài khoản Nhân viên; nếu chọn vai trò lãnh đạo/admin sẽ cần quản trị viên phê duyệt.</small>
         </div>
         <div class="grid-2">
           <div class="form-group">
@@ -1053,8 +1053,12 @@
     let selectedTaskIdForDetail = null;
 
     let unreadChatCounts = { group: 0 };
-    let activeChatPeerId = null, chatRealtimeChannel = null, presenceChannel = null;
+    let activeChatPeerId = localStorage.getItem("DSU_ACTIVE_CHAT_PEER") || null;
+    if (activeChatPeerId === "null" || activeChatPeerId === "undefined") activeChatPeerId = null;
+
+    let chatRealtimeChannel = null, presenceChannel = null;
     let onlineUserIds = new Set(), chatMessagesCache = [];
+    let chatPollingTimer = null;
 
     // 1. THEME
     function initTheme() {
@@ -1072,7 +1076,7 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
 
-    // 2. KHỞI TẠO APP
+    // 2. KHỞI TẠO APP & GIỮ NGUYÊN TRẠNG THÁI KHI RELOAD
     async function initApp() {
       initTheme();
       if (!currentUserId) {
@@ -1083,8 +1087,17 @@
       setupRealtime();
       setupPresence();
       await loadChatMessages();
+      startChatPolling();
+
       updatePresenceHeartbeat();
       setInterval(updatePresenceHeartbeat, 60000);
+
+      // Khôi phục Tab đang làm việc trước khi reload
+      const savedTab = localStorage.getItem("DSU_ACTIVE_TAB") || "tasksTab";
+      switchMainTab(savedTab);
+      if (savedTab === 'chatTab' && activeChatPeerId) {
+        openDirectChat(activeChatPeerId);
+      }
     }
 
     async function loadInitialData() {
@@ -1142,6 +1155,7 @@
 
     function openGroupChat() {
       activeChatPeerId = null;
+      localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
       unreadChatCounts['group'] = 0;
       document.getElementById('chatRoomTitle').textContent = '🌐 Chat Nhóm chung';
       hideChatTicker();
@@ -1153,6 +1167,7 @@
     function openDirectChat(uid) {
       if (String(uid) === String(currentUserId)) return;
       activeChatPeerId = uid;
+      localStorage.setItem("DSU_ACTIVE_CHAT_PEER", uid);
       unreadChatCounts[String(uid)] = 0;
       const u = users.find(x => String(x.id) === String(uid));
       document.getElementById('chatRoomTitle').textContent = '🔒 Chat riêng — ' + (u?.full_name || 'Đồng nghiệp');
@@ -1270,6 +1285,7 @@
 
     const originalSwitchTab = window.switchMainTab;
     window.switchMainTab = function(tabId) {
+      localStorage.setItem("DSU_ACTIVE_TAB", tabId);
       if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
       if (tabId === 'chatTab') {
         if (activeChatPeerId === null) unreadChatCounts['group'] = 0;
@@ -1313,6 +1329,24 @@
         .subscribe(st => {
           document.getElementById('chatConnectionState').textContent = st === 'SUBSCRIBED' ? '● Trực tuyến' : 'Đang kết nối…';
         });
+    }
+
+    // Cơ chế Polling ngầm dự phòng (mỗi 3 giây tự động đồng bộ tin nhắn để không bao giờ bị mất tin nếu Supabase websocket ngắt)
+    function startChatPolling() {
+      if (chatPollingTimer) clearInterval(chatPollingTimer);
+      chatPollingTimer = setInterval(async () => {
+        if (!currentUserId) return;
+        const room = chatRoomKey();
+        const { data } = await supabaseClient.from('chat_messages').select('*').eq('room_key', room).order('created_at', { ascending: true }).limit(300);
+        if (data && data.length !== chatMessagesCache.length) {
+          const lastId = chatMessagesCache.length > 0 ? chatMessagesCache[chatMessagesCache.length - 1].id : null;
+          chatMessagesCache = data;
+          renderChatMessages();
+          if (data.length > 0 && String(data[data.length - 1].id) !== String(lastId)) {
+            triggerChatNotification(data[data.length - 1]);
+          }
+        }
+      }, 3000);
     }
 
     function renderChatMessages() {
@@ -2129,6 +2163,8 @@
     // 10. AUTH & TABS
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
+      localStorage.removeItem("DSU_ACTIVE_TAB");
+      localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
       currentUserId = null;
       document.getElementById('modalAuth').style.display = 'flex';
     }
@@ -2149,6 +2185,7 @@
     }
 
     function switchMainTab(tabId) {
+      localStorage.setItem("DSU_ACTIVE_TAB", tabId);
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
 
