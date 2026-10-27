@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DSU Operations v5.0 - TT Khai thác & DVKH (Cảng Hải Phòng)</title>
+  <title>DSU Operations v6.0 - TT Khai thác & DVKH (Cảng Hải Phòng)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   
@@ -36,22 +36,6 @@
       flex-direction: column;
       position: relative;
       overflow-x: hidden;
-    }
-
-    /* BACKGROUND CHIBI WATERMARK TRANG TRÍ */
-    body::before {
-      content: "";
-      position: fixed;
-      right: 15px;
-      bottom: 10px;
-      width: 140px;
-      height: 140px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="28" fill="%23ffd5b5"/><path d="M22,35 Q50,10 78,35 Q65,15 50,22 Q35,15 22,35 Z" fill="%232b2b2b"/><circle cx="40" cy="38" r="4" fill="%23111"/><circle cx="60" cy="38" r="4" fill="%23111"/><ellipse cx="36" cy="44" rx="4" ry="2" fill="%23ff9999"/><ellipse cx="64" cy="44" rx="4" ry="2" fill="%23ff9999"/><path d="M46,47 Q50,52 54,47" stroke="%23333" stroke-width="2" fill="none"/><path d="M25,68 L75,68 L70,95 L30,95 Z" fill="%232563C9"/><polygon points="45,68 55,68 52,85 48,85" fill="%23F08A24"/><rect x="35" y="75" width="30" height="18" rx="2" fill="%23eee"/><text x="40" y="87" font-size="7" fill="%232563C9" font-family="sans-serif" font-weight="bold">PORT</text></svg>');
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
     }
 
     /* HEADER */
@@ -178,20 +162,15 @@
     .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display:flex; align-items:center; gap:5px; }
     .stat-val { font-size: 24px; font-weight: 800; margin-top: 4px; color: #fff; }
 
-    /* HIỆU ỨNG SÉT ĐÁNH LIÊN TỤC VÀO Ô CẢNH BÁO */
+    /* HIỆU ỨNG SÉT ĐÁNH LIÊN TỤC VÀO Ô CẢNH BÁO QUÁ HẠN */
     @keyframes lightningFlash {
-      0%, 100% {
-        box-shadow: 0 0 0px transparent;
-        border-color: var(--border-color);
-      }
+      0%, 100% { box-shadow: 0 0 0px transparent; border-color: var(--border-color); }
       20%, 24%, 55% {
         box-shadow: 0 0 25px rgba(217, 56, 56, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.4);
         border-color: #ff4d4d;
         background-color: rgba(217, 56, 56, 0.28);
       }
-      22%, 57% {
-        box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-      }
+      22%, 57% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
     }
     @keyframes shakeCard {
       0%, 100% { transform: translateX(0); }
@@ -216,7 +195,7 @@
       to { transform: scale(1.2) rotate(10deg); opacity: 1; filter: drop-shadow(0 0 14px #ff3b3b); }
     }
 
-    /* HIỆU ỨNG THIÊN THẦN BAY LƯỢN LẤP LÁNH */
+    /* HIỆU ỨNG THIÊN THẦN BAY LƯỢN CHO VIỆC GẤP */
     @keyframes angelFloat {
       0% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-8px) rotate(5deg); }
@@ -311,7 +290,6 @@
       z-index: 1;
     }
 
-    /* CHIBI ICON MỜ TRONG CỘT */
     .col-chibi-watermark {
       position: absolute;
       bottom: 12px;
@@ -323,7 +301,7 @@
       z-index: 0;
     }
 
-    /* TASK CARD VỚI GÓC CHIBI */
+    /* TASK CARD */
     .task-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -339,7 +317,6 @@
     }
     .task-card:hover { transform: translateY(-2px); border-color: var(--accent-light); }
     
-    /* GÓC CHIBI MINH HỌA */
     .card-corner-chibi {
       position: absolute;
       right: -2px;
@@ -437,20 +414,6 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 10px; font-weight: 700;
     }
-    .btn-quick-notify { display: flex; gap: 4px; }
-    .icon-btn {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
-      padding: 2px 6px;
-      color: #fff;
-      font-size: 10px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .icon-btn:hover { background: var(--accent-blue); }
 
     /* TABLE */
     .data-card {
@@ -553,6 +516,37 @@
       align-items: center;
       gap: 8px;
     }
+
+    /* NOTIFICATION & CHAT BADGE */
+    .notif-badge {
+      background: var(--danger-red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
+
+    /* HANDOVER HISTORY BOX */
+    .handover-history-box {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 140px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+    .handover-item {
+      padding: 6px 8px;
+      background: var(--bg-surface);
+      border-radius: 4px;
+      border-left: 3px solid var(--accent-light);
+    }
   </style>
 </head>
 <body>
@@ -565,12 +559,14 @@
         <div class="brand-title">
           <span>🚢 TRUNG TÂM KHAI THÁC & DỊCH VỤ KHÁCH HÀNG</span>
         </div>
-        <div class="brand-sub">Hệ thống Điều hành, Giao việc & Quản trị KPI (Cloud Supabase)</div>
+        <div class="brand-sub">Hệ thống Điều hành, Giao việc & Trao đổi Nội bộ (Cảng Hải Phòng)</div>
       </div>
     </div>
     <div class="header-user">
       <div id="currentUserBadge" style="font-size: 12px; text-align: right;"></div>
       <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc mới</button>
+      <button class="btn btn-warning btn-sm" onclick="openSendMessageModal()">💬 Gửi tin nội bộ</button>
+      <button class="btn btn-success btn-sm" onclick="openRegisterModal()">📝 Đăng ký tài khoản</button>
       <button class="btn btn-outline btn-sm" onclick="logoutUser()">Đổi tài khoản</button>
     </div>
   </header>
@@ -580,13 +576,15 @@
     <button class="nav-tab-btn active" onclick="switchMainTab('tasksTab')">
       📋 Bảng Công việc (Kanban)
     </button>
+    <button class="nav-tab-btn" onclick="switchMainTab('messagesTab')">
+      📬 Hộp thư Nội bộ <span id="unreadMsgCount" class="notif-badge" style="display:none;">0</span>
+    </button>
     <button class="nav-tab-btn" onclick="switchMainTab('scoreTab')">
       🏆 Thống kê & Tính điểm Hiệu suất
     </button>
     <button class="nav-tab-btn" id="kpiTabBtn" onclick="switchMainTab('kpiTab')">
       🎯 Cài đặt Mảng KPI
     </button>
-    <!-- Tab Quản trị có bảo vệ mật khẩu -->
     <button class="nav-tab-btn" id="adminTabBtn" onclick="promptAdminPasswordAndOpen()">
       🔒 Quản trị Nhân sự & Google Drive
     </button>
@@ -595,7 +593,9 @@
   <!-- CONTAINER -->
   <main class="container">
 
-    <!-- TAB 1: KANBAN -->
+    <!-- ========================================== -->
+    <!-- TAB 1: KANBAN BOARD -->
+    <!-- ========================================== -->
     <div id="tasksTab" class="tab-content active">
       <section class="stats-strip">
         <div class="stat-card" style="--stat-color: var(--accent-light);">
@@ -603,14 +603,12 @@
           <div class="stat-val" id="totalTasksCount">0</div>
         </div>
         
-        <!-- Ô CẢNH BÁO QUÁ HẠN: CÓ HIỆU ỨNG SÉT ĐÁNH LIÊN TỤC -->
         <div class="stat-card lightning-alert-box" style="--stat-color: var(--danger-red);">
           <div class="lightning-bolt-icon">⚡</div>
           <div class="stat-lbl" style="color:#ff7b7b;">⚡ VIỆC QUÁ HẠN CHÓT</div>
           <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
         </div>
 
-        <!-- Ô CẢNH BÁO GẤP: CÓ THIÊN THẦN BAY LƯỢN -->
         <div class="stat-card angel-alert-box" style="--stat-color: var(--warn-orange);">
           <div class="angel-wing-icon">👼</div>
           <div class="stat-lbl" style="color:#ffb469;">👼 SẮP ĐẾN HẠN (&lt; 2H)</div>
@@ -647,7 +645,6 @@
         </div>
       </section>
 
-      <!-- KANBAN COLUMNS CÓ CHIBI WATERMARK -->
       <section class="kanban-grid">
         <div class="kanban-col">
           <div class="col-header">
@@ -687,7 +684,39 @@
       </section>
     </div>
 
-    <!-- TAB 2: TÍNH ĐIỂM -->
+    <!-- ========================================== -->
+    <!-- TAB 2: HỘP THƯ & TIN NHẮN NỘI BỘ (THAY EMAIL) -->
+    <!-- ========================================== -->
+    <div id="messagesTab" class="tab-content">
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:16px;">📬 Hộp Thư Thông Báo & Giao Tiếp Nội Bộ</h3>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+            Nhận thông báo khi được giao việc, bàn giao công việc hoặc nhắn tin trực tiếp giữa các nhân sự.
+          </p>
+        </div>
+        <button class="btn btn-warning" onclick="openSendMessageModal()">✍️ Soạn tin nhắn mới</button>
+      </div>
+
+      <div class="data-card">
+        <table class="dsu-table">
+          <thead>
+            <tr>
+              <th style="width: 140px;">Thời gian</th>
+              <th style="width: 160px;">Người gửi</th>
+              <th>Tiêu đề & Nội dung</th>
+              <th style="width: 100px; text-align: center;">Trạng thái</th>
+              <th style="width: 120px; text-align: right;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="messagesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: TÍNH ĐIỂM HIỆU SUẤT DSU -->
+    <!-- ========================================== -->
     <div id="scoreTab" class="tab-content">
       <div class="filter-bar" style="margin-bottom:16px;">
         <div>
@@ -719,14 +748,13 @@
       </div>
     </div>
 
-    <!-- TAB 3: MẢNG KPI -->
+    <!-- ========================================== -->
+    <!-- TAB 4: MẢNG KPI -->
+    <!-- ========================================== -->
     <div id="kpiTab" class="tab-content">
       <div class="filter-bar" style="margin-bottom:16px;">
         <div>
           <h3 style="font-size:16px;">Thiết lập Danh Mục Mảng KPI Hoạt Động Trung Tâm</h3>
-          <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-            Lãnh đạo có thể thêm mới hoặc sửa đổi các chỉ tiêu KPI hàng ngày.
-          </p>
         </div>
         <button class="btn btn-primary" onclick="openCreateKpiModal()">+ Thêm Mảng KPI mới</button>
       </div>
@@ -748,13 +776,12 @@
       </div>
     </div>
 
-    <!-- TAB 4: QUẢN TRỊ NHÂN SỰ & GOOGLE DRIVE (CÓ THÊM / SỬA / XÓA) -->
+    <!-- ========================================== -->
+    <!-- TAB 5: QUẢN TRỊ NHÂN SỰ & GOOGLE DRIVE -->
+    <!-- ========================================== -->
     <div id="adminTab" class="tab-content">
       <div class="data-card" style="margin-bottom:20px;">
         <h3 style="font-size:15px; color:#fff; margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">
-          Thư mục Google Drive chung phục vụ tải lên/tải xuống tài liệu dung lượng lớn của đơn vị:
-        </p>
         <div style="display:flex; gap:10px; max-width: 800px;">
           <input type="url" id="cfgDriveUrl" class="form-control" style="flex:1;" readonly>
           <button class="btn btn-drive" onclick="openDriveFolder()">Mở Google Drive ngay</button>
@@ -849,50 +876,12 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal('modalCreateTask')">Hủy bỏ</button>
-        <button class="btn btn-primary" id="btnSubmitCreateTask" onclick="submitCreateTask()">Tạo việc & Lưu Cloud</button>
+        <button class="btn btn-primary" id="btnSubmitCreateTask" onclick="submitCreateTask()">Tạo việc & Gửi thông báo</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: CÀI ĐẶT MẢNG KPI MỚI -->
-  <div class="modal-backdrop" id="modalCreateKpi">
-    <div class="modal-box" style="max-width: 500px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px;">Thêm Mảng KPI Mới</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalCreateKpi')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Mã KPI (Viết hoa, không dấu) *</label>
-          <input type="text" id="kpiCodeInput" class="form-control" placeholder="VD: PORT_OPS, CRM_TICKET..." required>
-        </div>
-        <div class="form-group">
-          <label>Tên Mảng KPI / Nghiệp vụ *</label>
-          <input type="text" id="kpiNameInput" class="form-control" placeholder="VD: Điều độ hiện trường Tân Vũ" required>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Đơn vị tính</label>
-            <input type="text" id="kpiUnitInput" class="form-control" placeholder="lượt, TEU, phút" value="lượt">
-          </div>
-          <div class="form-group">
-            <label>Chỉ tiêu ngày</label>
-            <input type="number" id="kpiTargetInput" class="form-control" value="20">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Mô tả phạm vi thực hiện</label>
-          <textarea id="kpiDescInput" class="form-control" rows="2" placeholder="Ghi chú quy chuẩn tiếp nhận..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalCreateKpi')">Hủy</button>
-        <button class="btn btn-primary" onclick="submitCreateKpi()">Lưu Mảng KPI</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC, TẢI VỀ & NỘP BÁO CÁO -->
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC, NỘP BÁO CÁO & CHUYỂN GIAO VIỆC -->
   <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
@@ -905,12 +894,12 @@
       </div>
       <div class="modal-body">
         <div id="permissionWarning" class="lock-notice" style="display:none;">
-          ⚠️ <b>Khóa thao tác:</b> Bạn không phải người phụ trách việc này và không thuộc Ban Lãnh đạo nên chỉ có quyền xem!
+          ⚠️ <b>Khóa thao tác:</b> Bạn không phải người phụ trách hiện tại và không thuộc Ban Lãnh đạo nên chỉ có quyền xem!
         </div>
 
         <div class="grid-2">
           <div style="font-size:13px;">
-            <span style="color:var(--text-muted);">Người phụ trách: </span>
+            <span style="color:var(--text-muted);">Người phụ trách hiện tại: </span>
             <b id="detailAssigneeName"></b>
           </div>
           <div style="font-size:13px;">
@@ -924,6 +913,12 @@
           <div id="detailTaskDesc" style="background:var(--bg-surface); padding:10px; border-radius:6px; font-size:13px; line-height:1.5;"></div>
         </div>
 
+        <!-- LỊCH SỬ CHUYỂN GIAO VIỆC -->
+        <div class="form-group">
+          <label>📜 Lịch sử chuyển giao công việc (Handover Trail):</label>
+          <div class="handover-history-box" id="detailHandoverHistory"></div>
+        </div>
+
         <!-- LINK GOOGLE DRIVE -->
         <div id="detailDriveLinkWrap" class="form-group" style="display:none;">
           <label>🌐 Đường dẫn Google Drive đính kèm:</label>
@@ -932,15 +927,15 @@
           </div>
         </div>
 
-        <!-- DANH SÁCH FILE ĐÍNH KÈM TRÊN BUCKET -->
+        <!-- DANH SÁCH FILE TRÊN BUCKET -->
         <div class="form-group">
-          <label>📁 Tệp đính kèm & Báo cáo đã nộp (Lưu trên Supabase Storage):</label>
+          <label>📁 Tệp đính kèm & Báo cáo đã nộp:</label>
           <div class="file-attach-list" id="detailFileList"></div>
         </div>
 
-        <!-- NỘP THÊM FILE LÊN BUCKET -->
+        <!-- NỘP BÁO CÁO MỚI -->
         <div class="form-group" id="detailUploadSection" style="border-top:1px solid var(--border-color); padding-top:12px;">
-          <label>📤 Tải lên báo cáo mới (Đẩy lên Bucket Storage):</label>
+          <label>📤 Tải lên báo cáo mới:</label>
           <div style="display:flex; gap:8px; margin-bottom:8px;">
             <input type="file" id="detailNewFileInput" class="form-control" multiple style="flex:1;">
             <button class="btn btn-warning" id="btnUploadBucketFile" onclick="uploadMoreFilesToCurrentTask()">Tải lên Bucket</button>
@@ -963,62 +958,77 @@
           <span id="detailStatusNotice" style="font-size:11px; color:var(--text-muted); margin-top:4px;"></span>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
-        <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Cập nhật trạng thái</button>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <!-- NÚT CHUYỂN GIAO CHO NGƯỜI KHÁC -->
+        <button class="btn btn-warning" id="btnOpenHandoverModal" onclick="openHandoverModal()">🔁 Chuyển giao việc cho người khác</button>
+        <div>
+          <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
+          <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Cập nhật trạng thái</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ĐỔI NHÂN SỰ ĐĂNG NHẬP -->
-  <div class="modal-backdrop" id="modalAuth" style="display:none;">
-    <div class="modal-box" style="max-width: 420px;">
+  <!-- MODAL: BÀN GIAO / CHUYỂN VIỆC CHO NGƯỜI KHÁC -->
+  <div class="modal-backdrop" id="modalHandover">
+    <div class="modal-box" style="max-width: 500px;">
       <div class="modal-header">
-        <h3 style="font-size:16px;">Chọn Tài Khoản Đăng Nhập</h3>
+        <h3 style="font-size:16px;">🔁 Chuyển giao công việc cho người khác</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalHandover')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--warn-orange);">
+          ⚠️ <b>Lưu ý quan trọng:</b> Sau khi bạn chuyển giao việc này cho nhân sự khác, bạn sẽ <b>mất quyền sửa trạng thái</b>. Quyền cập nhật tiếp theo thuộc về người nhận mới và Lãnh đạo.
+        </p>
+        <div class="form-group">
+          <label>Chọn nhân sự nhận chuyển giao *</label>
+          <select id="handoverTargetUser" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label>Ghi chú bàn giao phần việc đã làm *</label>
+          <textarea id="handoverNote" class="form-control" rows="3" placeholder="VD: Đã kiểm tra số container và hoàn tất thủ tục ePort. Bàn giao đồng chí Tuấn tiếp nhận xe vào bãi lấy hàng..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalHandover')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitHandoverTask()">Xác nhận chuyển giao</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SOẠN TIN NHẮN NỘI BỘ -->
+  <div class="modal-backdrop" id="modalSendMessage">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">💬 Gửi Tin Nhắn / Thông Báo Nội Bộ</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalSendMessage')">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Nhân viên / Lãnh đạo:</label>
-          <select id="loginSelectUser" class="form-control" style="font-weight:700;"></select>
+          <label>Gửi tới nhân viên *</label>
+          <select id="msgReceiverSelect" class="form-control" required></select>
         </div>
         <div class="form-group">
-          <label>Mật khẩu:</label>
-          <input type="password" id="loginPassword" class="form-control" value="123456">
-          <span style="font-size:11px; color:var(--text-muted);">Mặc định: 123456</span>
+          <label>Tiêu đề tin nhắn *</label>
+          <input type="text" id="msgTitleInput" class="form-control" placeholder="VD: Cần hỗ trợ khẩn cấp thủ tục container lạnh..." required>
+        </div>
+        <div class="form-group">
+          <label>Nội dung tin nhắn *</label>
+          <textarea id="msgContentInput" class="form-control" rows="4" placeholder="Nhập nội dung trao đổi công việc chi tiết..." required></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitLogin()">Đăng nhập</button>
+        <button class="btn btn-outline" onclick="closeModal('modalSendMessage')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitSendMessage()">Bắn tin nội bộ ngay</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: XÁC THỰC MẬT KHẨU QUẢN TRỊ -->
-  <div class="modal-backdrop" id="modalAdminPassword" style="display:none;">
-    <div class="modal-box" style="max-width: 400px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px;">🔒 Xác thực Quyền Quản Trị</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalAdminPassword')">✕</button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size:13px; color:var(--text-muted);">Vui lòng nhập Mật khẩu Quản trị để mở khóa quyền thêm, xóa, sửa nhân sự:</p>
-        <div class="form-group">
-          <input type="password" id="adminPasswordInput" class="form-control" placeholder="Nhập mật khẩu quản trị..." autofocus>
-          <span style="font-size:11px; color:var(--accent-light);">Mật khẩu mặc định: <b>admin@canghp</b></span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalAdminPassword')">Hủy</button>
-        <button class="btn btn-primary" onclick="verifyAdminPassword()">Mở Khóa Quản Trị</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: THÊM / CHỈNH SỬA NHÂN SỰ -->
+  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN CÔNG KHAI -->
   <div class="modal-backdrop" id="modalRegister">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 id="modalRegisterTitle" style="font-size:16px;">Thêm nhân sự mới vào Trung tâm</h3>
+        <h3 id="modalRegisterTitle" style="font-size:16px;">Đăng ký tài khoản nhân sự mới</h3>
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalRegister')">✕</button>
       </div>
       <div class="modal-body">
@@ -1051,40 +1061,109 @@
             </select>
           </div>
         </div>
+        <div class="form-group">
+          <label>Mật khẩu đăng nhập (Tự đặt)</label>
+          <input type="password" id="regPass" class="form-control" value="123456">
+          <span style="font-size:11px; color:var(--text-muted);">Mặc định: 123456 (Đăng ký xong có thể đăng nhập ngay)</span>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal('modalRegister')">Hủy</button>
-        <button class="btn btn-primary" onclick="submitSaveUser()">Lưu Thông Tin</button>
+        <button class="btn btn-primary" onclick="submitSaveUser()">Lưu & Cấp tài khoản ngay</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: BẮN TIN ZALO/EMAIL -->
-  <div class="modal-backdrop" id="modalNotifyPrompt">
-    <div class="modal-box">
+  <!-- MODAL: ĐĂNG NHẬP / CHỌN TÀI KHOẢN -->
+  <div class="modal-backdrop" id="modalAuth" style="display:none;">
+    <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
-        <h3 style="font-size:16px; color:#fff;">⚡ Giao việc thành công! Gửi thông báo ngay:</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalNotifyPrompt')">✕</button>
+        <h3 style="font-size:16px;">Chọn Tài Khoản Đăng Nhập</h3>
       </div>
-      <div class="modal-body" id="notifyPromptBody"></div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" onclick="closeModal('modalNotifyPrompt')">Hoàn tất</button>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nhân viên / Lãnh đạo:</label>
+          <select id="loginSelectUser" class="form-control" style="font-weight:700;"></select>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu:</label>
+          <input type="password" id="loginPassword" class="form-control" value="123456">
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalAuth'); openRegisterModal();">+ Đăng ký mới</button>
+        <button class="btn btn-primary" onclick="submitLogin()">Đăng nhập</button>
       </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- JAVASCRIPT KẾT NỐI SUPABASE & GOOGLE DRIVE -->
-  <!-- ========================================== -->
+  <!-- MODAL: MẬT KHẨU QUẢN TRỊ -->
+  <div class="modal-backdrop" id="modalAdminPassword" style="display:none;">
+    <div class="modal-box" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">🔒 Xác thực Quyền Quản Trị</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalAdminPassword')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--text-muted);">Vui lòng nhập Mật khẩu Quản trị để mở khóa quyền thêm, xóa, sửa nhân sự:</p>
+        <div class="form-group">
+          <input type="password" id="adminPasswordInput" class="form-control" placeholder="Nhập mật khẩu..." autofocus>
+          <span style="font-size:11px; color:var(--accent-light);">Mặc định: <b>admin@canghp</b></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalAdminPassword')">Hủy</button>
+        <button class="btn btn-primary" onclick="verifyAdminPassword()">Mở Khóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CÀI ĐẶT MẢNG KPI -->
+  <div class="modal-backdrop" id="modalCreateKpi">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size:16px;">Thêm Mảng KPI Mới</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalCreateKpi')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Mã KPI (Viết hoa, không dấu) *</label>
+          <input type="text" id="kpiCodeInput" class="form-control" placeholder="VD: PORT_OPS, CRM_TICKET..." required>
+        </div>
+        <div class="form-group">
+          <label>Tên Mảng KPI / Nghiệp vụ *</label>
+          <input type="text" id="kpiNameInput" class="form-control" placeholder="VD: Điều độ hiện trường Tân Vũ" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Đơn vị tính</label>
+            <input type="text" id="kpiUnitInput" class="form-control" value="lượt">
+          </div>
+          <div class="form-group">
+            <label>Chỉ tiêu ngày</label>
+            <input type="number" id="kpiTargetInput" class="form-control" value="20">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mô tả phạm vi thực hiện</label>
+          <textarea id="kpiDescInput" class="form-control" rows="2" placeholder="Ghi chú quy chuẩn..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalCreateKpi')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitCreateKpi()">Lưu Mảng KPI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC V6.0 -->
   <script>
-    // 1. CẤU HÌNH API SUPABASE VÀ GOOGLE DRIVE
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_kPe1NJ-q0VDoh-aDwE6Bvw_01NUQSnt";
     const BUCKET_NAME = "dsu-attachments";
     const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1-6aAvCaw_akwXmNBw6SxWTmdDi0PekDN?usp=drive_link";
-    const ADMIN_SECRET_KEY = "admin@canghp"; // Mật khẩu truy cập tab Quản trị
+    const ADMIN_SECRET_KEY = "admin@canghp";
 
-    // Danh sách icon Chibi ngẫu nhiên ở góc thẻ việc
     const CHIBI_CORNER_ICONS = ["👨‍💼", "👩‍💼", "🚢", "🏗️", "📦", "☕", "💻", "📑", "⚡"];
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1092,11 +1171,13 @@
     let users = [];
     let tasks = [];
     let kpis = [];
+    let messages = [];
+    let handovers = [];
     let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || null;
     let selectedTaskIdForDetail = null;
-    let isAdminUnlocked = false; // Cờ kiểm tra mật khẩu admin
+    let isAdminUnlocked = false;
 
-    // 2. KHỞI TẠO VÀ TẢI DỮ LIỆU
+    // 1. KHỞI TẠO HỆ THỐNG
     async function initApp() {
       document.getElementById('cfgDriveUrl').value = DRIVE_FOLDER_URL;
       
@@ -1110,8 +1191,8 @@
 
     async function loadInitialData() {
       try {
-        const { data: userData, error: userErr } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
-        if (!userErr && userData && userData.length > 0) {
+        const { data: userData } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
+        if (userData && userData.length > 0) {
           users = userData;
           if (!currentUserId || !users.find(u => u.id === currentUserId)) {
             currentUserId = users[0].id;
@@ -1119,12 +1200,12 @@
           }
         }
 
-        const { data: kpiData, error: kpiErr } = await supabaseClient.from('kpi_categories').select('*').order('created_at', { ascending: true });
-        if (!kpiErr && kpiData) {
-          kpis = kpiData;
-        }
+        const { data: kpiData } = await supabaseClient.from('kpi_categories').select('*').order('created_at', { ascending: true });
+        if (kpiData) kpis = kpiData;
 
         await fetchTasks();
+        await fetchMessages();
+        await fetchHandovers();
 
         updateCurrentUserUI();
         renderUserSelectors();
@@ -1133,29 +1214,56 @@
         renderKpiTable();
         renderAdminUserTable();
       } catch (err) {
-        console.error("Lỗi khởi tạo dữ liệu:", err);
+        console.error("Lỗi tải dữ liệu:", err);
       }
     }
 
     async function fetchTasks() {
-      const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
-      if (!error && data) {
+      const { data } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
+      if (data) {
         tasks = data;
         renderKanban();
         renderScoreBoard();
       }
     }
 
+    async function fetchMessages() {
+      const { data } = await supabaseClient.from('internal_messages').select('*').order('created_at', { ascending: false });
+      if (data) {
+        messages = data;
+        renderMessages();
+      }
+    }
+
+    async function fetchHandovers() {
+      const { data } = await supabaseClient.from('task_handovers').select('*').order('created_at', { ascending: true });
+      if (data) handovers = data;
+    }
+
     function setupRealtimeListeners() {
       supabaseClient
-        .channel('dsu-realtime-tasks-v5')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
-          fetchTasks();
-        })
+        .channel('dsu-realtime-v6')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'internal_messages' }, () => fetchMessages())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'task_handovers' }, () => fetchHandovers())
         .subscribe();
     }
 
-    // 3. XÁC THỰC MẬT KHẨU QUẢN TRỊ KHI BẤM TAB QUẢN TRỊ
+    // 2. CHUYỂN TAB
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      const activeBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabId === 'messagesTab') renderMessages();
+      if (tabId === 'scoreTab') renderScoreBoard();
+      if (tabId === 'kpiTab') renderKpiTable();
+      if (tabId === 'adminTab') renderAdminUserTable();
+    }
+
     function promptAdminPasswordAndOpen() {
       if (isAdminUnlocked) {
         switchMainTab('adminTab');
@@ -1171,25 +1279,10 @@
         isAdminUnlocked = true;
         closeModal('modalAdminPassword');
         switchMainTab('adminTab');
-        alert("Xác thực Quản trị thành công! Bạn có thể thêm, sửa, xóa thông tin nhân sự.");
+        alert("Xác thực Quản trị thành công! Bạn có thể thêm, sửa, xóa nhân sự.");
       } else {
         alert("Sai mật khẩu Quản trị!");
       }
-    }
-
-    // 4. CHUYỂN TAB CHỨC NĂNG
-    function switchMainTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
-
-      document.getElementById(tabId).classList.add('active');
-      
-      const activeBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
-      if (activeBtn) activeBtn.classList.add('active');
-
-      if (tabId === 'scoreTab') renderScoreBoard();
-      if (tabId === 'kpiTab') renderKpiTable();
-      if (tabId === 'adminTab') renderAdminUserTable();
     }
 
     function updateCurrentUserUI() {
@@ -1215,15 +1308,19 @@
       const taskAssignee = document.getElementById('taskAssignee');
       const filterAssignee = document.getElementById('filterAssignee');
       const loginSelect = document.getElementById('loginSelectUser');
+      const msgReceiver = document.getElementById('msgReceiverSelect');
+      const handoverSelect = document.getElementById('handoverTargetUser');
 
       taskAssignee.innerHTML = '';
       filterAssignee.innerHTML = '<option value="ALL">-- Tất cả nhân viên --</option>';
       loginSelect.innerHTML = '';
+      msgReceiver.innerHTML = '';
+      handoverSelect.innerHTML = '';
 
       users.forEach(u => {
         const opt1 = document.createElement('option');
         opt1.value = u.id;
-        opt1.textContent = `${u.full_name} - ${u.phone} (${u.title})`;
+        opt1.textContent = `${u.full_name} (${u.title})`;
         taskAssignee.appendChild(opt1);
 
         const opt2 = document.createElement('option');
@@ -1236,6 +1333,18 @@
         opt3.textContent = `${u.full_name} [${u.title}]`;
         if (u.id === currentUserId) opt3.selected = true;
         loginSelect.appendChild(opt3);
+
+        if (u.id !== currentUserId) {
+          const opt4 = document.createElement('option');
+          opt4.value = u.id;
+          opt4.textContent = `${u.full_name} (${u.title})`;
+          msgReceiver.appendChild(opt4);
+
+          const opt5 = document.createElement('option');
+          opt5.value = u.id;
+          opt5.textContent = `${u.full_name} (${u.title})`;
+          handoverSelect.appendChild(opt5);
+        }
       });
     }
 
@@ -1267,10 +1376,13 @@
       currentUserId = document.getElementById('loginSelectUser').value;
       localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
       updateCurrentUserUI();
+      renderUserSelectors();
       renderKanban();
+      renderMessages();
       closeModal('modalAuth');
     }
 
+    // 3. QUYỀN SỬA TRẠNG THÁI: Chỉ người phụ trách hiện tại hoặc Lãnh đạo/Admin
     function canUserModifyTask(task) {
       const currentUser = users.find(u => u.id === currentUserId);
       if (!currentUser) return false;
@@ -1283,11 +1395,8 @@
       return currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
     }
 
-    // 5. TÍNH TOÁN CẢNH BÁO HẠN CHÓT (SÉT ĐÁNH / THIÊN THẦN)
     function getDeadlineStatus(dueDateTimeStr, status) {
-      if (status === 'completed') {
-        return { type: 'completed', text: '✅ Đã hoàn thành', badgeClass: 'dl-normal', cardClass: '' };
-      }
+      if (status === 'completed') return { type: 'completed', text: '✅ Đã hoàn thành', badgeClass: 'dl-normal', cardClass: '' };
       if (!dueDateTimeStr) return { type: 'normal', text: 'Không giới hạn', badgeClass: 'dl-normal', cardClass: '' };
 
       const now = new Date().getTime();
@@ -1305,7 +1414,7 @@
       }
     }
 
-    // 6. RENDER KANBAN
+    // 4. RENDER BẢNG KANBAN
     function renderKanban() {
       const filterWho = document.getElementById('filterAssignee').value;
       const filterPri = document.getElementById('filterPriority').value;
@@ -1331,16 +1440,11 @@
         if (dlInfo.type === 'overdue') counts.overdue++;
         if (dlInfo.type === 'duesoon') counts.dueSoon++;
 
-        const assignee = users.find(u => u.id === t.assignee_id) || { full_name: 'Chưa gán', phone: '', email: '' };
+        const assignee = users.find(u => u.id === t.assignee_id) || { full_name: 'Chưa gán', phone: '' };
         const kpiItem = kpis.find(k => k.code === t.kpi_code) || { name: t.kpi_code || 'Khác' };
         const fileCount = (t.files && Array.isArray(t.files)) ? t.files.length : 0;
         const hasPermission = canUserModifyTask(t);
         const cornerChibi = CHIBI_CORNER_ICONS[idx % CHIBI_CORNER_ICONS.length];
-
-        const formattedTime = new Date(t.due_datetime).toLocaleString('vi-VN');
-        const zaloMsg = encodeURIComponent(`[DSU CẢNG HẢI PHÒNG - GIAO VIỆC]\n• Mã: ${t.task_code}\n• Nhiệm vụ: ${t.title}\n• Hạn chót: ${formattedTime}\n• Mảng KPI: ${kpiItem.name}\n• Mức ưu tiên: ${t.priority.toUpperCase()}\nNhân viên vui lòng cập nhật tiến độ trước giờ chót!`);
-        const zaloUrl = `https://zalo.me/${assignee.phone}`;
-        const mailUrl = `mailto:${assignee.email}?subject=${encodeURIComponent('[DSU TT KTDVKH] ' + t.title)}&body=${zaloMsg}`;
 
         const card = document.createElement('div');
         card.className = `task-card ${dlInfo.cardClass}`;
@@ -1357,7 +1461,7 @@
           <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
             <span class="deadline-chip ${dlInfo.badgeClass}">${dlInfo.text}</span>
             ${fileCount > 0 ? `<div class="file-pill-tag" onclick="openTaskDetailModal('${t.id}')">📎 ${fileCount} tệp</div>` : ''}
-            ${t.drive_link ? `<a href="${t.drive_link}" target="_blank" class="icon-btn" style="background:#1a73e8;" onclick="event.stopPropagation()">🌐 Drive</a>` : ''}
+            ${t.drive_link ? `<a href="${t.drive_link}" target="_blank" class="btn-drive btn-sm" style="text-decoration:none;" onclick="event.stopPropagation()">🌐 Drive</a>` : ''}
           </div>
 
           <div class="task-footer">
@@ -1365,11 +1469,11 @@
               <div class="avatar-circle">${assignee.full_name ? assignee.full_name.charAt(0) : 'U'}</div>
               <span>${assignee.full_name}</span>
             </div>
-            <div class="btn-quick-notify" onclick="event.stopPropagation()">
-              <a href="${zaloUrl}" target="_blank" class="icon-btn" title="Gửi Zalo">💬 Zalo</a>
-              <a href="${mailUrl}" class="icon-btn" title="Gửi Mail">✉️ Mail</a>
+            <div onclick="event.stopPropagation()">
+              <a href="https://zalo.me/${assignee.phone}" target="_blank" class="icon-btn" title="Gửi Zalo">💬 Zalo</a>
             </div>
           </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;" onclick="event.stopPropagation()">
             <span style="font-size:11px; color:var(--text-muted);">Trạng thái:</span>
             ${hasPermission ? `
@@ -1380,7 +1484,7 @@
                 ${isLeaderOrAdmin() ? `<option value="completed" ${t.status === 'completed' ? 'selected' : ''}>Hoàn thành</option>` : (t.status === 'completed' ? `<option value="completed" selected>Hoàn thành</option>` : '')}
               </select>
             ` : `
-              <span style="font-size:11px; color:var(--text-muted); font-style:italic;">🔒 Khóa</span>
+              <span style="font-size:11px; color:var(--danger-red); font-style:italic;">🔒 Khóa (Không có quyền)</span>
             `}
           </div>
         `;
@@ -1420,13 +1524,13 @@
         .eq('id', taskId);
 
       if (error) {
-        alert("Lỗi cập nhật trạng thái lên Supabase: " + error.message);
+        alert("Lỗi: " + error.message);
       } else {
         await fetchTasks();
       }
     }
 
-    // 7. GIAO VIỆC & UPLOAD FILE LÊN BUCKET
+    // 5. GIAO VIỆC & GỬI THÔNG BÁO NỘI BỘ TỰ ĐỘNG
     function openCreateTaskModal() {
       document.getElementById('taskTitle').value = '';
       document.getElementById('taskDesc').value = '';
@@ -1447,19 +1551,18 @@
       const fileInput = document.getElementById('createTaskFileInput');
 
       if (!title || !dueDateTime) {
-        alert("Vui lòng điền tên công việc và giờ chót hoàn thành!");
+        alert("Vui lòng điền tên công việc và giờ chót!");
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = "Đang đẩy dữ liệu lên Cloud...";
+      btn.textContent = "Đang lưu...";
 
       try {
         let attachedFiles = [];
         if (fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
-            const file = fileInput.files[i];
-            const fileInfo = await uploadFileToSupabaseBucket(file);
+            const fileInfo = await uploadFileToSupabaseBucket(fileInput.files[i]);
             if (fileInfo) attachedFiles.push(fileInfo);
           }
         }
@@ -1478,17 +1581,28 @@
         }]).select();
 
         if (error) {
-          alert("Lỗi tạo công việc: " + error.message);
+          alert("Lỗi: " + error.message);
         } else {
+          // Bắn thông báo nội bộ cho nhân viên được giao việc
+          const creator = users.find(u => u.id === currentUserId);
+          await supabaseClient.from('internal_messages').insert([{
+            sender_id: currentUserId,
+            receiver_id: assigneeId,
+            title: `📌 Nhiệm vụ mới: ${title}`,
+            content: `Bạn được ${creator?.full_name || 'Lãnh đạo'} phân công công việc mới. Hạn chót: ${new Date(dueDateTime).toLocaleString('vi-VN')}. Ghi chú: ${desc || 'Không có'}`,
+            task_id: data[0].id
+          }]);
+
           closeModal('modalCreateTask');
           await fetchTasks();
-          if (data && data[0]) showNotifyPrompt(data[0]);
+          await fetchMessages();
+          alert("Đã giao việc thành công và gửi thông báo nội bộ tới nhân viên!");
         }
       } catch (err) {
-        alert("Lỗi upload: " + err.message);
+        alert("Lỗi: " + err.message);
       } finally {
         btn.disabled = false;
-        btn.textContent = "Tạo việc & Lưu Cloud";
+        btn.textContent = "Tạo việc & Gửi thông báo";
       }
     }
 
@@ -1496,14 +1610,11 @@
       const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
       const filePath = `tasks/${Date.now()}_${cleanFileName}`;
 
-      const { data, error } = await supabaseClient.storage
+      const { error } = await supabaseClient.storage
         .from(BUCKET_NAME)
         .upload(filePath, file, { cacheControl: '3600', upsert: true });
 
-      if (error) {
-        console.error("Lỗi upload file lên bucket:", error);
-        return null;
-      }
+      if (error) return null;
 
       const { data: publicData } = supabaseClient.storage.from(BUCKET_NAME).getPublicUrl(filePath);
       const currentUser = users.find(u => u.id === currentUserId);
@@ -1517,30 +1628,7 @@
       };
     }
 
-    function showNotifyPrompt(task) {
-      const assignee = users.find(u => u.id === task.assignee_id);
-      const promptBody = document.getElementById('notifyPromptBody');
-      const formattedTime = new Date(task.due_datetime).toLocaleString('vi-VN');
-
-      const msg = encodeURIComponent(`[DSU CẢNG HẢI PHÒNG - GIAO VIỆC MỚI]\nKính gửi anh/chị ${assignee.full_name},\nBạn được phân công nhiệm vụ:\n• Nhiệm vụ: ${task.title}\n• Hạn chót: ${formattedTime}\n• Mức ưu tiên: ${task.priority.toUpperCase()}\nĐề nghị kiểm tra văn bản và nộp báo cáo đúng giờ chót!`);
-      const zaloLink = `https://zalo.me/${assignee.phone}`;
-      const mailLink = `mailto:${assignee.email}?subject=${encodeURIComponent('[DSU CẢNG HẢI PHÒNG] Giao việc mới: ' + task.title)}&body=${msg}`;
-
-      promptBody.innerHTML = `
-        <p style="font-size:14px; margin-bottom:12px;">Đã phân công cho <b>${assignee.full_name}</b> (SĐT: ${assignee.phone}) - Hạn chót: <b>${formattedTime}</b>. Chọn kênh gửi báo ngay:</p>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <a href="${zaloLink}" target="_blank" class="btn btn-primary" style="justify-content:center; background:#0068FF;">
-            💬 Mở Zalo để gửi tới số ${assignee.phone}
-          </a>
-          <a href="${mailLink}" class="btn btn-warning" style="justify-content:center;">
-            ✉️ Mở Email gửi tới ${assignee.email}
-          </a>
-        </div>
-      `;
-      document.getElementById('modalNotifyPrompt').style.display = 'flex';
-    }
-
-    // 8. POPUP CHI TIẾT CÔNG VIỆC
+    // 6. POPUP CHI TIẾT CÔNG VIỆC
     function openTaskDetailModal(taskId) {
       selectedTaskIdForDetail = taskId;
       const task = tasks.find(t => t.id === taskId);
@@ -1570,24 +1658,30 @@
         driveWrap.style.display = 'none';
       }
 
+      // Render lịch sử bàn giao việc
+      renderDetailHandoverHistory(task.id);
+
       const permWarning = document.getElementById('permissionWarning');
       const statusSelect = document.getElementById('detailStatusSelect');
       const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
       const uploadSection = document.getElementById('detailUploadSection');
       const optCompleted = document.getElementById('optStatusCompleted');
       const statusNotice = document.getElementById('detailStatusNotice');
+      const btnHandover = document.getElementById('btnOpenHandoverModal');
 
       if (!hasPermission) {
         permWarning.style.display = 'flex';
         statusSelect.disabled = true;
         btnSaveStatus.disabled = true;
         uploadSection.style.display = 'none';
-        statusNotice.textContent = "Chỉ người thực hiện hoặc Lãnh đạo mới có quyền nộp báo cáo.";
+        btnHandover.style.display = 'none';
+        statusNotice.textContent = "Chỉ người phụ trách hiện tại hoặc Lãnh đạo mới có quyền chuyển trạng thái.";
       } else {
         permWarning.style.display = 'none';
         statusSelect.disabled = false;
         btnSaveStatus.disabled = false;
         uploadSection.style.display = 'block';
+        btnHandover.style.display = 'inline-flex';
 
         if (!isLeader) {
           optCompleted.disabled = true;
@@ -1600,6 +1694,31 @@
 
       renderDetailFileList(task);
       document.getElementById('modalTaskDetail').style.display = 'flex';
+    }
+
+    function renderDetailHandoverHistory(taskId) {
+      const box = document.getElementById('detailHandoverHistory');
+      box.innerHTML = '';
+      const list = handovers.filter(h => h.task_id === taskId);
+
+      if (list.length === 0) {
+        box.innerHTML = '<span style="color:var(--text-muted); font-size:11px;">Chưa có lần chuyển giao nào. Việc đang do người ban đầu phụ trách.</span>';
+        return;
+      }
+
+      list.forEach(h => {
+        const fromUser = users.find(u => u.id === h.from_user_id)?.full_name || 'Hệ thống';
+        const toUser = users.find(u => u.id === h.to_user_id)?.full_name || 'N/A';
+        const time = new Date(h.created_at).toLocaleString('vi-VN');
+
+        const item = document.createElement('div');
+        item.className = 'handover-item';
+        item.innerHTML = `
+          <div><b>${fromUser}</b> ➔ chuyển giao cho <b>${toUser}</b> lúc <span style="color:var(--accent-light);">${time}</span></div>
+          <div style="color:var(--text-muted); margin-top:2px;">Ghi chú bàn giao: <i>${h.handover_note}</i></div>
+        `;
+        box.appendChild(item);
+      });
     }
 
     function renderDetailFileList(task) {
@@ -1656,16 +1775,16 @@
           .eq('id', task.id);
 
         if (error) {
-          alert("Lỗi lưu file: " + error.message);
+          alert("Lỗi: " + error.message);
         } else {
           task.files = currentFiles;
           fileInput.value = '';
           renderDetailFileList(task);
           renderKanban();
-          alert("Đã tải tệp lên Storage Bucket thành công!");
+          alert("Đã tải tệp lên thành công!");
         }
       } catch (err) {
-        alert("Lỗi upload: " + err.message);
+        alert("Lỗi: " + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = "Tải lên Bucket";
@@ -1674,27 +1793,18 @@
 
     async function saveDriveLinkToTask() {
       const url = document.getElementById('detailAddDriveLink').value.trim();
-      if (!url) {
-        alert("Vui lòng dán link Google Drive hợp lệ!");
-        return;
-      }
+      if (!url) return;
       const task = tasks.find(t => t.id === selectedTaskIdForDetail);
       if (!task) return;
 
-      const { error } = await supabaseClient
-        .from('tasks')
-        .update({ drive_link: url, updated_at: new Date() })
-        .eq('id', task.id);
-
-      if (error) {
-        alert("Lỗi lưu link Drive: " + error.message);
-      } else {
+      const { error } = await supabaseClient.from('tasks').update({ drive_link: url, updated_at: new Date() }).eq('id', task.id);
+      if (!error) {
         task.drive_link = url;
         document.getElementById('detailDriveLinkWrap').style.display = 'block';
         document.getElementById('detailDriveLinkTag').href = url;
         document.getElementById('detailAddDriveLink').value = '';
         renderKanban();
-        alert("Đã lưu liên kết Google Drive vào công việc!");
+        alert("Đã lưu đường dẫn Google Drive vào công việc!");
       }
     }
 
@@ -1706,74 +1816,241 @@
       closeModal('modalTaskDetail');
     }
 
-    // 9. CÀI ĐẶT MẢNG KPI (TAB 3)
-    function renderKpiTable() {
-      const tbody = document.getElementById('kpiTableBody');
+    // 7. CHUYỂN GIAO CÔNG VIỆC CHO NGƯỜI KHÁC (HANDOVER)
+    function openHandoverModal() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task || !canUserModifyTask(task)) {
+        alert("Bạn không có quyền chuyển giao việc này!");
+        return;
+      }
+      document.getElementById('handoverNote').value = '';
+      document.getElementById('modalHandover').style.display = 'flex';
+    }
+
+    async function submitHandoverTask() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const toUserId = document.getElementById('handoverTargetUser').value;
+      const note = document.getElementById('handoverNote').value.trim();
+
+      if (!toUserId || !note) {
+        alert("Vui lòng chọn người nhận và nhập nội dung bàn giao phần việc đã làm!");
+        return;
+      }
+
+      const fromUser = users.find(u => u.id === currentUserId);
+      const toUser = users.find(u => u.id === toUserId);
+
+      // 1. Cập nhật assignee_id mới cho công việc (Người cũ sẽ mất quyền sửa trạng thái)
+      const { error: taskErr } = await supabaseClient
+        .from('tasks')
+        .update({
+          assignee_id: toUserId,
+          status: 'in_progress', // Đặt về đang thực hiện cho người mới
+          updated_at: new Date()
+        })
+        .eq('id', task.id);
+
+      if (taskErr) {
+        alert("Lỗi chuyển giao: " + taskErr.message);
+        return;
+      }
+
+      // 2. Ghi lịch sử chuyển giao
+      await supabaseClient.from('task_handovers').insert([{
+        task_id: task.id,
+        from_user_id: currentUserId,
+        to_user_id: toUserId,
+        handover_note: note
+      }]);
+
+      // 3. Bắn tin nhắn nội bộ thông báo cho người nhận
+      await supabaseClient.from('internal_messages').insert([{
+        sender_id: currentUserId,
+        receiver_id: toUserId,
+        title: `🔁 Nhận bàn giao công việc: ${task.title}`,
+        content: `Đồng chí ${fromUser?.full_name} đã chuyển giao công việc [${task.task_code}] cho bạn tiếp tục thực hiện.\nNội dung bàn giao: ${note}`,
+        task_id: task.id
+      }]);
+
+      closeModal('modalHandover');
+      closeModal('modalTaskDetail');
+      await fetchTasks();
+      await fetchHandovers();
+      await fetchMessages();
+
+      alert(`Đã chuyển giao việc thành công cho ${toUser?.full_name}. Bạn đã hết phần việc và không còn quyền sửa trạng thái việc này.`);
+    }
+
+    // 8. HỘP THƯ & TIN NHẮN NỘI BỘ (THAY THẾ EMAIL)
+    function renderMessages() {
+      const tbody = document.getElementById('messagesTableBody');
       tbody.innerHTML = '';
 
-      kpis.forEach(k => {
+      // Lọc các tin nhắn gửi tới tài khoản đang đăng nhập
+      const myMessages = messages.filter(m => m.receiver_id === currentUserId);
+      const unreadCount = myMessages.filter(m => !m.is_read).length;
+
+      const badge = document.getElementById('unreadMsgCount');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      if (myMessages.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">Hộp thư trống. Chưa có tin nhắn nội bộ nào.</td></tr>';
+        return;
+      }
+
+      myMessages.forEach(m => {
+        const sender = users.find(u => u.id === m.sender_id)?.full_name || 'Hệ thống DSU';
+        const time = new Date(m.created_at).toLocaleString('vi-VN');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><code>${k.code}</code></td>
-          <td><b>${k.name}</b></td>
-          <td>${k.unit}</td>
-          <td><b style="color:var(--accent-light);">${k.daily_target} ${k.unit}/ngày</b></td>
-          <td><span style="font-size:12px; color:var(--text-muted);">${k.description || ''}</span></td>
+          <td><span style="font-size:11px; color:var(--accent-light);">${time}</span></td>
+          <td><b>${sender}</b></td>
+          <td>
+            <div style="font-weight:700; color:#fff;">${m.title}</div>
+            <div style="font-size:12px; color:var(--text-muted); margin-top:3px; white-space:pre-wrap;">${m.content}</div>
+          </td>
+          <td style="text-align: center;">
+            <span style="font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700; background:${m.is_read ? 'var(--bg-surface)' : 'var(--danger-red)'};">
+              ${m.is_read ? 'Đã xem' : 'MỚI'}
+            </span>
+          </td>
           <td style="text-align: right;">
-            <button class="btn btn-outline btn-sm" onclick="deleteKpi('${k.id}')">Xóa</button>
+            ${!m.is_read ? `<button class="btn btn-outline btn-sm" onclick="markMessageAsRead('${m.id}')">Đánh dấu đã đọc</button>` : ''}
+            ${m.task_id ? `<button class="btn btn-primary btn-sm" style="margin-left:4px;" onclick="openTaskDetailModal('${m.task_id}')">Xem việc</button>` : ''}
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function openCreateKpiModal() {
-      document.getElementById('kpiCodeInput').value = '';
-      document.getElementById('kpiNameInput').value = '';
-      document.getElementById('kpiDescInput').value = '';
-      document.getElementById('modalCreateKpi').style.display = 'flex';
+    function openSendMessageModal() {
+      document.getElementById('msgTitleInput').value = '';
+      document.getElementById('msgContentInput').value = '';
+      document.getElementById('modalSendMessage').style.display = 'flex';
     }
 
-    async function submitCreateKpi() {
-      const code = document.getElementById('kpiCodeInput').value.trim().toUpperCase();
-      const name = document.getElementById('kpiNameInput').value.trim();
-      const unit = document.getElementById('kpiUnitInput').value.trim();
-      const target = document.getElementById('kpiTargetInput').value;
-      const desc = document.getElementById('kpiDescInput').value.trim();
+    async function submitSendMessage() {
+      const receiverId = document.getElementById('msgReceiverSelect').value;
+      const title = document.getElementById('msgTitleInput').value.trim();
+      const content = document.getElementById('msgContentInput').value.trim();
 
-      if (!code || !name) {
-        alert("Vui lòng điền Mã KPI và Tên Mảng KPI!");
+      if (!receiverId || !title || !content) {
+        alert("Vui lòng điền người nhận, tiêu đề và nội dung tin nhắn!");
         return;
       }
 
-      const { data, error } = await supabaseClient.from('kpi_categories').insert([{
-        code, name, unit: unit || 'lượt', daily_target: Number(target) || 0, description: desc
-      }]).select();
+      const { error } = await supabaseClient.from('internal_messages').insert([{
+        sender_id: currentUserId,
+        receiver_id: receiverId,
+        title,
+        content
+      }]);
 
       if (error) {
-        alert("Lỗi thêm KPI: " + error.message);
+        alert("Lỗi gửi tin: " + error.message);
       } else {
-        if (data) kpis.push(data[0]);
-        renderKpiSelectors();
-        renderKpiTable();
-        closeModal('modalCreateKpi');
-        alert(`Đã thêm Mảng KPI: [${code}] ${name}`);
+        closeModal('modalSendMessage');
+        await fetchMessages();
+        alert("Đã gửi tin nhắn nội bộ thành công tới nhân viên!");
       }
     }
 
-    async function deleteKpi(kpiId) {
-      if (!confirm("Bạn có chắc chắn muốn xóa Mảng KPI này?")) return;
-      const { error } = await supabaseClient.from('kpi_categories').delete().eq('id', kpiId);
-      if (error) {
-        alert("Lỗi xóa KPI: " + error.message);
+    async function markMessageAsRead(msgId) {
+      await supabaseClient.from('internal_messages').update({ is_read: true }).eq('id', msgId);
+      await fetchMessages();
+    }
+
+    // 9. ĐĂNG KÝ TÀI KHOẢN CÔNG KHAI
+    function openRegisterModal() {
+      document.getElementById('modalRegisterTitle').textContent = "Đăng ký tài khoản nhân sự mới";
+      document.getElementById('editUserId').value = '';
+      document.getElementById('regFullName').value = '';
+      document.getElementById('regPhone').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
+      document.getElementById('regRole').value = 'staff';
+      document.getElementById('regPass').value = '123456';
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    function openEditUserModal(userId) {
+      const user = users.find(u => u.id === userId);
+      if (!user) return;
+
+      document.getElementById('modalRegisterTitle').textContent = `✏️ Sửa thông tin: ${user.full_name}`;
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('regFullName').value = user.full_name;
+      document.getElementById('regPhone').value = user.phone;
+      document.getElementById('regEmail').value = user.email;
+      document.getElementById('regTitle').value = user.title;
+      document.getElementById('regRole').value = user.role;
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    async function submitSaveUser() {
+      const editId = document.getElementById('editUserId').value;
+      const name = document.getElementById('regFullName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const title = document.getElementById('regTitle').value.trim();
+      const role = document.getElementById('regRole').value;
+      const pass = document.getElementById('regPass').value.trim() || '123456';
+
+      if (!name || !phone) {
+        alert("Vui lòng điền ít nhất Họ tên và Số điện thoại!");
+        return;
+      }
+
+      if (editId) {
+        const { error } = await supabaseClient.from('app_users').update({
+          full_name: name,
+          phone,
+          email: email || `${phone}@canghaiphong.com`,
+          title: title || 'Chuyên viên',
+          role
+        }).eq('id', editId);
+
+        if (error) {
+          alert("Lỗi sửa: " + error.message);
+        } else {
+          alert("Đã cập nhật thông tin nhân sự!");
+        }
       } else {
-        kpis = kpis.filter(k => k.id !== kpiId);
-        renderKpiSelectors();
-        renderKpiTable();
+        const { data, error } = await supabaseClient.from('app_users').insert([{
+          full_name: name,
+          phone,
+          email: email || `${phone}@canghaiphong.com`,
+          title: title || 'Chuyên viên Khai thác',
+          role,
+          password_hash: pass
+        }]).select();
+
+        if (error) {
+          alert("Lỗi đăng ký: " + error.message);
+        } else {
+          alert(`Đã đăng ký tài khoản thành công cho: ${name}. Bạn có thể đăng nhập ngay!`);
+        }
+      }
+
+      await loadInitialData();
+      closeModal('modalRegister');
+    }
+
+    async function deleteUser(userId) {
+      if (!confirm("Bạn có chắc chắn muốn xóa nhân sự này khỏi hệ thống?")) return;
+      const { error } = await supabaseClient.from('app_users').delete().eq('id', userId);
+      if (!error) {
+        await loadInitialData();
+        alert("Đã xóa nhân sự thành công!");
       }
     }
 
-    // 10. TÍNH ĐIỂM HIỆU SUẤT DSU (TAB 2)
+    // 10. TÍNH ĐIỂM HIỆU SUẤT
     function renderScoreBoard() {
       const tbody = document.getElementById('scoreTableBody');
       tbody.innerHTML = '';
@@ -1836,7 +2113,62 @@
       });
     }
 
-    // 11. TAB 4: QUẢN TRỊ NHÂN SỰ (THÊM / SỬA / XÓA)
+    // 11. TAB KPI & ADMIN TABLE
+    function renderKpiTable() {
+      const tbody = document.getElementById('kpiTableBody');
+      tbody.innerHTML = '';
+      kpis.forEach(k => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code>${k.code}</code></td>
+          <td><b>${k.name}</b></td>
+          <td>${k.unit}</td>
+          <td><b style="color:var(--accent-light);">${k.daily_target} ${k.unit}/ngày</b></td>
+          <td><span style="font-size:12px; color:var(--text-muted);">${k.description || ''}</span></td>
+          <td style="text-align: right;">
+            <button class="btn btn-outline btn-sm" onclick="deleteKpi('${k.id}')">Xóa</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openCreateKpiModal() {
+      document.getElementById('kpiCodeInput').value = '';
+      document.getElementById('kpiNameInput').value = '';
+      document.getElementById('kpiDescInput').value = '';
+      document.getElementById('modalCreateKpi').style.display = 'flex';
+    }
+
+    async function submitCreateKpi() {
+      const code = document.getElementById('kpiCodeInput').value.trim().toUpperCase();
+      const name = document.getElementById('kpiNameInput').value.trim();
+      const unit = document.getElementById('kpiUnitInput').value.trim();
+      const target = document.getElementById('kpiTargetInput').value;
+      const desc = document.getElementById('kpiDescInput').value.trim();
+
+      if (!code || !name) return;
+
+      const { data, error } = await supabaseClient.from('kpi_categories').insert([{
+        code, name, unit: unit || 'lượt', daily_target: Number(target) || 0, description: desc
+      }]).select();
+
+      if (!error && data) {
+        kpis.push(data[0]);
+        renderKpiSelectors();
+        renderKpiTable();
+        closeModal('modalCreateKpi');
+      }
+    }
+
+    async function deleteKpi(kpiId) {
+      if (!confirm("Xác nhận xóa Mảng KPI này?")) return;
+      await supabaseClient.from('kpi_categories').delete().eq('id', kpiId);
+      kpis = kpis.filter(k => k.id !== kpiId);
+      renderKpiSelectors();
+      renderKpiTable();
+    }
+
     function openDriveFolder() {
       window.open(DRIVE_FOLDER_URL, '_blank');
     }
@@ -1844,7 +2176,6 @@
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
       tbody.innerHTML = '';
-
       users.forEach(u => {
         const tr = document.createElement('tr');
         let roleName = u.role === 'hod' ? 'Lãnh đạo TT' : (u.role === 'admin' ? 'Quản trị' : 'Nhân viên');
@@ -1861,104 +2192,6 @@
         `;
         tbody.appendChild(tr);
       });
-    }
-
-    function openRegisterModal() {
-      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới vào Trung tâm";
-      document.getElementById('editUserId').value = '';
-      document.getElementById('regFullName').value = '';
-      document.getElementById('regPhone').value = '';
-      document.getElementById('regEmail').value = '';
-      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
-      document.getElementById('regRole').value = 'staff';
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    // Mở popup sửa thông tin khi nhân viên đăng ký sai
-    function openEditUserModal(userId) {
-      const user = users.find(u => u.id === userId);
-      if (!user) return;
-
-      document.getElementById('modalRegisterTitle').textContent = `✏️ Chỉnh sửa thông tin nhân sự: ${user.full_name}`;
-      document.getElementById('editUserId').value = user.id;
-      document.getElementById('regFullName').value = user.full_name;
-      document.getElementById('regPhone').value = user.phone;
-      document.getElementById('regEmail').value = user.email;
-      document.getElementById('regTitle').value = user.title;
-      document.getElementById('regRole').value = user.role;
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    async function submitSaveUser() {
-      const editId = document.getElementById('editUserId').value;
-      const name = document.getElementById('regFullName').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const title = document.getElementById('regTitle').value.trim();
-      const role = document.getElementById('regRole').value;
-
-      if (!name || !phone || !email) {
-        alert("Vui lòng điền đủ Họ tên, SĐT Zalo và Email!");
-        return;
-      }
-
-      if (editId) {
-        // CẬP NHẬT THÔNG TIN ĐÃ ĐĂNG KÝ SAI
-        const { error } = await supabaseClient.from('app_users').update({
-          full_name: name,
-          phone,
-          email,
-          title: title || 'Chuyên viên',
-          role
-        }).eq('id', editId);
-
-        if (error) {
-          alert("Lỗi sửa nhân sự: " + error.message);
-        } else {
-          const userIdx = users.findIndex(u => u.id === editId);
-          if (userIdx !== -1) {
-            users[userIdx] = { ...users[userIdx], full_name: name, phone, email, title, role };
-          }
-          alert("Đã cập nhật thông tin nhân sự thành công!");
-        }
-      } else {
-        // THÊM MỚI
-        const { data, error } = await supabaseClient.from('app_users').insert([{
-          full_name: name,
-          phone,
-          email,
-          title: title || 'Chuyên viên Khai thác',
-          role
-        }]).select();
-
-        if (error) {
-          alert("Lỗi thêm nhân sự: " + error.message);
-        } else {
-          if (data) users.push(data[0]);
-          alert(`Đã cấp tài khoản thành công cho: ${name}`);
-        }
-      }
-
-      renderUserSelectors();
-      renderAdminUserTable();
-      renderScoreBoard();
-      updateCurrentUserUI();
-      closeModal('modalRegister');
-    }
-
-    async function deleteUser(userId) {
-      if (!confirm("Bạn có chắc chắn muốn xóa nhân sự này khỏi hệ thống?")) return;
-      const { error } = await supabaseClient.from('app_users').delete().eq('id', userId);
-      if (error) {
-        alert("Lỗi xóa nhân sự: " + error.message);
-      } else {
-        users = users.filter(u => u.id !== userId);
-        renderUserSelectors();
-        renderAdminUserTable();
-        renderScoreBoard();
-        renderKanban();
-        alert("Đã xóa nhân sự thành công!");
-      }
     }
 
     function closeModal(id) {
