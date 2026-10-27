@@ -322,7 +322,7 @@
         height: auto;
       }
       .user-list-card {
-        max-height: 200px;
+        max-height: 190px;
       }
       .chat-main-card {
         height: 480px;
@@ -380,7 +380,7 @@
     .bubble-me { align-self: flex-end; background: var(--accent-blue); color: #fff; }
     .bubble-other { align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); }
 
-    /* HIỆU ỨNG NHẤP NHÁY VÀ HUY HIỆU CHƯA ĐỌC */
+    /* HIỆU ỨNG NHẤP NHÁY VÀ DÒNG CHÚ Ý TRÊN Ô GÕ */
     @keyframes chatNotificationBlink {
       0%, 100% { border-color: var(--border-color); box-shadow: 0 0 0px transparent; }
       50% { border-color: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.9); background: rgba(0, 230, 118, 0.12); }
@@ -402,6 +402,17 @@
       border-radius: 99px;
       font-weight: 800;
       margin-left: 6px;
+    }
+    .chat-live-ticker {
+      background: rgba(240, 138, 36, 0.2);
+      border-left: 3px solid var(--warn-orange);
+      color: #ffb469;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
     }
 
     /* GUIDE CARDS */
@@ -610,6 +621,13 @@
             <span id="chatConnectionState" style="font-size:11px; color:var(--text-muted);">Đang kết nối…</span>
           </div>
           <div id="chatMessages" class="chat-messages-area"></div>
+          
+          <!-- DÒNG THÔNG BÁO TIN NHẮN MỚI NGAY TRÊN KHUNG GÕ -->
+          <div id="chatLiveTicker" class="chat-live-ticker">
+            <span id="chatTickerText">⚡ Chú ý có tin nhắn mới!</span>
+            <button class="btn btn-sm" style="background:transparent; color:#fff; padding:0 4px;" onclick="hideChatTicker()">✕</button>
+          </div>
+
           <form onsubmit="sendChatMessage(event)" style="display:flex; gap:8px; padding:12px; border-top:1px solid var(--border-color)">
             <input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required>
             <button class="btn btn-primary" type="submit">Gửi ➤</button>
@@ -1012,7 +1030,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V21.1                     -->
+  <!-- JAVASCRIPT LOGIC V21.2                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1102,7 +1120,7 @@
         if (chatRealtimeChannel) {
           supabaseClient.removeChannel(chatRealtimeChannel);
         }
-        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.1')
+        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.2')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -1126,6 +1144,7 @@
       activeChatPeerId = null;
       unreadChatCounts['group'] = 0;
       document.getElementById('chatRoomTitle').textContent = '🌐 Chat Nhóm chung';
+      hideChatTicker();
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
@@ -1137,6 +1156,7 @@
       unreadChatCounts[String(uid)] = 0;
       const u = users.find(x => String(x.id) === String(uid));
       document.getElementById('chatRoomTitle').textContent = '🔒 Chat riêng — ' + (u?.full_name || 'Đồng nghiệp');
+      hideChatTicker();
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
@@ -1199,6 +1219,7 @@
 
       const senderIdStr = String(msg.sender_id);
       const isGroupMsg = !msg.recipient_id || msg.room_key === 'group';
+      const senderObj = users.find(x => String(x.id) === senderIdStr) || { full_name: 'Đồng nghiệp' };
 
       if (isGroupMsg) {
         if (activeChatPeerId !== null || !document.getElementById('chatTab').classList.contains('active')) {
@@ -1212,13 +1233,28 @@
         }
       }
 
+      // 1. Nhấp nháy Tab Chat
       const chatTabBtn = document.getElementById('tabBtn-chat');
       if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
         chatTabBtn.classList.add('chat-tab-alert');
-        chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span style="background:var(--danger-red);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:4px;">MỚI</span>';
+        chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span class="unread-badge-pill">MỚI</span>';
       }
-      document.title = "💬 Có tin nhắn mới trong DSU!";
+
+      // 2. Hiển thị dòng ticker nhỏ ngay trên khung gõ nội dung chat
+      const ticker = document.getElementById('chatLiveTicker');
+      const tickerText = document.getElementById('chatTickerText');
+      if (ticker && tickerText) {
+        tickerText.textContent = `⚡ Chú ý có tin nhắn từ [${senderObj.full_name}] gửi cho bạn!`;
+        ticker.style.display = 'flex';
+      }
+
+      document.title = `💬 Có tin nhắn từ ${senderObj.full_name}!`;
       renderChatUsers();
+    }
+
+    function hideChatTicker() {
+      const ticker = document.getElementById('chatLiveTicker');
+      if (ticker) ticker.style.display = 'none';
     }
 
     function updateTabChatAlertUI() {
@@ -1228,6 +1264,7 @@
         chatTabBtn.classList.remove('chat-tab-alert');
         chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1';
         document.title = "TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng";
+        hideChatTicker();
       }
     }
 
@@ -1259,11 +1296,18 @@
       if (chatRealtimeChannel) await supabaseClient.removeChannel(chatRealtimeChannel);
       
       chatRealtimeChannel = supabaseClient.channel('chat-room-' + room)
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `room_key=eq.${room}` }, p => {
-          if (p.new && !chatMessagesCache.some(m => String(m.id) === String(p.new.id))) {
-            chatMessagesCache.push(p.new);
-            renderChatMessages();
-            triggerChatNotification(p.new);
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
+          if (p.new) {
+            const incomingMsg = p.new;
+            const matchesRoom = (incomingMsg.room_key === room) || 
+                                (incomingMsg.room_key === 'group' && room === 'group') ||
+                                (incomingMsg.room_key.includes(String(currentUserId)) && incomingMsg.room_key.includes(String(activeChatPeerId)));
+
+            if (matchesRoom && !chatMessagesCache.some(m => String(m.id) === String(incomingMsg.id))) {
+              chatMessagesCache.push(incomingMsg);
+              renderChatMessages();
+            }
+            triggerChatNotification(incomingMsg);
           }
         })
         .subscribe(st => {
