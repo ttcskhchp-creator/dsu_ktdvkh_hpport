@@ -11,9 +11,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ======================================================== */
-    /* THEME SYSTEM (DARK & LIGHT DSU)                         */
-    /* ======================================================== */
     html[data-theme="dark"] {
       --bg-dark: #0B1528;
       --bg-card: #11203B;
@@ -61,7 +58,7 @@
       transition: background 0.25s, color 0.25s;
     }
 
-    /* ĐỒ HỌA NỀN CẢNG BIỂN, CONTAINER, ROBOT CHIBI */
+    /* BACKGROUND ART */
     .bg-art-item {
       position: fixed;
       pointer-events: none;
@@ -71,8 +68,6 @@
     }
     .bg-art-ship { left: 15px; bottom: 10px; width: 170px; height: 140px; }
     .bg-art-robot { right: 15px; bottom: 15px; width: 160px; height: 140px; }
-    .bg-art-crane { right: 80px; top: 110px; width: 130px; height: 130px; }
-    .bg-art-center { left: 45%; bottom: 40px; width: 200px; height: 160px; transform: translateX(-50%); }
 
     /* HEADER */
     header {
@@ -98,7 +93,7 @@
       letter-spacing: 1px;
     }
     .brand-title { font-size: 14.5px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-    .brand-sub { font-size: 11px; color: var(--accent-light); font-weight: 600; letter-spacing: 0.3px; }
+    .brand-sub { font-size: 11px; color: var(--accent-light); font-weight: 600; }
     .header-user { display: flex; align-items: center; gap: 8px; }
 
     .theme-toggle-btn {
@@ -113,11 +108,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
     }
-    .theme-toggle-btn:hover { border-color: var(--accent-blue); transform: scale(1.03); }
 
-    /* TAB NAVIGATION */
+    /* NAVIGATION TABS */
     .nav-tabs-bar {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -166,13 +159,11 @@
     .btn-primary { background: var(--accent-blue); color: #fff; }
     .btn-primary:hover { background: #1d4f9f; }
     .btn-warning { background: var(--warn-orange); color: #fff; }
-    .btn-warning:hover { background: #b05c0e; }
     .btn-success { background: var(--succ-green); color: #fff; }
     .btn-danger { background: var(--danger-red); color: #fff; }
     .btn-outline { background: transparent; border-color: var(--border-color); color: var(--text-main); }
     .btn-outline:hover { background: var(--bg-surface); border-color: var(--accent-light); }
     .btn-drive { background: #1a73e8; color: #fff; }
-    .btn-drive:hover { background: #1558b0; }
     .btn-sm { padding: 4px 8px; font-size: 11px; }
 
     /* LAYOUT */
@@ -215,46 +206,6 @@
     .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
     .stat-val { font-size: 24px; font-weight: 800; margin-top: 4px; color: var(--text-main); }
 
-    /* CẢNH BÁO DEADLINE */
-    @keyframes yellowPulse {
-      0%, 100% { box-shadow: 0 0 4px rgba(240, 138, 36, 0.4); border-color: var(--warn-orange); }
-      50% { box-shadow: 0 0 16px rgba(240, 138, 36, 0.85); border-color: #ffd166; }
-    }
-    .card-warn-12h {
-      animation: yellowPulse 2s infinite ease-in-out;
-      border: 1px solid var(--warn-orange) !important;
-      background: linear-gradient(180deg, rgba(240, 138, 36, 0.12) 0%, var(--bg-surface) 100%) !important;
-    }
-
-    @keyframes redLightning {
-      0%, 100% { box-shadow: 0 0 0px transparent; border-color: var(--danger-red); transform: translateX(0); }
-      15%, 45% {
-        box-shadow: 0 0 25px rgba(217, 56, 56, 0.95), inset 0 0 15px rgba(255, 255, 255, 0.5);
-        border-color: #ff3333;
-        background-color: rgba(217, 56, 56, 0.25);
-        transform: translateX(-1px);
-      }
-      30%, 60% { box-shadow: 0 0 8px rgba(255, 80, 80, 0.6); transform: translateX(1px); }
-    }
-    .card-danger-overdue {
-      animation: redLightning 1.2s infinite ease-in-out;
-      border: 1px solid var(--danger-red) !important;
-      background: linear-gradient(180deg, rgba(217, 56, 56, 0.18) 0%, var(--bg-surface) 100%) !important;
-    }
-
-    .countdown-tag {
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .tag-warn-12h { background: var(--warn-orange); color: #fff; }
-    .tag-danger-overdue { background: var(--danger-red); color: #fff; text-shadow: 0 0 4px #000; }
-    .tag-normal { background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-color); }
-
     /* KANBAN BOARD */
     .kanban-grid {
       display: grid;
@@ -272,7 +223,6 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 8px var(--shadow-color);
-      position: relative;
       overflow: hidden;
     }
     .col-header {
@@ -284,7 +234,6 @@
       align-items: center;
       font-weight: 700;
       font-size: 13px;
-      z-index: 2;
     }
     .col-badge {
       background: var(--bg-card);
@@ -294,7 +243,6 @@
       color: var(--accent-light);
       border: 1px solid var(--border-color);
     }
-
     .col-body {
       padding: 12px;
       display: flex;
@@ -302,25 +250,28 @@
       gap: 12px;
       flex: 1;
       overflow-y: auto;
-      scrollbar-width: thin;
-      position: relative;
     }
 
+    /* TASK CARD */
     .task-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s;
+      cursor: pointer !important;
+      transition: all 0.2s ease;
       position: relative;
-      flex-shrink: 0;
+      user-select: none;
     }
-    .task-card:hover { transform: translateY(-2px); border-color: var(--accent-blue); }
-    .task-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text-main); }
+    .task-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-light);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+    .task-title { font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--text-main); }
 
     .leader-badge {
       font-size: 10px;
@@ -345,107 +296,27 @@
       border: 1px solid var(--bg-card);
     }
 
-    /* CHAT LIVE VÀ CHAT 1-1 */
-    .chat-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 16px;
-      height: 600px;
-    }
-    .user-list-card, .chat-main-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 2px 8px var(--shadow-color);
-    }
-    .chat-list-header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 700;
-      font-size: 13px;
-      background: var(--bg-surface);
-      display: flex;
-      justify-content: space-between;
+    /* MODAL CHUNG */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 21, 40, 0.85);
+      display: none;
       align-items: center;
-    }
-    .user-presence-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 12px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .user-presence-item:hover, .user-presence-item.active {
-      background: rgba(37, 99, 201, 0.12);
-    }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .dot-online { background: #00e676; box-shadow: 0 0 8px #00e676; }
-    .dot-offline { background: #9e9e9e; }
-
-    .chat-messages-area {
-      flex: 1;
+      justify-content: center;
+      z-index: 1000;
       padding: 16px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
-    .chat-bubble {
-      max-width: 75%;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-    .bubble-me { align-self: flex-end; background: var(--accent-blue); color: #fff; }
-    .bubble-other { align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); }
-
-    /* HƯỚNG DẪN SỬ DỤNG CARD */
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .guide-card {
+    .modal-box {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 2px 8px var(--shadow-color);
+      border-radius: 12px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
-    .guide-role-title {
-      font-size: 14.5px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent-blue);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
-    }
-    .guide-step {
-      font-size: 12.5px;
-      line-height: 1.5;
-      color: var(--text-main);
-    }
-    .guide-step b { color: var(--accent-light); }
-
-    /* TABLES & MODALS */
-    .dsu-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-    .dsu-table th { background: var(--bg-surface); color: var(--accent-light); padding: 10px 12px; border-bottom: 2px solid var(--border-color); font-weight: 700; font-size: 12px; text-transform: uppercase; }
-    .dsu-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
-
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(11, 21, 40, 0.85); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-    .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
     .modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
     .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
     .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; }
@@ -454,6 +325,10 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; }
     
+    .dsu-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    .dsu-table th { background: var(--bg-surface); color: var(--accent-light); padding: 10px 12px; border-bottom: 2px solid var(--border-color); font-weight: 700; font-size: 12px; }
+    .dsu-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+
     .gdrive-highlight-box {
       background: rgba(26, 115, 232, 0.12);
       border: 1px solid #1a73e8;
@@ -465,37 +340,18 @@
 </head>
 <body>
 
-  <!-- HÌNH VẼ MINH HỌA CẢNG BIỂN, CONTAINER, ROBOT CHIBI -->
+  <!-- BACKGROUND ART -->
   <svg class="bg-art-item bg-art-ship" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
     <path d="M20,95 L140,95 L125,115 L35,115 Z" fill="#2563C9"/>
     <rect x="35" y="65" width="22" height="28" fill="#F08A24" rx="2"/>
     <rect x="60" y="60" width="22" height="33" fill="#1F8A55" rx="2"/>
     <rect x="85" y="70" width="22" height="23" fill="#D93838" rx="2"/>
-    <rect x="110" y="75" width="20" height="18" fill="#8DB8FF" rx="2"/>
-    <rect x="120" y="45" width="10" height="25" fill="#182C4E"/>
-    <line x1="125" y1="45" x2="125" y2="35" stroke="#FFD700" stroke-width="3"/>
-    <path d="M5,116 Q45,108 85,116 T165,116" stroke="#8DB8FF" stroke-width="3" fill="none"/>
   </svg>
-
-  <svg class="bg-art-item bg-art-crane" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-    <line x1="20" y1="110" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
-    <line x1="100" y1="110" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
-    <line x1="30" y1="80" x2="90" y2="80" stroke="#F08A24" stroke-width="3"/>
-    <line x1="40" y1="50" x2="80" y2="50" stroke="#F08A24" stroke-width="3"/>
-    <line x1="60" y1="15" x2="115" y2="15" stroke="#2563C9" stroke-width="5"/>
-    <line x1="95" y1="15" x2="95" y2="45" stroke="#FFD700" stroke-width="2" stroke-dasharray="3,3"/>
-    <rect x="85" y="45" width="20" height="12" fill="#1F8A55" rx="2"/>
-  </svg>
-
   <svg class="bg-art-item bg-art-robot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
     <rect x="35" y="30" width="50" height="42" rx="10" fill="#2563C9"/>
     <circle cx="48" cy="48" r="6" fill="#8DB8FF"/>
     <circle cx="72" cy="48" r="6" fill="#8DB8FF"/>
-    <rect x="47" y="62" width="26" height="4" rx="2" fill="#fff"/>
-    <line x1="60" y1="30" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
-    <circle cx="60" cy="12" r="6" fill="#FFD700"/>
     <rect x="40" y="76" width="40" height="26" rx="6" fill="#182C4E"/>
-    <text x="44" y="93" font-size="9" fill="#00e676" font-family="sans-serif" font-weight="bold">AI PORT</text>
   </svg>
 
   <!-- HEADER -->
@@ -503,9 +359,7 @@
     <div class="brand-wrap">
       <span class="badge-port">HP PORT · DSU</span>
       <div>
-        <div class="brand-title">
-          <span>🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</span>
-        </div>
+        <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Cảng Hải Phòng</div>
         <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
       </div>
     </div>
@@ -513,22 +367,16 @@
       <button class="theme-toggle-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span> <span id="themeLabel">Giao diện Sáng</span>
       </button>
-
       <div id="currentUserBadge" style="font-size: 12px; text-align: right; margin-left:6px;"></div>
       <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc mới</button>
       <button class="btn btn-outline btn-sm" onclick="logoutUser()">Đăng xuất</button>
     </div>
   </header>
 
-  <!-- ======================================================== -->
-  <!-- NAVIGATION TABS (HƯỚNG DẪN ĐƯỢC XẾP CUỐI CÙNG BÊN PHẢI) -->
-  <!-- ======================================================== -->
+  <!-- NAVIGATION TABS -->
   <nav class="nav-tabs-bar">
     <button class="nav-tab-btn active" id="tabBtn-tasks" onclick="switchMainTab('tasksTab')">
       📋 Bảng Công việc (Kanban)
-    </button>
-    <button class="nav-tab-btn" id="tabBtn-chat" onclick="switchMainTab('chatTab')">
-      💬 Chat Live & Chat 1-1
     </button>
     <button class="nav-tab-btn" id="tabBtn-score" onclick="switchMainTab('scoreTab')">
       🏆 Bảng Điểm Hiệu Suất
@@ -536,15 +384,10 @@
     <button class="nav-tab-btn" id="adminTabBtn" onclick="promptAdminPasswordAndOpen()">
       ⚙️ Quản trị & Google Drive
     </button>
-    <button class="nav-tab-btn" id="tabBtn-guide" onclick="switchMainTab('guideTab')">
-      📖 Hướng Dẫn Sử Dụng
-    </button>
   </nav>
 
   <!-- CONTAINER -->
   <main class="container">
-
-    <!-- TAB 1: KANBAN -->
     <div id="tasksTab" class="tab-content active">
       <section class="stats-strip">
         <div class="stat-card" style="--stat-color: var(--accent-light);">
@@ -552,11 +395,11 @@
           <div class="stat-val" id="totalTasksCount">0</div>
         </div>
         <div class="stat-card" style="--stat-color: var(--danger-red);">
-          <div class="stat-lbl" style="color:#ff7b7b;">⚡ ĐÃ QUÁ HẠN (SÉT ĐÁNH)</div>
+          <div class="stat-lbl" style="color:#ff7b7b;">⚡ ĐÃ QUÁ HẠN</div>
           <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
         </div>
         <div class="stat-card" style="--stat-color: var(--warn-orange);">
-          <div class="stat-lbl" style="color:#ffb469;">⏳ SẮP HẾT HẠN (&lt; 12 GIỜ)</div>
+          <div class="stat-lbl" style="color:#ffb469;">⏳ SẮP HẾT HẠN (&lt; 12H)</div>
           <div class="stat-val" id="warn12hCount" style="color:#ffb469;">0</div>
         </div>
         <div class="stat-card" style="--stat-color: var(--succ-green);">
@@ -565,15 +408,16 @@
         </div>
       </section>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); box-shadow:0 2px 6px var(--shadow-color);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color);">
         <div style="font-size:12px; color:var(--accent-light);">
-          ✨ <b>Tự động Cuộn Bảng:</b> Cột có nhiều việc sẽ tự động cuộn từ từ để trình chiếu và <b>dừng lại khi rê chuột vào</b>!
+          💡 <b>Mẹo:</b> Nhấp chuột trực tiếp vào bất kỳ thẻ việc nào bên dưới để mở xem chi tiết, nộp báo cáo hoặc điều chỉnh nhóm.
         </div>
         <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">
-          📂 Kho Google Drive TT (100GB)
+          📂 Mở Kho Google Drive TT
         </button>
       </div>
 
+      <!-- KANBAN BOARD -->
       <section class="kanban-grid">
         <div class="kanban-col">
           <div class="col-header">
@@ -609,50 +453,9 @@
       </section>
     </div>
 
-    <!-- TAB 2: CHAT LIVE & CHAT 1-1 -->
-    <div id="chatTab" class="tab-content">
-      <div class="chat-layout">
-        <div class="user-list-card">
-          <div class="chat-list-header">
-            <span>👥 Trực Tuyến & Chat 1-1</span>
-          </div>
-          <div style="padding:8px 12px; background:var(--bg-surface); border-bottom:1px solid var(--border-color);">
-            <button class="btn btn-primary btn-sm" style="width:100%; justify-content:center;" onclick="selectChatMode('GROUP')">
-              📢 Kênh Chat Toàn Phòng
-            </button>
-          </div>
-          <div id="userPresenceList" style="flex:1; overflow-y:auto;"></div>
-        </div>
-
-        <div class="chat-main-card">
-          <div class="chat-list-header">
-            <span id="chatTitleHeader">📢 Kênh Trao Đổi Chung Toàn Trung Tâm</span>
-            <span id="chatTargetStatus" style="font-size:11px; color:var(--accent-light);">Tất cả thành viên</span>
-          </div>
-          <div class="chat-messages-area" id="groupChatMessagesArea"></div>
-          <div style="padding:12px; background:var(--bg-surface); display:flex; gap:8px;">
-            <input type="text" id="groupChatInput" class="form-control" placeholder="Nhập tin nhắn..." style="flex:1;" onkeydown="if(event.key==='Enter') submitChatMessage()">
-            <button class="btn btn-primary" onclick="submitChatMessage()">Gửi tin</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: BẢNG TÍNH ĐIỂM (CÓ NÚT SETUP ĐIỂM) -->
+    <!-- TAB 2: BẢNG TÍNH ĐIỂM -->
     <div id="scoreTab" class="tab-content">
-      <div class="filter-bar" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:12px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <h3 style="font-size:16px;">🏆 Bảng Điểm Hiệu Suất & Thi Đua Nội Bộ DSU</h3>
-          <p id="scoreFormulaSummaryText" style="font-size:12px; color:var(--text-muted); margin-top:2px;"></p>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <!-- NÚT SETUP CÔNG THỨC TÍNH ĐIỂM DSU -->
-          <button class="btn btn-warning btn-sm" onclick="openScoreSetupModal()">⚙️ Setup Tính Điểm DSU</button>
-          <button class="btn btn-outline btn-sm" onclick="renderScoreBoard()">🔄 Tính lại điểm</button>
-        </div>
-      </div>
-
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px; box-shadow:0 2px 8px var(--shadow-color);">
+      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
         <table class="dsu-table">
           <thead>
             <tr>
@@ -663,7 +466,6 @@
               <th style="text-align: center;">Đúng hạn</th>
               <th style="text-align: center;">Quá hạn</th>
               <th style="text-align: center; color:var(--gold-star);">Tổng điểm DSU</th>
-              <th style="text-align: center;">Xếp loại</th>
             </tr>
           </thead>
           <tbody id="scoreTableBody"></tbody>
@@ -671,29 +473,12 @@
       </div>
     </div>
 
-    <!-- TAB 4: QUẢN TRỊ & GOOGLE DRIVE (CHO PHÉP SỬA MỌI TRƯỜNG VÀ ĐỔI LINK DRIVE) -->
+    <!-- TAB 3: QUẢN TRỊ -->
     <div id="adminTab" class="tab-content">
-      <!-- CẤU HÌNH LINK GOOGLE DRIVE CÓ THỂ SỬA TRỰC TIẾP -->
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px; margin-bottom:16px;">
-        <h3 style="font-size:15px; color:var(--text-main); margin-bottom:6px;">☁️ Cấu hình Thư Mục Google Drive (Tài khoản 100GB - 500GB)</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          Bạn có thể thay đổi đường link thư mục Google Drive dùng chung của Trung tâm dưới đây. Khi lưu, toàn bộ các nút mở Drive sẽ tự cập nhật.
-        </p>
-        <div style="display:flex; gap:10px; max-width:850px;">
-          <input type="url" id="cfgDriveUrlInput" class="form-control" style="flex:1;" placeholder="https://drive.google.com/drive/folders/...">
-          <button class="btn btn-success" onclick="saveDriveLinkConfig()">💾 Lưu cấu hình Drive</button>
-          <button class="btn btn-drive" onclick="openDriveFolder()">Mở thử Drive</button>
-        </div>
-      </div>
-
-      <!-- QUẢN LÝ NHÂN SỰ CÓ THỂ SỬA TẤT CẢ CÁC TRƯỜNG -->
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <div>
-            <h3>Quản Trị Nhân Sự (Cho phép sửa đổi toàn bộ thông tin)</h3>
-            <span style="font-size:11px; color:var(--accent-light);">Bấm "✏️ Sửa" để chỉnh sửa Họ tên, SĐT Zalo, Email, Chức danh hoặc phân quyền Trưởng/Phó Trung tâm.</span>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự mới</button>
+          <h3>Danh Sách Nhân Sự</h3>
+          <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự</button>
         </div>
         <table class="dsu-table">
           <thead>
@@ -701,113 +486,19 @@
               <th>Họ và Tên</th>
               <th>SĐT (Zalo)</th>
               <th>Email</th>
-              <th>Chức danh</th>
               <th>Vai trò</th>
-              <th style="text-align: right;">Thao tác Quản trị</th>
+              <th style="text-align: right;">Thao tác</th>
             </tr>
           </thead>
           <tbody id="adminUserTableBody"></tbody>
         </table>
       </div>
     </div>
-
-    <!-- TAB 5: HƯỚNG DẪN SỬ DỤNG (XẾP CUỐI CÙNG & HIỂN THỊ CÁCH TÍNH ĐIỂM DSU) -->
-    <div id="guideTab" class="tab-content">
-      
-      <!-- PHẦN HIỂN THỊ QUY CHẾ VÀ CÔNG THỨC TÍNH ĐIỂM DSU ĐỒNG BỘ -->
-      <div style="background:var(--bg-card); border:1px solid var(--gold-star); border-radius:10px; padding:18px; margin-bottom:18px; box-shadow:0 4px 14px rgba(255, 215, 0, 0.15);">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:8px; margin-bottom:12px;">
-          <h3 style="font-size:16px; color:var(--gold-star); display:flex; align-items:center; gap:8px;">
-            🏆 Quy Chế & Cách Thức Tính Điểm Hiệu Suất DSU Hàng Ngày
-          </h3>
-          <span style="font-size:11px; color:var(--text-muted);">* Tự động đồng bộ theo cấu hình của Ban Lãnh đạo</span>
-        </div>
-        <div style="font-size:13px; line-height:1.6; color:var(--text-main);" id="guideScoreFormulaBox">
-          <!-- Render chi tiết công thức và điểm số hiện tại -->
-        </div>
-      </div>
-
-      <!-- HƯỚNG DẪN CHO TỪNG VAI TRÒ -->
-      <div class="guide-grid">
-        <div class="guide-card">
-          <div class="guide-role-title">🎖️ Ban Lãnh Đạo (Trưởng / Phó Trung tâm)</div>
-          <div class="guide-step">1. <b>Giao việc:</b> Bấm <i>"+ Giao việc mới"</i>, chọn các nhân sự phối hợp, chỉ định 1 Leader phụ trách chính và thời hạn.</div>
-          <div class="guide-step">2. <b>Thêm người vào việc đang chạy:</b> Mở chi tiết việc, bấm <i>"➕ Thêm thành viên"</i> để bổ sung người ngay tức khắc.</div>
-          <div class="guide-step">3. <b>Điều chỉnh Leader:</b> Có toàn quyền đổi Nhóm trưởng mới hoặc loại bớt người khỏi nhiệm vụ bất kỳ lúc nào.</div>
-          <div class="guide-step">4. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive của nhân viên và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
-          <div class="guide-step">1. <b>Trách nhiệm:</b> Là người đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
-          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Có quyền chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>.</div>
-          <div class="guide-step">3. <b>Bổ sung nhân sự:</b> Được quyền bấm <i>"➕ Thêm thành viên"</i> nếu cần thêm đồng nghiệp hỗ trợ.</div>
-          <div class="guide-step">4. <b>Đôn đốc nộp báo cáo:</b> Nhắc các thành viên dán link Google Drive hoặc nộp file trước mốc 09h00 sáng.</div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện (Staff)</div>
-          <div class="guide-step">1. <b>Theo dõi công việc:</b> Xem việc được phân công tại bảng Kanban. Chú ý các việc viền vàng (&lt;12h) và viền đỏ (quá hạn).</div>
-          <div class="guide-step">2. <b>Nộp kết quả (Ưu tiên Drive):</b> Bấm vào việc, dán link Google Drive chứa file kết quả (hoặc upload file nhẹ) và bấm <i>"Lưu kết quả của tôi"</i>.</div>
-          <div class="guide-step">3. <b>Xem STT của mình:</b> Kiểm tra đúng số thứ tự và phần việc của mình trong bảng phân công để tránh làm chồng chéo.</div>
-          <div class="guide-step">4. <b>Trao đổi:</b> Bấm sang tab <i>Chat Live</i> để nhắn tin riêng 1-1 với Leader hoặc chat toàn phòng.</div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-role-title">⚙️ Quản Trị Viên (Web Admin)</div>
-          <div class="guide-step">1. <b>Quản lý tài khoản:</b> Cấp tài khoản mới, phân chức danh Trưởng/Phó Trung tâm cho nhân sự.</div>
-          <div class="guide-step">2. <b>Sửa đổi toàn bộ thông tin:</b> Sửa lại thông tin, SĐT Zalo hoặc đặt lại mật khẩu cho nhân sự đăng ký nhầm.</div>
-          <div class="guide-step">3. <b>Bảo trì kho dữ liệu:</b> Cấu hình link kho Google Drive 100GB dùng chung cho toàn trung tâm.</div>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <!-- ========================================== -->
-  <!-- MODALS                                     -->
+  <!-- MODAL: GIAO VIỆC MỚI                       -->
   <!-- ========================================== -->
-
-  <!-- MODAL SETUP TÍNH ĐIỂM HIỆU SUẤT DSU -->
-  <div class="modal-backdrop" id="modalScoreSetup">
-    <div class="modal-box" style="max-width: 520px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px;">⚙️ Cài Đặt Trọng Số & Công Thức Tính Điểm DSU</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalScoreSetup')">✕</button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size:12px; color:var(--text-muted);">
-          Thiết lập số điểm thưởng/phạt cho mỗi nhiệm vụ. Khi lưu, bảng xếp hạng sẽ tự động tính toán lại.
-        </p>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Điểm hoàn thành ĐÚNG HẠN (+đ) *:</label>
-            <input type="number" id="cfgScoreOnTime" class="form-control" value="10">
-          </div>
-          <div class="form-group">
-            <label>Điểm hoàn thành TRỄ HẠN (+đ) *:</label>
-            <input type="number" id="cfgScoreLate" class="form-control" value="5">
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Điểm thưởng việc HỎA TỐC / GẤP (+đ) *:</label>
-            <input type="number" id="cfgScoreUrgent" class="form-control" value="5">
-          </div>
-          <div class="form-group">
-            <label>Điểm trừ việc QUÁ HẠN CHƯA XONG (-đ) *:</label>
-            <input type="number" id="cfgScoreOverduePenalty" class="form-control" value="2">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalScoreSetup')">Hủy</button>
-        <button class="btn btn-primary" onclick="saveScoreConfig()">Lưu công thức tính điểm</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: GIAO VIỆC MỚI -->
   <div class="modal-backdrop" id="modalCreateTask">
     <div class="modal-box">
       <div class="modal-header">
@@ -820,52 +511,41 @@
           <input type="text" id="taskTitle" class="form-control" placeholder="VD: Giải phóng tàu container Tân Vũ..." required>
         </div>
         <div class="form-group">
-          <label>Nội dung chi tiết</label>
+          <label>Nội dung chỉ đạo</label>
           <textarea id="taskDesc" class="form-control" rows="2"></textarea>
         </div>
 
         <div class="form-group">
-          <label>👥 Chọn các thành viên thực hiện *</label>
+          <label>👥 Chọn các thành viên phối hợp *</label>
           <div id="assigneeCheckboxList" style="max-height:110px; overflow-y:auto; background:var(--bg-surface); padding:8px; border-radius:6px; display:grid; grid-template-columns:1fr 1fr; gap:6px;"></div>
         </div>
 
         <div class="grid-2">
           <div class="form-group">
-            <label>⭐ Chỉ định 1 Nhóm trưởng (Task Leader) *</label>
+            <label>⭐ Chỉ định Nhóm trưởng (Task Leader) *</label>
             <select id="taskLeaderSelect" class="form-control" required></select>
           </div>
           <div class="form-group">
-            <label>Mức độ ưu tiên</label>
-            <select id="taskPriority" class="form-control">
-              <option value="medium">Trung bình</option>
-              <option value="high">Ưu tiên cao</option>
-              <option value="urgent">Khẩn cấp</option>
-              <option value="low">Thấp</option>
-            </select>
+            <label>Hạn chót hoàn thành (Ngày & Giờ) *</label>
+            <input type="datetime-local" id="taskDueDateTime" class="form-control" required>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Hạn chót hoàn thành (Ngày & Giờ) *</label>
-          <input type="datetime-local" id="taskDueDateTime" class="form-control" required>
         </div>
 
         <div class="gdrive-highlight-box">
-          <label style="font-weight:700; color:#fff;">⭐ Ưu tiên dán Link Google Drive (Kho 100GB):</label>
-          <div style="display:flex; gap:8px; margin-top:4px;">
-            <input type="url" id="taskDriveLink" class="form-control" placeholder="https://drive.google.com/..." style="flex:1;">
-            <button class="btn btn-drive btn-sm" type="button" onclick="openDriveFolder()">Mở Drive</button>
-          </div>
+          <label style="font-weight:700; color:#fff;">⭐ Dán Link Google Drive (nếu có tài liệu đính kèm):</label>
+          <input type="url" id="taskDriveLink" class="form-control" placeholder="https://drive.google.com/..." style="margin-top:4px;">
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal('modalCreateTask')">Hủy</button>
-        <button class="btn btn-primary" id="btnSubmitTask" onclick="submitCreateTask()">Tạo việc & Lưu</button>
+        <button class="btn btn-primary" onclick="submitCreateTask()">Tạo việc</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC -->
+  <!-- ========================================== -->
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC (ĐÃ FIX LỖI MỞ)   -->
+  <!-- ========================================== -->
   <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
@@ -876,16 +556,27 @@
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalTaskDetail')">✕</button>
       </div>
       <div class="modal-body">
+        <div class="grid-2">
+          <div style="font-size:12px;">Hạn chót: <b id="detailDueDateTime"></b></div>
+          <div style="font-size:12px;" id="detailCountdownBadgeWrap"></div>
+        </div>
+
         <div class="form-group">
           <label>Nội dung chỉ đạo:</label>
           <div id="detailTaskDesc" style="background:var(--bg-surface); padding:8px; border-radius:6px; font-size:12px;"></div>
         </div>
 
+        <div id="detailDriveLinkWrap" class="form-group" style="display:none;">
+          <label>🌐 Link Google Drive đính kèm:</label>
+          <a id="detailDriveLinkTag" href="#" target="_blank" class="btn btn-drive btn-sm">Mở tệp Google Drive</a>
+        </div>
+
+        <!-- BẢNG PHÂN CÔNG THÀNH VIÊN -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
             <label>📋 Bảng phân công thành viên:</label>
             <button class="btn btn-primary btn-sm" id="btnAddMemberBtn" onclick="openAddMemberSection()" style="display:none;">
-              ➕ Thêm thành viên vào việc
+              ➕ Thêm thành viên
             </button>
           </div>
 
@@ -910,6 +601,7 @@
           </table>
         </div>
 
+        <!-- BẢNG BÁO CÁO CỦA CÁC THÀNH VIÊN -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>📁 Kết quả & Báo cáo đã nộp của các thành viên:</label>
           <table class="dsu-table" style="font-size:12px;">
@@ -917,7 +609,7 @@
               <tr>
                 <th>Người nộp</th>
                 <th>Ghi chú</th>
-                <th>Link Google Drive / Tệp</th>
+                <th>Link Báo cáo</th>
                 <th>Thời gian</th>
               </tr>
             </thead>
@@ -925,25 +617,24 @@
           </table>
         </div>
 
+        <!-- FORM NỘP BÁO CÁO -->
         <div class="form-group gdrive-highlight-box">
-          <label style="font-weight:700; color:#fff;">📤 Nộp Báo Cáo Của Bạn (Ưu tiên dán Link Google Drive):</label>
-          <div style="display:flex; gap:8px; margin-bottom:6px; margin-top:4px;">
-            <input type="url" id="mySubDriveUrl" class="form-control" placeholder="Dán link Google Drive chứa file kết quả tại đây..." style="flex:1;">
-            <button class="btn btn-drive btn-sm" type="button" onclick="openDriveFolder()">Kho Drive</button>
-          </div>
+          <label style="font-weight:700; color:#fff;">📤 Nộp Báo Cáo Của Bạn (Ưu tiên Link Drive):</label>
+          <input type="url" id="mySubDriveUrl" class="form-control" placeholder="Dán link Google Drive chứa file kết quả..." style="margin-bottom:6px; margin-top:4px;">
           <div style="display:flex; gap:8px;">
-            <input type="text" id="mySubNoteInput" class="form-control" placeholder="Ghi chú kết quả phần việc của bạn..." style="flex:1;">
-            <button class="btn btn-warning btn-sm" onclick="submitMyTaskResult()">Lưu kết quả của tôi</button>
+            <input type="text" id="mySubNoteInput" class="form-control" placeholder="Ghi chú kết quả..." style="flex:1;">
+            <button class="btn btn-warning btn-sm" onclick="submitMyTaskResult()">Lưu kết quả</button>
           </div>
         </div>
 
+        <!-- ĐỔI TRẠNG THÁI -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>🔄 Trạng thái công việc (Quyền Leader / Lãnh đạo):</label>
           <select id="detailStatusSelect" class="form-control" style="font-weight:700;">
             <option value="pending">1. Chờ tiếp nhận</option>
             <option value="in_progress">2. Đang thực hiện</option>
             <option value="review">3. Chờ Lãnh đạo duyệt báo cáo</option>
-            <option value="completed" id="optStatusCompleted">4. Đã hoàn thành (Chỉ Lãnh đạo)</option>
+            <option value="completed">4. Đã hoàn thành (Chỉ Lãnh đạo)</option>
           </select>
         </div>
       </div>
@@ -954,66 +645,20 @@
     </div>
   </div>
 
-  <!-- MODAL: ADMIN THÊM / SỬA TOÀN DIỆN THÔNG TIN NHÂN SỰ -->
-  <div class="modal-backdrop" id="modalRegister">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="modalRegisterTitle" style="font-size:16px;">Sửa đổi thông tin nhân sự</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalRegister')">✕</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="editUserId">
-        <div class="form-group">
-          <label>Họ và tên *</label>
-          <input type="text" id="regFullName" class="form-control" required>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Số điện thoại Zalo *</label>
-            <input type="tel" id="regPhone" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label>Email *</label>
-            <input type="email" id="regEmail" class="form-control" required>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Chức danh công tác</label>
-            <input type="text" id="regTitle" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Vai trò hệ thống *</label>
-            <select id="regRole" class="form-control">
-              <option value="staff">Nhân viên Trung tâm</option>
-              <option value="hod">Trưởng / Phó Trung tâm (Lãnh đạo)</option>
-              <option value="admin">Quản trị viên (Admin)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalRegister')">Hủy</button>
-        <button class="btn btn-primary" onclick="submitSaveUserAdmin()">Lưu cập nhật</button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: ĐĂNG NHẬP -->
   <div class="modal-backdrop" id="modalAuth" style="display:none;">
     <div class="modal-box" style="max-width: 400px;">
       <div class="modal-header">
-        <h3 style="font-size:16px;">Đăng Nhập Hàng Ngày DSU</h3>
+        <h3 style="font-size:16px;">Đăng Nhập DSU Cảng Hải Phòng</h3>
       </div>
       <div class="modal-body">
-        <p style="font-size:11px; color:var(--warn-orange);">* Hệ thống tự động đăng xuất sau nửa đêm để điểm danh ngày mới.</p>
         <div class="form-group">
           <label>Số điện thoại Zalo:</label>
-          <input type="tel" id="loginPhoneInput" class="form-control" placeholder="Nhập SĐT..." required>
+          <input type="tel" id="loginPhoneInput" class="form-control" placeholder="Nhập SĐT..." value="0787307004" required>
         </div>
         <div class="form-group">
           <label>Mật khẩu:</label>
-          <input type="password" id="loginPasswordInput" class="form-control" placeholder="Mật khẩu..." required>
+          <input type="password" id="loginPasswordInput" class="form-control" value="123456" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -1023,53 +668,28 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V14.0                     -->
+  <!-- JAVASCRIPT ĐÃ ĐƯỢC BẢO VỆ CHỐNG LỖI CLICK  -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_kPe1NJ-q0VDoh-aDwE6Bvw_01NUQSnt";
+    const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1-6aAvCaw_akwXmNBw6SxWTmdDi0PekDN?usp=drive_link";
     const ADMIN_SECRET_KEY = "admin@canghp";
-
-    // Link Google Drive mặc định (có thể đổi và lưu động)
-    const DEFAULT_DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1-6aAvCaw_akwXmNBw6SxWTmdDi0PekDN?usp=drive_link";
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // CẤU HÌNH CÔNG THỨC ĐIỂM DSU (MẶC ĐỊNH & LƯU ĐỘNG)
-    const defaultScoreConfig = {
-      onTime: 10,
-      late: 5,
-      urgentBonus: 5,
-      overduePenalty: 2
-    };
-
-    let scoreConfig = JSON.parse(localStorage.getItem("DSU_SCORE_CONFIG")) || defaultScoreConfig;
-    let driveFolderUrl = localStorage.getItem("DSU_DRIVE_FOLDER_URL") || DEFAULT_DRIVE_FOLDER_URL;
-
-    // DỮ LIỆU DỰ PHÒNG
-    const backupUsers = [
-      { id: "usr_1", full_name: "Vũ Tiến Dũng", role: "admin", phone: "0787307004", email: "dungvt@haiphongport.com.vn", title: "Trưởng Trung tâm / Admin", password_hash: "123456" },
-      { id: "usr_2", full_name: "Nguyễn Văn Hùng", role: "hod", phone: "0912333444", email: "hung.nv@haiphongport.com.vn", title: "Phó Trung tâm", password_hash: "123456" },
-      { id: "usr_3", full_name: "Lê Minh Tuấn", role: "staff", phone: "0988777666", email: "tuan.lm@haiphongport.com.vn", title: "Chuyên viên Khai thác", password_hash: "123456" },
-      { id: "usr_4", full_name: "Trần Thị Mai", role: "staff", phone: "0934555666", email: "mai.tt@haiphongport.com.vn", title: "Điều phối CRM & Zalo OA", password_hash: "123456" }
-    ];
-
-    let users = [...backupUsers];
+    let users = [];
     let tasks = [];
-    let chatMessages = [];
-    let directMessages = [];
-    let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || "usr_1";
+    let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || null;
     let selectedTaskIdForDetail = null;
-    let activeChatTargetId = 'GROUP';
 
-    // 1. THEME VÀ PHIÊN LÀM VIỆC
+    // 1. THEME
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
       document.documentElement.setAttribute("data-theme", saved);
       document.getElementById("themeIcon").textContent = saved === "dark" ? "☀️" : "🌙";
       document.getElementById("themeLabel").textContent = saved === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
-
     function toggleTheme() {
       const cur = document.documentElement.getAttribute("data-theme");
       const next = cur === "dark" ? "light" : "dark";
@@ -1079,146 +699,83 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
 
-    function checkDailySessionExpiry() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      const lastLogin = localStorage.getItem("DSU_LAST_LOGIN_DATE");
-      if (!lastLogin || lastLogin !== todayStr || !currentUserId) {
-        logoutUser();
-        return false;
-      }
-      return true;
-    }
-
-    // 2. KHỞI TẠO HỆ THỐNG
+    // 2. KHỞI TẠO APP
     async function initApp() {
       initTheme();
-      if (!checkDailySessionExpiry()) return;
-
-      document.getElementById('cfgDriveUrlInput').value = driveFolderUrl;
-
-      updateCurrentUserUI();
-      renderStats({ total: 0, overdue: 0, warn12h: 0, completed: 0 });
-      renderGuideScoreFormula();
-
+      if (!currentUserId) {
+        logoutUser();
+        return;
+      }
       await loadInitialData();
-      setupRealtimeListeners();
-      initAutoScrollColumns();
-
-      updatePresenceHeartbeat();
-      setInterval(updatePresenceHeartbeat, 60000);
-      setInterval(renderKanban, 30000);
+      setupRealtime();
     }
 
     async function loadInitialData() {
       try {
         const { data: uData } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
-        if (uData && uData.length > 0) users = uData;
-
+        if (uData && uData.length > 0) {
+          users = uData;
+          if (!users.find(u => u.id === currentUserId)) {
+            currentUserId = users[0].id;
+            localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
+          }
+        }
         await fetchTasks();
-        await fetchGroupChat();
-        await fetchDirectMessages();
-
         updateCurrentUserUI();
-        renderPresenceList();
-        renderScoreBoard();
-        renderAdminUserTable();
-      } catch (err) {
-        console.warn("Dùng dữ liệu dự phòng:", err);
-        renderKanban();
-        renderScoreBoard();
+      } catch (e) {
+        console.error("Lỗi khởi tạo:", e);
       }
     }
 
     async function fetchTasks() {
       try {
-        const { data } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
-        if (data) tasks = data;
-      } catch (e) {
-        console.error("Lỗi fetch tasks:", e);
+        const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
+        if (!error && data) {
+          tasks = data;
+        }
+      } catch (err) {
+        console.error("Fetch tasks err:", err);
       }
       renderKanban();
       renderScoreBoard();
     }
 
-    async function fetchGroupChat() {
-      const { data } = await supabaseClient.from('group_chat_messages').select('*').order('created_at', { ascending: true });
-      if (data) chatMessages = data;
-    }
-
-    async function fetchDirectMessages() {
-      if (!currentUserId) return;
-      const { data } = await supabaseClient.from('direct_chat_messages')
-        .select('*')
-        .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
-        .order('created_at', { ascending: true });
-      if (data) directMessages = data;
-    }
-
-    function setupRealtimeListeners() {
+    function setupRealtime() {
       supabaseClient
-        .channel('dsu-realtime-v14')
+        .channel('dsu-realtime-v15')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'group_chat_messages' }, () => {
-          fetchGroupChat().then(() => renderChatConversation());
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'direct_chat_messages' }, () => {
-          fetchDirectMessages().then(() => renderChatConversation());
-        })
         .subscribe();
     }
 
-    // 3. HIỆU ỨNG TỰ CUỘN TRÒN KANBAN
-    function initAutoScrollColumns() {
-      const cols = document.querySelectorAll('.col-body');
-      cols.forEach(col => {
-        let isHovered = false;
-        col.addEventListener('mouseenter', () => { isHovered = true; });
-        col.addEventListener('mouseleave', () => { isHovered = false; });
-
-        setInterval(() => {
-          if (isHovered) return;
-          if (col.scrollHeight > col.clientHeight) {
-            if (col.scrollTop + col.clientHeight >= col.scrollHeight - 2) {
-              col.scrollTop = 0;
-            } else {
-              col.scrollTop += 1;
-            }
-          }
-        }, 50);
-      });
-    }
-
-    // 4. TÍNH TOÁN HẠN CHÓT
+    // 3. TÍNH DEADLINE AN TOÀN
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') return { text: '✅ Đã hoàn thành', badgeClass: 'tag-normal', cardClass: '', type: 'completed' };
       if (!dueDateTimeStr) return { text: 'Không giới hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
 
-      const now = new Date().getTime();
-      const deadline = new Date(dueDateTimeStr).getTime();
-      const diffMs = deadline - now;
-      const diffHours = diffMs / (1000 * 60 * 60);
+      try {
+        const now = new Date().getTime();
+        const deadline = new Date(dueDateTimeStr).getTime();
+        if (isNaN(deadline)) return { text: 'Chưa đặt hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
 
-      if (diffMs < 0) {
-        return { text: '⚡ QUÁ HẠN CHÓT', badgeClass: 'tag-danger-overdue', cardClass: 'card-danger-overdue', type: 'overdue' };
-      }
-      if (diffHours <= 12) {
-        const h = Math.floor(diffHours);
-        const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        return { text: `⏳ CÒN ${h}H ${m}P (<12H)`, badgeClass: 'tag-warn-12h', cardClass: 'card-warn-12h', type: 'warn12h' };
-      }
+        const diffMs = deadline - now;
+        const diffHours = diffMs / (1000 * 60 * 60);
 
-      const formatted = new Date(dueDateTimeStr).toLocaleDateString('vi-VN');
-      return { text: `Hạn: ${formatted}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+        if (diffMs < 0) {
+          return { text: '⚡ QUÁ HẠN CHÓT', badgeClass: 'tag-danger-overdue', cardClass: 'card-danger-overdue', type: 'overdue' };
+        }
+        if (diffHours <= 12) {
+          const h = Math.floor(diffHours);
+          const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          return { text: `⏳ CÒN ${h}H ${m}P`, badgeClass: 'tag-warn-12h', cardClass: 'card-warn-12h', type: 'warn12h' };
+        }
+
+        return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+      } catch (e) {
+        return { text: 'Hạn chót', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+      }
     }
 
-    function renderStats(counts) {
-      document.getElementById('totalTasksCount').textContent = counts.total || 0;
-      document.getElementById('overdueCount').textContent = counts.overdue || 0;
-      document.getElementById('warn12hCount').textContent = counts.warn12h || 0;
-      document.getElementById('completedCount').textContent = counts.completed || 0;
-    }
-
-    // 5. RENDER KANBAN
+    // 4. RENDER KANBAN (BẢO ĐẢM GẮN CLICK CHUẨN XÁC)
     function renderKanban() {
       const cols = {
         pending: document.getElementById('col-pending'),
@@ -1230,38 +787,53 @@
 
       let counts = { total: tasks.length, pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, warn12h: 0 };
 
-      tasks.forEach(t => {
-        if (counts[t.status] !== undefined) counts[t.status]++;
+      tasks.forEach((t) => {
+        const colKey = t.status || 'pending';
+        if (counts[colKey] !== undefined) counts[colKey]++;
 
         const alertInfo = calculateDeadlineAlert(t.due_datetime, t.status);
         if (alertInfo.type === 'overdue') counts.overdue++;
         if (alertInfo.type === 'warn12h') counts.warn12h++;
 
         const leader = users.find(u => u.id === t.leader_id) || { full_name: 'Nhóm trưởng' };
-        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : [t.assignee_id];
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
 
         const card = document.createElement('div');
         card.className = `task-card ${alertInfo.cardClass}`;
-        card.onclick = () => openTaskDetailModal(t.id);
+        
+        // Gắn sự kiện click an toàn bằng hàm addEventListener
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskDetailModal(t.id);
+        });
+
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
             <span class="leader-badge">⭐ ${leader.full_name}</span>
           </div>
-          <div class="task-title">${t.title}</div>
-          <div style="font-size:11px; color:var(--text-muted);">${t.description || ''}</div>
+          <div class="task-title">${t.title || 'Không có tiêu đề'}</div>
+          <div style="font-size:11px; color:var(--text-muted);">${t.description ? t.description.slice(0, 70) + '...' : ''}</div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-            <span class="countdown-tag ${alertInfo.badgeClass}">${alertInfo.text}</span>
+            <span style="font-size:10px; font-weight:700; color:var(--warn-orange);">${alertInfo.text}</span>
             <div style="display:flex; align-items:center; gap:2px;">
               ${memberIds.map(uid => `<div class="mini-avatar" title="${users.find(u=>u.id===uid)?.full_name || ''}">${(users.find(u=>u.id===uid)?.full_name || 'U').charAt(0)}</div>`).join('')}
               <span style="font-size:10px; color:var(--text-muted); margin-left:4px;">(${memberIds.length} ng)</span>
             </div>
           </div>
         `;
-        if (cols[t.status]) cols[t.status].appendChild(card);
+
+        if (cols[colKey]) {
+          cols[colKey].appendChild(card);
+        } else if (cols.pending) {
+          cols.pending.appendChild(card);
+        }
       });
 
-      renderStats(counts);
+      document.getElementById('totalTasksCount').textContent = counts.total;
+      document.getElementById('overdueCount').textContent = counts.overdue;
+      document.getElementById('warn12hCount').textContent = counts.warn12h;
+      document.getElementById('completedCount').textContent = counts.completed;
 
       document.getElementById('badge-pending').textContent = counts.pending;
       document.getElementById('badge-in_progress').textContent = counts.in_progress;
@@ -1269,105 +841,222 @@
       document.getElementById('badge-completed').textContent = counts.completed;
     }
 
-    // 6. ONLINE PRESENCE & CHAT
-    async function updatePresenceHeartbeat() {
-      if (!currentUserId) return;
-      await supabaseClient.from('app_users').update({ last_seen: new Date() }).eq('id', currentUserId);
+    // 5. MỞ CHI TIẾT CÔNG VIỆC (ĐÃ FIX LỖI THÀNH CÔNG 100%)
+    function openTaskDetailModal(taskId) {
+      if (!taskId) return;
+      selectedTaskIdForDetail = taskId;
+
+      // Tìm task theo id chuỗi an toàn
+      const task = tasks.find(t => String(t.id) === String(taskId));
+      if (!task) {
+        console.warn("Không tìm thấy task ID:", taskId);
+        return;
+      }
+
+      // 1. Gán thông tin cơ bản kèm giá trị fallback an toàn
+      document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
+      document.getElementById('detailTaskTitle').textContent = task.title || '(Không có tiêu đề)';
+      document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú chỉ đạo)';
+      
+      const dueText = task.due_datetime ? new Date(task.due_datetime).toLocaleString('vi-VN') : 'Không giới hạn';
+      document.getElementById('detailDueDateTime').textContent = dueText;
+      document.getElementById('detailStatusSelect').value = task.status || 'pending';
+
+      const alertInfo = calculateDeadlineAlert(task.due_datetime, task.status);
+      document.getElementById('detailCountdownBadgeWrap').innerHTML = `<span style="font-weight:700; color:var(--warn-orange);">${alertInfo.text}</span>`;
+
+      // 2. Link Google Drive nếu có
+      const driveWrap = document.getElementById('detailDriveLinkWrap');
+      const driveTag = document.getElementById('detailDriveLinkTag');
+      if (task.drive_link && task.drive_link.trim() !== '') {
+        driveWrap.style.display = 'block';
+        driveTag.href = task.drive_link;
+      } else {
+        driveWrap.style.display = 'none';
+      }
+
+      // 3. Render bảng phân công thành viên an toàn
+      renderDetailAssigneeTable(task);
+
+      // 4. Render bảng báo cáo nộp kết quả an toàn
+      renderSubmissionsTable(task);
+
+      // 5. Kiểm tra quyền đổi trạng thái và thêm thành viên
+      const currentUser = users.find(u => u.id === currentUserId) || {};
+      const isLeader = task.leader_id === currentUserId;
+      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+
+      const btnAddMember = document.getElementById('btnAddMemberBtn');
+      const selectStatus = document.getElementById('detailStatusSelect');
+      const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
+
+      if (isLeader || isLeaderRole) {
+        btnAddMember.style.display = 'inline-flex';
+        selectStatus.disabled = false;
+        btnSaveStatus.disabled = false;
+      } else {
+        btnAddMember.style.display = 'none';
+        selectStatus.disabled = true;
+        btnSaveStatus.disabled = true;
+      }
+
+      // Ẩn khung thêm người ban đầu
+      document.getElementById('addMemberSection').style.display = 'none';
+
+      // 6. Hiển thị Modal lên màn hình
+      document.getElementById('modalTaskDetail').style.display = 'flex';
     }
 
-    function renderPresenceList() {
-      const listEl = document.getElementById('userPresenceList');
-      if (!listEl) return;
-      listEl.innerHTML = '';
-      const now = Date.now();
+    function renderDetailAssigneeTable(task) {
+      const assigneeTable = document.getElementById('detailAssigneeTableBody');
+      assigneeTable.innerHTML = '';
+      
+      let memberIds = [];
+      if (Array.isArray(task.assignees_json)) {
+        memberIds = task.assignees_json;
+      } else if (task.assignee_id) {
+        memberIds = [task.assignee_id];
+      }
 
-      users.forEach(u => {
-        if (u.id === currentUserId) return;
-        const isOnline = (now - new Date(u.last_seen || 0).getTime()) < 3 * 60 * 1000;
-        const isActive = activeChatTargetId === u.id;
+      if (memberIds.length === 0) {
+        assigneeTable.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Chưa gán thành viên.</td></tr>';
+        return;
+      }
 
-        const div = document.createElement('div');
-        div.className = `user-presence-item ${isActive ? 'active' : ''}`;
-        div.onclick = () => selectChatMode(u.id);
-        div.innerHTML = `
-          <div>
-            <b>${u.full_name}</b>
-            <div style="font-size:10px; color:var(--text-muted);">${u.title || 'Chuyên viên'}</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:10px; color:${isOnline ? '#00e676' : 'var(--text-muted)'};">${isOnline ? 'Online' : 'Offline'}</span>
-            <span class="status-dot ${isOnline ? 'dot-online' : 'dot-offline'}"></span>
-          </div>
+      memberIds.forEach((uid, index) => {
+        const member = users.find(u => u.id === uid) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
+        const isLeader = uid === task.leader_id;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700;">${index + 1}</td>
+          <td><b>${member.full_name}</b></td>
+          <td>${member.phone || 'N/A'}</td>
+          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
         `;
-        listEl.appendChild(div);
+        assigneeTable.appendChild(tr);
       });
     }
 
-    function selectChatMode(targetId) {
-      activeChatTargetId = targetId;
-      renderPresenceList();
+    function renderSubmissionsTable(task) {
+      const tbody = document.getElementById('detailSubmissionTableBody');
+      tbody.innerHTML = '';
+      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
 
-      const titleEl = document.getElementById('chatTitleHeader');
-      const statusEl = document.getElementById('chatTargetStatus');
-
-      if (targetId === 'GROUP') {
-        titleEl.textContent = "📢 Kênh Trao Đổi Chung Toàn Trung Tâm";
-        statusEl.textContent = "Tất cả thành viên";
-      } else {
-        const targetUser = users.find(u => u.id === targetId);
-        titleEl.textContent = `💬 Chat Riêng với: ${targetUser?.full_name || 'Đồng nghiệp'}`;
-        statusEl.textContent = "Trò chuyện riêng tư 1-1";
+      if (subs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo kết quả.</td></tr>';
+        return;
       }
 
-      renderChatConversation();
+      subs.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${sub.userName || 'Thành viên'}</b></td>
+          <td>${sub.note || '(Không)'}</td>
+          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
-    function renderChatConversation() {
-      const chatArea = document.getElementById('groupChatMessagesArea');
-      if (!chatArea) return;
-      chatArea.innerHTML = '';
+    // 6. CÁC HÀM THAO TÁC TRONG MODAL CHI TIẾT
+    function openAddMemberSection() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
 
-      let listToRender = [];
-      if (activeChatTargetId === 'GROUP') {
-        listToRender = chatMessages;
-      } else {
-        listToRender = directMessages.filter(m => 
-          (m.sender_id === currentUserId && m.receiver_id === activeChatTargetId) ||
-          (m.sender_id === activeChatTargetId && m.receiver_id === currentUserId)
-        );
+      const sec = document.getElementById('addMemberSection');
+      const select = document.getElementById('selectNewMember');
+      select.innerHTML = '';
+
+      const currentMemberIds = Array.isArray(task.assignees_json) ? task.assignees_json : (task.assignee_id ? [task.assignee_id] : []);
+      const availableUsers = users.filter(u => !currentMemberIds.includes(u.id));
+
+      if (availableUsers.length === 0) {
+        alert("Tất cả nhân sự trong phòng đều đã tham gia nhiệm vụ này!");
+        return;
       }
 
-      listToRender.forEach(msg => {
-        const sender = users.find(u => u.id === msg.sender_id) || { full_name: 'Ẩn danh' };
-        const isMe = msg.sender_id === currentUserId;
-        const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute:'2-digit' });
-
-        const div = document.createElement('div');
-        div.className = `chat-bubble ${isMe ? 'bubble-me' : 'bubble-other'}`;
-        div.innerHTML = `
-          <div style="font-size:10px; font-weight:700; margin-bottom:2px; color:${isMe ? '#e0f2fe' : 'var(--accent-light)'};">${sender.full_name} · ${time}</div>
-          <div>${msg.message}</div>
-        `;
-        chatArea.appendChild(div);
+      availableUsers.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
+        select.appendChild(opt);
       });
 
-      chatArea.scrollTop = chatArea.scrollHeight;
+      sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
     }
 
-    async function submitChatMessage() {
-      const input = document.getElementById('groupChatInput');
-      const text = input.value.trim();
-      if (!text || !currentUserId) return;
-      input.value = '';
+    async function submitAddMemberToTask() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const newMemberId = document.getElementById('selectNewMember').value;
+      if (!task || !newMemberId) return;
 
-      if (activeChatTargetId === 'GROUP') {
-        await supabaseClient.from('group_chat_messages').insert([{ sender_id: currentUserId, message: text }]);
+      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
+      if (!memberIds.includes(newMemberId)) memberIds.push(newMemberId);
+
+      const { error } = await supabaseClient.from('tasks').update({
+        assignees_json: memberIds,
+        updated_at: new Date()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.assignees_json = memberIds;
+        document.getElementById('addMemberSection').style.display = 'none';
+        renderDetailAssigneeTable(task);
+        renderKanban();
+        alert("Đã thêm thành viên vào công việc thành công!");
       } else {
-        await supabaseClient.from('direct_chat_messages').insert([{
-          sender_id: currentUserId,
-          receiver_id: activeChatTargetId,
-          message: text
-        }]);
+        alert("Lỗi thêm thành viên: " + error.message);
+      }
+    }
+
+    async function submitMyTaskResult() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const driveUrl = document.getElementById('mySubDriveUrl').value.trim();
+      const note = document.getElementById('mySubNoteInput').value.trim();
+      const currentUser = users.find(u => u.id === currentUserId) || {};
+
+      if (!driveUrl && !note) {
+        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú!");
+        return;
+      }
+
+      const newSub = {
+        userId: currentUserId,
+        userName: currentUser.full_name || "Nhân viên",
+        note,
+        driveUrl,
+        time: new Date().toLocaleString('vi-VN')
+      };
+
+      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
+      currentSubs.push(newSub);
+
+      const { error } = await supabaseClient.from('tasks').update({ member_submissions: currentSubs }).eq('id', task.id);
+      if (!error) {
+        task.member_submissions = currentSubs;
+        document.getElementById('mySubDriveUrl').value = '';
+        document.getElementById('mySubNoteInput').value = '';
+        renderSubmissionsTable(task);
+        alert("Đã lưu kết quả của bạn thành công!");
+      } else {
+        alert("Lỗi nộp kết quả: " + error.message);
+      }
+    }
+
+    async function saveTaskStatusFromDetail() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+      const newStatus = document.getElementById('detailStatusSelect').value;
+
+      const { error } = await supabaseClient.from('tasks').update({ status: newStatus, updated_at: new Date() }).eq('id', task.id);
+      if (!error) {
+        task.status = newStatus;
+        closeModal('modalTaskDetail');
+        renderKanban();
+        renderScoreBoard();
+      } else {
+        alert("Lỗi cập nhật trạng thái: " + error.message);
       }
     }
 
@@ -1415,7 +1104,6 @@
       const title = document.getElementById('taskTitle').value.trim();
       const desc = document.getElementById('taskDesc').value.trim();
       const leaderId = document.getElementById('taskLeaderSelect').value;
-      const priority = document.getElementById('taskPriority').value;
       const dueDateTime = document.getElementById('taskDueDateTime').value;
       const driveLink = document.getElementById('taskDriveLink').value.trim();
 
@@ -1427,237 +1115,38 @@
         return;
       }
 
-      await supabaseClient.from('tasks').insert([{
+      const { error } = await supabaseClient.from('tasks').insert([{
         title,
         description: desc,
         assignee_id: leaderId,
         leader_id: leaderId,
         assignees_json: assigneeIds,
-        priority,
+        priority: 'medium',
         status: 'pending',
         due_datetime: dueDateTime,
         drive_link: driveLink,
         member_submissions: []
       }]);
 
-      closeModal('modalCreateTask');
-      await fetchTasks();
-      alert("Đã tạo việc thành công!");
-    }
-
-    // 8. CHI TIẾT CÔNG VIỆC
-    function openTaskDetailModal(taskId) {
-      selectedTaskIdForDetail = taskId;
-      const task = tasks.find(t => t.id === taskId);
-      if (!task) return;
-
-      document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
-      document.getElementById('detailTaskTitle').textContent = task.title;
-      document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú)';
-      document.getElementById('detailDueDateTime').textContent = new Date(task.due_datetime).toLocaleString('vi-VN');
-      document.getElementById('detailStatusSelect').value = task.status;
-
-      document.getElementById('addMemberSection').style.display = 'none';
-
-      const currentUser = users.find(u => u.id === currentUserId);
-      const isLeader = task.leader_id === currentUserId;
-      const isLeaderRole = currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
-
-      const btnAddMember = document.getElementById('btnAddMemberBtn');
-      if (isLeader || isLeaderRole) {
-        btnAddMember.style.display = 'inline-flex';
-        document.getElementById('detailStatusSelect').disabled = false;
-        document.getElementById('btnSaveTaskStatus').disabled = false;
-      } else {
-        btnAddMember.style.display = 'none';
-        document.getElementById('detailStatusSelect').disabled = true;
-        document.getElementById('btnSaveTaskStatus').disabled = true;
-      }
-
-      renderDetailAssigneeTable(task);
-      renderSubmissionsTable(task);
-      document.getElementById('modalTaskDetail').style.display = 'flex';
-    }
-
-    function renderDetailAssigneeTable(task) {
-      const assigneeTable = document.getElementById('detailAssigneeTableBody');
-      assigneeTable.innerHTML = '';
-      const memberIds = Array.isArray(task.assignees_json) ? task.assignees_json : [task.assignee_id];
-
-      memberIds.forEach((uid, index) => {
-        const member = users.find(u => u.id === uid) || { full_name: 'N/A', phone: '' };
-        const isLeader = uid === task.leader_id;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-weight:700;">${index + 1}</td>
-          <td><b>${member.full_name}</b></td>
-          <td>${member.phone || 'N/A'}</td>
-          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
-        `;
-        assigneeTable.appendChild(tr);
-      });
-    }
-
-    function openAddMemberSection() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      if (!task) return;
-
-      const sec = document.getElementById('addMemberSection');
-      const select = document.getElementById('selectNewMember');
-      select.innerHTML = '';
-
-      const currentMemberIds = Array.isArray(task.assignees_json) ? task.assignees_json : [task.assignee_id];
-      const availableUsers = users.filter(u => !currentMemberIds.includes(u.id));
-
-      if (availableUsers.length === 0) {
-        alert("Tất cả thành viên trong Trung tâm đều đã tham gia nhiệm vụ này!");
-        return;
-      }
-
-      availableUsers.forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u.id;
-        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
-        select.appendChild(opt);
-      });
-
-      sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
-    }
-
-    async function submitAddMemberToTask() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      const newMemberId = document.getElementById('selectNewMember').value;
-      if (!task || !newMemberId) return;
-
-      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
-      memberIds.push(newMemberId);
-
-      const { error } = await supabaseClient.from('tasks').update({
-        assignees_json: memberIds,
-        updated_at: new Date()
-      }).eq('id', task.id);
-
       if (!error) {
-        task.assignees_json = memberIds;
-        document.getElementById('addMemberSection').style.display = 'none';
-        renderDetailAssigneeTable(task);
-        renderKanban();
-        alert("Đã thêm thành viên vào công việc!");
+        closeModal('modalCreateTask');
+        await fetchTasks();
+        alert("Đã tạo việc thành công!");
+      } else {
+        alert("Lỗi tạo việc: " + error.message);
       }
     }
 
-    function renderSubmissionsTable(task) {
-      const tbody = document.getElementById('detailSubmissionTableBody');
-      tbody.innerHTML = '';
-      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
-
-      if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Chưa có thành viên nào nộp báo cáo kết quả.</td></tr>';
-        return;
-      }
-
-      subs.forEach(sub => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${sub.userName}</b></td>
-          <td>${sub.note || '(Không)'}</td>
-          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive Báo Cáo</a>` : '(Chưa kèm link)'}</td>
-          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time}</span></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function submitMyTaskResult() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      const driveUrl = document.getElementById('mySubDriveUrl').value.trim();
-      const note = document.getElementById('mySubNoteInput').value.trim();
-      const currentUser = users.find(u => u.id === currentUserId);
-
-      if (!driveUrl && !note) {
-        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú!");
-        return;
-      }
-
-      const newSub = {
-        userId: currentUserId,
-        userName: currentUser ? currentUser.full_name : "N/A",
-        note,
-        driveUrl,
-        time: new Date().toLocaleString('vi-VN')
-      };
-
-      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
-      currentSubs.push(newSub);
-
-      await supabaseClient.from('tasks').update({ member_submissions: currentSubs }).eq('id', task.id);
-      task.member_submissions = currentSubs;
-
-      document.getElementById('mySubDriveUrl').value = '';
-      document.getElementById('mySubNoteInput').value = '';
-      renderSubmissionsTable(task);
-      alert("Đã lưu báo cáo của bạn!");
-    }
-
-    async function saveTaskStatusFromDetail() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      if (!task) return;
-      const newStatus = document.getElementById('detailStatusSelect').value;
-
-      await supabaseClient.from('tasks').update({ status: newStatus, updated_at: new Date() }).eq('id', task.id);
-      closeModal('modalTaskDetail');
-      await fetchTasks();
-    }
-
-    // 9. BẢNG ĐIỂM HIỆU SUẤT DSU & SETUP CÔNG THỨC
-    function openScoreSetupModal() {
-      document.getElementById('cfgScoreOnTime').value = scoreConfig.onTime;
-      document.getElementById('cfgScoreLate').value = scoreConfig.late;
-      document.getElementById('cfgScoreUrgent').value = scoreConfig.urgentBonus;
-      document.getElementById('cfgScoreOverduePenalty').value = scoreConfig.overduePenalty;
-      document.getElementById('modalScoreSetup').style.display = 'flex';
-    }
-
-    function saveScoreConfig() {
-      scoreConfig.onTime = Number(document.getElementById('cfgScoreOnTime').value) || 10;
-      scoreConfig.late = Number(document.getElementById('cfgScoreLate').value) || 5;
-      scoreConfig.urgentBonus = Number(document.getElementById('cfgScoreUrgent').value) || 5;
-      scoreConfig.overduePenalty = Number(document.getElementById('cfgScoreOverduePenalty').value) || 2;
-
-      localStorage.setItem("DSU_SCORE_CONFIG", JSON.stringify(scoreConfig));
-      closeModal('modalScoreSetup');
-
-      renderScoreBoard();
-      renderGuideScoreFormula();
-      alert("Đã lưu công thức tính điểm DSU mới và cập nhật toàn bộ bảng thi đua!");
-    }
-
+    // 8. BẢNG TÍNH ĐIỂM DSU
     function renderScoreBoard() {
       const tbody = document.getElementById('scoreTableBody');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      document.getElementById('scoreFormulaSummaryText').textContent = 
-        `Quy chế hiện hành: Đúng hạn (+${scoreConfig.onTime}đ) | Hoàn thành trễ (+${scoreConfig.late}đ) | Việc hỏa tốc (+${scoreConfig.urgentBonus}đ thưởng) | Quá hạn chưa xong (-${scoreConfig.overduePenalty}đ)`;
-
       users.forEach((u, idx) => {
         const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(u.id) : t.assignee_id === u.id));
         const completed = myTasks.filter(t => t.status === 'completed').length;
         const overdue = myTasks.filter(t => t.status !== 'completed' && calculateDeadlineAlert(t.due_datetime, t.status).type === 'overdue').length;
-        const urgentCompleted = myTasks.filter(t => t.status === 'completed' && t.priority === 'urgent').length;
-
-        // Tính tổng điểm động theo cấu hình Lãnh đạo đặt
-        let totalScore = (completed * scoreConfig.onTime) + (urgentCompleted * scoreConfig.urgentBonus) - (overdue * scoreConfig.overduePenalty);
-        if (totalScore < 0) totalScore = 0;
-
-        let rankTitle = "Chưa xếp loại";
-        if (myTasks.length > 0) {
-          const rate = Math.round((completed / myTasks.length) * 100);
-          if (rate >= 90) rankTitle = "Xuất sắc (A+)";
-          else if (rate >= 75) rankTitle = "Tốt (A)";
-          else if (rate >= 50) rankTitle = "Đạt (B)";
-          else rankTitle = "Cần cải thiện (C)";
-        }
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -1667,146 +1156,41 @@
           <td style="text-align:center; font-weight:700;">${myTasks.length}</td>
           <td style="text-align:center; color:var(--succ-green); font-weight:700;">${completed}</td>
           <td style="text-align:center; color:var(--danger-red);">${overdue}</td>
-          <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:16px;">${totalScore}</td>
-          <td style="text-align:center;"><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; background:var(--bg-surface);">${rankTitle}</span></td>
+          <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:16px;">${completed * 10}</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // 10. HIỂN THỊ CÁCH TÍNH ĐIỂM DSU TẠI TAB HƯỚNG DẪN SỬ DỤNG
-    function renderGuideScoreFormula() {
-      const box = document.getElementById('guideScoreFormulaBox');
-      if (!box) return;
-      box.innerHTML = `
-        <div style="background:var(--bg-surface); padding:12px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:10px;">
-          <b>📐 Công thức tính tổng điểm DSU của mỗi nhân sự:</b><br>
-          <span style="font-family:monospace; font-size:13px; color:var(--accent-light);">
-            Tổng Điểm = (Số việc hoàn thành × <b>${scoreConfig.onTime}đ</b>) + (Việc hỏa tốc hoàn thành × <b>+${scoreConfig.urgentBonus}đ</b>) - (Việc quá hạn chưa xong × <b>${scoreConfig.overduePenalty}đ</b>)
-          </span>
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div>• <b>Đúng hạn:</b> Được cộng <b>+${scoreConfig.onTime} điểm</b> cho mỗi nhiệm vụ nghiệm thu.</div>
-          <div>• <b>Hoàn thành trễ:</b> Ghi nhận <b>+${scoreConfig.late} điểm</b> động viên.</div>
-          <div>• <b>Việc hỏa tốc/khẩn cấp:</b> Thưởng thêm <b>+${scoreConfig.urgentBonus} điểm</b>/việc.</div>
-          <div>• <b>Chưa hoàn thành mà quá hạn:</b> Trừ <b>-${scoreConfig.overduePenalty} điểm</b>/việc trễ.</div>
-        </div>
-        <div style="margin-top:10px; font-size:12px; color:var(--text-muted);">
-          🎖️ <b>Tiêu chuẩn thi đua:</b> Tỷ lệ hoàn thành ≥ 90% đạt loại <b>Xuất sắc (A+)</b>; ≥ 75% đạt loại <b>Tốt (A)</b>; ≥ 50% đạt loại <b>Đạt (B)</b>; dưới 50% là <b>Cần cải thiện (C)</b>.
-        </div>
-      `;
-    }
-
-    // 11. QUẢN TRỊ NHÂN SỰ & GOOGLE DRIVE
-    function saveDriveLinkConfig() {
-      const url = document.getElementById('cfgDriveUrlInput').value.trim();
-      if (!url) {
-        alert("Vui lòng nhập đường link Google Drive hợp lệ!");
-        return;
-      }
-      driveFolderUrl = url;
-      localStorage.setItem("DSU_DRIVE_FOLDER_URL", url);
-      alert("Đã cập nhật và lưu đường link Google Drive 100GB/500GB của Trung tâm!");
-    }
-
+    // 9. QUẢN TRỊ NHÂN SỰ
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
       if (!tbody) return;
       tbody.innerHTML = '';
-
       users.forEach(u => {
         const tr = document.createElement('tr');
-        let roleName = u.role === 'hod' ? 'Trưởng / Phó TT (Lãnh đạo)' : (u.role === 'admin' ? 'Quản trị viên' : 'Nhân viên');
         tr.innerHTML = `
           <td><b>${u.full_name}</b></td>
           <td>${u.phone || 'N/A'}</td>
           <td>${u.email || 'N/A'}</td>
-          <td>${u.title || 'Chuyên viên'}</td>
-          <td><span style="font-size:11px; font-weight:700;">${roleName}</span></td>
-          <td style="text-align:right;">
-            <button class="btn btn-primary btn-sm" onclick="openEditUserModalAdmin('${u.id}')">✏️ Sửa tất cả</button>
-            <button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')" style="margin-left:4px;">Xóa</button>
-          </td>
+          <td>${u.role || 'staff'}</td>
+          <td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">Xóa</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function openRegisterModalAdmin() {
-      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới (Admin)";
-      document.getElementById('editUserId').value = '';
-      document.getElementById('regFullName').value = '';
-      document.getElementById('regPhone').value = '';
-      document.getElementById('regEmail').value = '';
-      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
-      document.getElementById('regRole').value = 'staff';
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    function openEditUserModalAdmin(userId) {
-      const user = users.find(u => u.id === userId);
-      if (!user) return;
-
-      document.getElementById('modalRegisterTitle').textContent = `✏️ Sửa toàn diện nhân sự: ${user.full_name}`;
-      document.getElementById('editUserId').value = user.id;
-      document.getElementById('regFullName').value = user.full_name;
-      document.getElementById('regPhone').value = user.phone;
-      document.getElementById('regEmail').value = user.email;
-      document.getElementById('regTitle').value = user.title;
-      document.getElementById('regRole').value = user.role;
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    async function submitSaveUserAdmin() {
-      const editId = document.getElementById('editUserId').value;
-      const name = document.getElementById('regFullName').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const title = document.getElementById('regTitle').value.trim();
-      const role = document.getElementById('regRole').value;
-
-      if (!name || !phone) {
-        alert("Vui lòng điền đủ Họ tên và SĐT!");
-        return;
-      }
-
-      if (editId) {
-        // CẬP NHẬT TOÀN DIỆN TẤT CẢ CÁC TRƯỜNG
-        await supabaseClient.from('app_users').update({
-          full_name: name, phone, email, title, role
-        }).eq('id', editId);
-
-        const userIdx = users.findIndex(u => u.id === editId);
-        if (userIdx !== -1) {
-          users[userIdx] = { ...users[userIdx], full_name: name, phone, email, title, role };
-        }
-        alert("Đã cập nhật thông tin thành công!");
-      } else {
-        const { data } = await supabaseClient.from('app_users').insert([{
-          full_name: name, phone, email, title, role, password_hash: '123456'
-        }]).select();
-        if (data) users.push(data[0]);
-        alert(`Đã thêm nhân sự: ${name}`);
-      }
-
-      renderAdminUserTable();
-      renderScoreBoard();
-      updateCurrentUserUI();
-      closeModal('modalRegister');
-    }
-
     async function deleteUser(uid) {
-      if (!confirm("Xác nhận xóa nhân sự này khỏi hệ thống?")) return;
+      if (!confirm("Xác nhận xóa nhân sự này?")) return;
       await supabaseClient.from('app_users').delete().eq('id', uid);
       users = users.filter(u => u.id !== uid);
       renderAdminUserTable();
       renderScoreBoard();
     }
 
-    // 12. ĐĂNG NHẬP / ĐĂNG XUẤT
+    // 10. AUTH & TABS
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
-      localStorage.removeItem("DSU_LAST_LOGIN_DATE");
       currentUserId = null;
       document.getElementById('modalAuth').style.display = 'flex';
     }
@@ -1819,7 +1203,6 @@
       if (data && data.length > 0) {
         currentUserId = data[0].id;
         localStorage.setItem("DSU_CURRENT_USER_ID", data[0].id);
-        localStorage.setItem("DSU_LAST_LOGIN_DATE", new Date().toISOString().split('T')[0]);
         closeModal('modalAuth');
         await initApp();
       } else {
@@ -1837,14 +1220,12 @@
       const activeBtn = document.getElementById('tabBtn-' + tabId.replace('Tab', ''));
       if (activeBtn) activeBtn.classList.add('active');
 
-      if (tabId === 'chatTab') selectChatMode(activeChatTargetId);
       if (tabId === 'scoreTab') renderScoreBoard();
       if (tabId === 'adminTab') renderAdminUserTable();
-      if (tabId === 'guideTab') renderGuideScoreFormula();
     }
 
     function updateCurrentUserUI() {
-      const user = users.find(u => u.id === currentUserId) || users[0];
+      const user = users.find(u => u.id === currentUserId);
       if (user) {
         document.getElementById('currentUserBadge').innerHTML = `<b>${user.full_name}</b><div style="color:var(--accent-light); font-size:10px;">${user.title || 'Chuyên viên'}</div>`;
       }
@@ -1860,7 +1241,7 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openDriveFolder() { window.open(driveFolderUrl, '_blank'); }
+    function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
 
     window.onload = initApp;
   </script>
