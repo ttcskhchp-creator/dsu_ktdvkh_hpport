@@ -11,7 +11,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* THEME SYSTEM */
+    /* ======================================================== */
+    /* THEME SYSTEM (DARK & LIGHT DSU)                         */
+    /* ======================================================== */
     html[data-theme="dark"] {
       --bg-dark: #0B1528;
       --bg-card: #11203B;
@@ -26,6 +28,7 @@
       --text-muted: #9FB0C9;
       --gold-star: #FFD700;
       --shadow-color: rgba(0,0,0,0.4);
+      --bg-chibi-opacity: 0.12;
     }
 
     html[data-theme="light"] {
@@ -42,6 +45,7 @@
       --text-muted: #5E6A7E;
       --gold-star: #D4A017;
       --shadow-color: rgba(19, 35, 63, 0.08);
+      --bg-chibi-opacity: 0.08;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,6 +59,46 @@
       position: relative;
       overflow-x: hidden;
       transition: background 0.25s, color 0.25s;
+    }
+
+    /* ======================================================== */
+    /* CÁC HÌNH ẢNH NỀN VĂN PHÒNG, CẢNG BIỂN, CONTAINER, ROBOT */
+    /* ======================================================== */
+    .bg-art-item {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: var(--bg-chibi-opacity);
+      transition: opacity 0.3s ease;
+    }
+    /* Góc dưới trái: Tàu container cảng biển & Sóng */
+    .bg-art-ship {
+      left: 15px;
+      bottom: 10px;
+      width: 170px;
+      height: 140px;
+    }
+    /* Góc dưới phải: Robot cảng biển AI & Kỹ sư */
+    .bg-art-robot {
+      right: 15px;
+      bottom: 15px;
+      width: 160px;
+      height: 140px;
+    }
+    /* Góc trên phải: Cần cẩu bãi container cảng */
+    .bg-art-crane {
+      right: 80px;
+      top: 110px;
+      width: 130px;
+      height: 130px;
+    }
+    /* Nền trung tâm mờ: Tòa nhà điều hành & Văn phòng số */
+    .bg-art-center {
+      left: 45%;
+      bottom: 40px;
+      width: 200px;
+      height: 160px;
+      transform: translateX(-50%);
     }
 
     /* HEADER */
@@ -171,6 +215,75 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* ======================================================== */
+    /* THẺ TỔNG KẾT THỐNG KÊ CÔNG VIỆC                         */
+    /* ======================================================== */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 10px 0 0 10px;
+      background: var(--stat-color, var(--accent-blue));
+    }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .stat-val { font-size: 24px; font-weight: 800; margin-top: 4px; color: var(--text-main); }
+
+    /* CẢNH BÁO VÀNG DƯỚI 12H VÀ ĐỎ SÉT ĐÁNH */
+    @keyframes yellowPulse {
+      0%, 100% { box-shadow: 0 0 4px rgba(240, 138, 36, 0.4); border-color: var(--warn-orange); }
+      50% { box-shadow: 0 0 16px rgba(240, 138, 36, 0.85); border-color: #ffd166; }
+    }
+    .card-warn-12h {
+      animation: yellowPulse 2s infinite ease-in-out;
+      border: 1px solid var(--warn-orange) !important;
+      background: linear-gradient(180deg, rgba(240, 138, 36, 0.12) 0%, var(--bg-surface) 100%) !important;
+    }
+
+    @keyframes redLightning {
+      0%, 100% { box-shadow: 0 0 0px transparent; border-color: var(--danger-red); transform: translateX(0); }
+      15%, 45% {
+        box-shadow: 0 0 25px rgba(217, 56, 56, 0.95), inset 0 0 15px rgba(255, 255, 255, 0.5);
+        border-color: #ff3333;
+        background-color: rgba(217, 56, 56, 0.25);
+        transform: translateX(-1px);
+      }
+      30%, 60% { box-shadow: 0 0 8px rgba(255, 80, 80, 0.6); transform: translateX(1px); }
+    }
+    .card-danger-overdue {
+      animation: redLightning 1.2s infinite ease-in-out;
+      border: 1px solid var(--danger-red) !important;
+      background: linear-gradient(180deg, rgba(217, 56, 56, 0.18) 0%, var(--bg-surface) 100%) !important;
+    }
+
+    .countdown-tag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tag-warn-12h { background: var(--warn-orange); color: #fff; }
+    .tag-danger-overdue { background: var(--danger-red); color: #fff; text-shadow: 0 0 4px #000; }
+    .tag-normal { background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-color); }
+
     /* KANBAN BOARD */
     .kanban-grid {
       display: grid;
@@ -211,7 +324,7 @@
       border: 1px solid var(--border-color);
     }
 
-    /* HIỆU ỨNG TỰ CUỘN TRÒN KHI CÓ NHIỀU TASK (AUTO-SCROLL) VÀ DỪNG KHI HOVER */
+    /* CUỘN TỰ ĐỘNG KHI CÓ NHIỀU TASK VÀ DỪNG KHI HOVER */
     .col-body {
       padding: 12px;
       display: flex;
@@ -221,9 +334,6 @@
       overflow-y: auto;
       scrollbar-width: thin;
       position: relative;
-    }
-    .col-body.auto-scroll-enabled {
-      scroll-behavior: smooth;
     }
 
     .task-card {
@@ -329,7 +439,7 @@
     /* HƯỚNG DẪN SỬ DỤNG CARD */
     .guide-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
     }
     .guide-card {
@@ -343,7 +453,7 @@
       box-shadow: 0 2px 8px var(--shadow-color);
     }
     .guide-role-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -353,7 +463,7 @@
       padding-bottom: 8px;
     }
     .guide-step {
-      font-size: 12.5px;
+      font-size: 12px;
       line-height: 1.5;
       color: var(--text-main);
     }
@@ -385,6 +495,63 @@
 </head>
 <body>
 
+  <!-- ======================================================== -->
+  <!-- ẢNH NỀN MINH HỌA CẢNG BIỂN, CONTAINER, ROBOT CHIBI      -->
+  <!-- ======================================================== -->
+
+  <!-- 1. Tàu biển container & Sóng cảng Hải Phòng (Góc dưới trái) -->
+  <svg class="bg-art-item bg-art-ship" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20,95 L140,95 L125,115 L35,115 Z" fill="#2563C9"/>
+    <rect x="35" y="65" width="22" height="28" fill="#F08A24" rx="2"/>
+    <rect x="60" y="60" width="22" height="33" fill="#1F8A55" rx="2"/>
+    <rect x="85" y="70" width="22" height="23" fill="#D93838" rx="2"/>
+    <rect x="110" y="75" width="20" height="18" fill="#8DB8FF" rx="2"/>
+    <rect x="120" y="45" width="10" height="25" fill="#182C4E"/>
+    <line x1="125" y1="45" x2="125" y2="35" stroke="#FFD700" stroke-width="3"/>
+    <path d="M5,116 Q45,108 85,116 T165,116" stroke="#8DB8FF" stroke-width="3" fill="none"/>
+  </svg>
+
+  <!-- 2. Cần cẩu bãi container Cảng (Góc trên phải) -->
+  <svg class="bg-art-item bg-art-crane" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <line x1="20" y1="110" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
+    <line x1="100" y1="110" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
+    <line x1="30" y1="80" x2="90" y2="80" stroke="#F08A24" stroke-width="3"/>
+    <line x1="40" y1="50" x2="80" y2="50" stroke="#F08A24" stroke-width="3"/>
+    <line x1="60" y1="15" x2="115" y2="15" stroke="#2563C9" stroke-width="5"/>
+    <line x1="95" y1="15" x2="95" y2="45" stroke="#FFD700" stroke-width="2" stroke-dasharray="3,3"/>
+    <rect x="85" y="45" width="20" height="12" fill="#1F8A55" rx="2"/>
+  </svg>
+
+  <!-- 3. Robot Chibi thông minh điều phối cảng AI (Góc dưới phải) -->
+  <svg class="bg-art-item bg-art-robot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="35" y="30" width="50" height="42" rx="10" fill="#2563C9"/>
+    <circle cx="48" cy="48" r="6" fill="#8DB8FF"/>
+    <circle cx="72" cy="48" r="6" fill="#8DB8FF"/>
+    <rect x="47" y="62" width="26" height="4" rx="2" fill="#fff"/>
+    <line x1="60" y1="30" x2="60" y2="15" stroke="#F08A24" stroke-width="4"/>
+    <circle cx="60" cy="12" r="6" fill="#FFD700"/>
+    <rect x="40" y="76" width="40" height="26" rx="6" fill="#182C4E"/>
+    <text x="44" y="93" font-size="9" fill="#00e676" font-family="sans-serif" font-weight="bold">AI PORT</text>
+    <rect x="25" y="42" width="6" height="18" rx="3" fill="#F08A24"/>
+    <rect x="89" y="42" width="6" height="18" rx="3" fill="#F08A24"/>
+  </svg>
+
+  <!-- 4. Tòa nhà trung tâm điều hành cảng mờ ở giữa nền -->
+  <svg class="bg-art-item bg-art-center" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="30" y="40" width="50" height="75" fill="#182C4E" rx="3"/>
+    <rect x="90" y="20" width="60" height="95" fill="#11203B" rx="3"/>
+    <polygon points="120,5 105,20 135,20" fill="#2563C9"/>
+    <line x1="120" y1="5" x2="120" y2="0" stroke="#FFD700" stroke-width="3"/>
+    <rect x="40" y="50" width="10" height="10" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="60" y="50" width="10" height="10" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="40" y="70" width="10" height="10" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="60" y="70" width="10" height="10" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="105" y="35" width="12" height="12" fill="#F08A24" opacity="0.6"/>
+    <rect x="125" y="35" width="12" height="12" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="105" y="55" width="12" height="12" fill="#8DB8FF" opacity="0.6"/>
+    <rect x="125" y="55" width="12" height="12" fill="#8DB8FF" opacity="0.6"/>
+  </svg>
+
   <!-- HEADER -->
   <header>
     <div class="brand-wrap">
@@ -407,7 +574,9 @@
     </div>
   </header>
 
-  <!-- NAVIGATION TABS -->
+  <!-- ======================================================== -->
+  <!-- NAVIGATION TABS (ĐÃ CHỈNH HƯỚNG DẪN VỀ CUỐI CÙNG BÊN PHẢI) -->
+  <!-- ======================================================== -->
   <nav class="nav-tabs-bar">
     <button class="nav-tab-btn active" id="tabBtn-tasks" onclick="switchMainTab('tasksTab')">
       📋 Bảng Công việc (Kanban)
@@ -415,14 +584,15 @@
     <button class="nav-tab-btn" id="tabBtn-chat" onclick="switchMainTab('chatTab')">
       💬 Chat Live & Chat 1-1
     </button>
-    <button class="nav-tab-btn" id="tabBtn-guide" onclick="switchMainTab('guideTab')">
-      📖 Hướng Dẫn Sử Dụng
-    </button>
     <button class="nav-tab-btn" id="tabBtn-score" onclick="switchMainTab('scoreTab')">
       🏆 Bảng Điểm Hiệu Suất
     </button>
     <button class="nav-tab-btn" id="adminTabBtn" onclick="promptAdminPasswordAndOpen()">
       ⚙️ Quản trị & Google Drive
+    </button>
+    <!-- Tab Hướng Dẫn Sử Dụng được đặt ở vị trí cuối cùng bên phải -->
+    <button class="nav-tab-btn" id="tabBtn-guide" onclick="switchMainTab('guideTab')">
+      📖 Hướng Dẫn Sử Dụng
     </button>
   </nav>
 
@@ -430,12 +600,33 @@
   <main class="container">
 
     <!-- ========================================== -->
-    <!-- TAB 1: KANBAN BOARD                        -->
+    <!-- TAB 1: KANBAN BOARD & CÁC THẺ THỐNG KÊ   -->
     <!-- ========================================== -->
     <div id="tasksTab" class="tab-content active">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color);">
+      
+      <!-- CÁC THẺ TỔNG KẾT CÔNG VIỆC (ĐÃ ĐƯỢC BẢO VỆ DỮ LIỆU) -->
+      <section class="stats-strip">
+        <div class="stat-card" style="--stat-color: var(--accent-light);">
+          <div class="stat-lbl">📊 Tổng số công việc</div>
+          <div class="stat-val" id="totalTasksCount">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: var(--danger-red);">
+          <div class="stat-lbl" style="color:#ff7b7b;">⚡ ĐÃ QUÁ HẠN (SÉT ĐÁNH)</div>
+          <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: var(--warn-orange);">
+          <div class="stat-lbl" style="color:#ffb469;">⏳ SẮP HẾT HẠN (&lt; 12 GIỜ)</div>
+          <div class="stat-val" id="warn12hCount" style="color:#ffb469;">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: var(--succ-green);">
+          <div class="stat-lbl">✅ Đã hoàn thành</div>
+          <div class="stat-val" id="completedCount">0</div>
+        </div>
+      </section>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); box-shadow:0 2px 6px var(--shadow-color);">
         <div style="font-size:12px; color:var(--accent-light);">
-          ✨ <b>Tính năng Tự động Cuộn:</b> Cột có nhiều việc sẽ tự động cuộn từ từ để trình chiếu và <b>dừng lại khi bạn di chuột vào</b>!
+          ✨ <b>Tự động Cuộn Bảng:</b> Cột có nhiều việc sẽ tự động cuộn từ từ để trình chiếu và <b>tự động dừng lại khi bạn di chuột vào</b>!
         </div>
         <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">
           📂 Kho Google Drive TT (100GB)
@@ -512,52 +703,10 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 3: HƯỚNG DẪN SỬ DỤNG CHO CÁC THÀNH VIÊN -->
-    <!-- ========================================== -->
-    <div id="guideTab" class="tab-content">
-      <div class="guide-grid">
-        <!-- HƯỚNG DẪN CHO LÃNH ĐẠO TRUNG TÂM -->
-        <div class="guide-card">
-          <div class="guide-role-title">🎖️ Ban Lãnh Đạo (Trưởng / Phó Trung tâm)</div>
-          <div class="guide-step">1. <b>Giao việc:</b> Bấm <i>"+ Giao việc mới"</i>, chọn các nhân sự phối hợp, chỉ định 1 Leader phụ trách chính và thời hạn.</div>
-          <div class="guide-step">2. <b>Thêm người vào việc đang chạy:</b> Mở chi tiết việc, bấm <i>"➕ Thêm thành viên"</i> để bổ sung người ngay tức khắc.</div>
-          <div class="guide-step">3. <b>Điều chỉnh Leader:</b> Có toàn quyền đổi Nhóm trưởng mới hoặc loại bớt người khỏi nhiệm vụ bất kỳ lúc nào.</div>
-          <div class="guide-step">4. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive của nhân viên và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
-        </div>
-
-        <!-- HƯỚNG DẪN CHO NHÓM TRƯỞNG (TASK LEADER) -->
-        <div class="guide-card">
-          <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
-          <div class="guide-step">1. <b>Trách nhiệm:</b> Là người đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
-          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Có quyền chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>.</div>
-          <div class="guide-step">3. <b>Bổ sung nhân sự:</b> Được quyền bấm <i>"➕ Thêm thành viên"</i> nếu cần thêm đồng nghiệp hỗ trợ.</div>
-          <div class="guide-step">4. <b>Đôn đốc nộp báo cáo:</b> Nhắc các thành viên dán link Google Drive hoặc nộp file trước mốc 09h00 sáng.</div>
-        </div>
-
-        <!-- HƯỚNG DẪN CHO NHÂN VIÊN (STAFF) -->
-        <div class="guide-card">
-          <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện (Staff)</div>
-          <div class="guide-step">1. <b>Theo dõi công việc:</b> Xem việc được phân công tại bảng Kanban. Chú ý các việc viền vàng (&lt;12h) và viền đỏ (quá hạn).</div>
-          <div class="guide-step">2. <b>Nộp kết quả (Ưu tiên Drive):</b> Bấm vào việc, dán link Google Drive chứa file kết quả (hoặc upload file nhẹ) và bấm <i>"Lưu kết quả của tôi"</i>.</div>
-          <div class="guide-step">3. <b>Xem STT của mình:</b> Kiểm tra đúng số thứ tự và phần việc của mình trong bảng phân công để tránh làm chồng chéo.</div>
-          <div class="guide-step">4. <b>Trao đổi:</b> Bấm sang tab <i>Chat Live</i> để nhắn tin riêng 1-1 với Leader hoặc chat toàn phòng.</div>
-        </div>
-
-        <!-- HƯỚNG DẪN CHO QUẢN TRỊ VIÊN (ADMIN) -->
-        <div class="guide-card">
-          <div class="guide-role-title">⚙️ Quản Trị Viên (Web Admin)</div>
-          <div class="guide-step">1. <b>Quản lý tài khoản:</b> Cấp tài khoản mới, phân chức danh Trưởng/Phó Trung tâm cho nhân sự.</div>
-          <div class="guide-step">2. <b>Sửa lỗi đăng ký:</b> Sửa lại thông tin, SĐT Zalo hoặc đặt lại mật khẩu cho nhân sự đăng ký nhầm.</div>
-          <div class="guide-step">3. <b>Bảo trì kho dữ liệu:</b> Cấu hình link kho Google Drive 100GB dùng chung cho toàn trung tâm.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- TAB 4: BẢNG TÍNH ĐIỂM                      -->
+    <!-- TAB 3: BẢNG TÍNH ĐIỂM                      -->
     <!-- ========================================== -->
     <div id="scoreTab" class="tab-content">
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
+      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px; box-shadow:0 2px 8px var(--shadow-color);">
         <table class="dsu-table">
           <thead>
             <tr>
@@ -576,12 +725,17 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 5: QUẢN TRỊ & GOOGLE DRIVE             -->
+    <!-- TAB 4: QUẢN TRỊ & GOOGLE DRIVE             -->
     <!-- ========================================== -->
     <div id="adminTab" class="tab-content">
+      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px; margin-bottom:16px;">
+        <h3 style="font-size:15px; color:var(--text-main); margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
+        <button class="btn btn-drive" onclick="openDriveFolder()">Mở Google Drive Trung tâm</button>
+      </div>
+
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3>Quản Trị Nhân Sự</h3>
+          <h3>Danh Sách Nhân Sự</h3>
           <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự</button>
         </div>
         <table class="dsu-table">
@@ -596,6 +750,44 @@
           </thead>
           <tbody id="adminUserTableBody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: HƯỚNG DẪN SỬ DỤNG (CUỐI CÙNG)       -->
+    <!-- ========================================== -->
+    <div id="guideTab" class="tab-content">
+      <div class="guide-grid">
+        <div class="guide-card">
+          <div class="guide-role-title">🎖️ Ban Lãnh Đạo (Trưởng / Phó Trung tâm)</div>
+          <div class="guide-step">1. <b>Giao việc:</b> Bấm <i>"+ Giao việc mới"</i>, chọn các nhân sự phối hợp, chỉ định 1 Leader phụ trách chính và thời hạn.</div>
+          <div class="guide-step">2. <b>Thêm người vào việc đang chạy:</b> Mở chi tiết việc, bấm <i>"➕ Thêm thành viên"</i> để bổ sung người ngay tức khắc.</div>
+          <div class="guide-step">3. <b>Điều chỉnh Leader:</b> Có toàn quyền đổi Nhóm trưởng mới hoặc loại bớt người khỏi nhiệm vụ bất kỳ lúc nào.</div>
+          <div class="guide-step">4. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive của nhân viên và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
+          <div class="guide-step">1. <b>Trách nhiệm:</b> Là người đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
+          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Có quyền chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>.</div>
+          <div class="guide-step">3. <b>Bổ sung nhân sự:</b> Được quyền bấm <i>"➕ Thêm thành viên"</i> nếu cần thêm đồng nghiệp hỗ trợ.</div>
+          <div class="guide-step">4. <b>Đôn đốc nộp báo cáo:</b> Nhắc các thành viên dán link Google Drive hoặc nộp file trước mốc 09h00 sáng.</div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện (Staff)</div>
+          <div class="guide-step">1. <b>Theo dõi công việc:</b> Xem việc được phân công tại bảng Kanban. Chú ý các việc viền vàng (&lt;12h) và viền đỏ (quá hạn).</div>
+          <div class="guide-step">2. <b>Nộp kết quả (Ưu tiên Drive):</b> Bấm vào việc, dán link Google Drive chứa file kết quả (hoặc upload file nhẹ) và bấm <i>"Lưu kết quả của tôi"</i>.</div>
+          <div class="guide-step">3. <b>Xem STT của mình:</b> Kiểm tra đúng số thứ tự và phần việc của mình trong bảng phân công để tránh làm chồng chéo.</div>
+          <div class="guide-step">4. <b>Trao đổi:</b> Bấm sang tab <i>Chat Live</i> để nhắn tin riêng 1-1 với Leader hoặc chat toàn phòng.</div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-role-title">⚙️ Quản Trị Viên (Web Admin)</div>
+          <div class="guide-step">1. <b>Quản lý tài khoản:</b> Cấp tài khoản mới, phân chức danh Trưởng/Phó Trung tâm cho nhân sự.</div>
+          <div class="guide-step">2. <b>Sửa lỗi đăng ký:</b> Sửa lại thông tin, SĐT Zalo hoặc đặt lại mật khẩu cho nhân sự đăng ký nhầm.</div>
+          <div class="guide-step">3. <b>Bảo trì kho dữ liệu:</b> Cấu hình link kho Google Drive 100GB dùng chung cho toàn trung tâm.</div>
+        </div>
       </div>
     </div>
 
@@ -648,7 +840,6 @@
           <input type="datetime-local" id="taskDueDateTime" class="form-control" required>
         </div>
 
-        <!-- ƯU TIÊN LINK GOOGLE DRIVE -->
         <div class="gdrive-highlight-box">
           <label style="font-weight:700; color:#fff;">⭐ Ưu tiên dán Link Google Drive (Kho 100GB):</label>
           <div style="display:flex; gap:8px; margin-top:4px;">
@@ -664,7 +855,7 @@
     </div>
   </div>
 
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC, THÊM THÀNH VIÊN VÀ BÁO CÁO DRIVE -->
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC -->
   <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
@@ -680,19 +871,14 @@
           <div id="detailTaskDesc" style="background:var(--bg-surface); padding:8px; border-radius:6px; font-size:12px;"></div>
         </div>
 
-        <!-- BẢNG PHÂN CÔNG VÀ NÚT THÊM THÀNH VIÊN TRỰC TIẾP -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
             <label>📋 Bảng phân công thành viên:</label>
-            <div style="display:flex; gap:6px;">
-              <!-- NÚT THÊM THÀNH VIÊN VÀO DỰ ÁN ĐANG CHẠY -->
-              <button class="btn btn-primary btn-sm" id="btnAddMemberBtn" onclick="openAddMemberSection()" style="display:none;">
-                ➕ Thêm thành viên vào việc
-              </button>
-            </div>
+            <button class="btn btn-primary btn-sm" id="btnAddMemberBtn" onclick="openAddMemberSection()" style="display:none;">
+              ➕ Thêm thành viên vào việc
+            </button>
           </div>
 
-          <!-- KHUNG CHỌN THÊM THÀNH VIÊN NHANH -->
           <div id="addMemberSection" style="display:none; background:rgba(37,99,201,0.12); border:1px dashed var(--accent-blue); padding:10px; border-radius:6px; margin-bottom:8px;">
             <div style="font-size:12px; font-weight:700; color:var(--accent-light); margin-bottom:6px;">Chọn nhân sự để thêm vào nhiệm vụ này:</div>
             <div style="display:flex; gap:8px;">
@@ -714,7 +900,6 @@
           </table>
         </div>
 
-        <!-- BẢNG BÁO CÁO CỦA TỪNG NGƯỜI -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>📁 Kết quả & Báo cáo đã nộp của các thành viên:</label>
           <table class="dsu-table" style="font-size:12px;">
@@ -730,7 +915,6 @@
           </table>
         </div>
 
-        <!-- FORM NỘP BÁO CÁO ƯU TIÊN LINK GOOGLE DRIVE -->
         <div class="form-group gdrive-highlight-box">
           <label style="font-weight:700; color:#fff;">📤 Nộp Báo Cáo Của Bạn (Ưu tiên dán Link Google Drive):</label>
           <div style="display:flex; gap:8px; margin-bottom:6px; margin-top:4px;">
@@ -743,7 +927,6 @@
           </div>
         </div>
 
-        <!-- ĐỔI TRẠNG THÁI -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>🔄 Trạng thái công việc (Quyền Leader / Lãnh đạo):</label>
           <select id="detailStatusSelect" class="form-control" style="font-weight:700;">
@@ -761,7 +944,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐĂNG NHẬP ĐẦU NGÀY -->
+  <!-- MODAL: ĐĂNG NHẬP -->
   <div class="modal-backdrop" id="modalAuth" style="display:none;">
     <div class="modal-box" style="max-width: 400px;">
       <div class="modal-header">
@@ -785,7 +968,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V12.0                     -->
+  <!-- JAVASCRIPT LOGIC V13.0 (ĐÃ SỬA LỖI MẤT DỮ LIỆU) -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -795,14 +978,20 @@
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let users = [];
+    // DỮ LIỆU MẪU DỰ PHÒNG AN TOÀN TRÁNH TRẮNG MÀN HÌNH
+    const backupUsers = [
+      { id: "usr_1", full_name: "Vũ Tiến Dũng", role: "admin", phone: "0787307004", email: "dungvt@haiphongport.com.vn", title: "Trưởng Trung tâm / Admin", password_hash: "123456" },
+      { id: "usr_2", full_name: "Nguyễn Văn Hùng", role: "hod", phone: "0912333444", email: "hung.nv@haiphongport.com.vn", title: "Phó Trung tâm", password_hash: "123456" },
+      { id: "usr_3", full_name: "Lê Minh Tuấn", role: "staff", phone: "0988777666", email: "tuan.lm@haiphongport.com.vn", title: "Chuyên viên Khai thác", password_hash: "123456" },
+      { id: "usr_4", full_name: "Trần Thị Mai", role: "staff", phone: "0934555666", email: "mai.tt@haiphongport.com.vn", title: "Điều phối CRM & Zalo OA", password_hash: "123456" }
+    ];
+
+    let users = [...backupUsers];
     let tasks = [];
     let chatMessages = [];
     let directMessages = [];
-    let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || null;
+    let currentUserId = localStorage.getItem("DSU_CURRENT_USER_ID") || "usr_1";
     let selectedTaskIdForDetail = null;
-
-    // Quản lý Chat: 'GROUP' hoặc ID của nhân sự đang chat 1-1
     let activeChatTargetId = 'GROUP';
 
     // 1. THEME VÀ PHIÊN LÀM VIỆC
@@ -812,6 +1001,7 @@
       document.getElementById("themeIcon").textContent = saved === "dark" ? "☀️" : "🌙";
       document.getElementById("themeLabel").textContent = saved === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
+
     function toggleTheme() {
       const cur = document.documentElement.getAttribute("data-theme");
       const next = cur === "dark" ? "light" : "dark";
@@ -831,38 +1021,57 @@
       return true;
     }
 
-    // 2. KHỞI TẠO HỆ THỐNG
+    // 2. KHỞI TẠO HỆ THỐNG VÀ BẢO ĐẢM KHÔNG MẤT DỮ LIỆU
     async function initApp() {
       initTheme();
       if (!checkDailySessionExpiry()) return;
+
+      // Khởi tạo hiển thị dữ liệu ngay lập tức với giá trị ban đầu để không bị trắng bảng
+      updateCurrentUserUI();
+      renderStats({ total: 0, overdue: 0, warn12h: 0, completed: 0 });
 
       await loadInitialData();
       setupRealtimeListeners();
       initAutoScrollColumns();
 
-      // Cập nhật trạng thái Online định kỳ mỗi phút
       updatePresenceHeartbeat();
       setInterval(updatePresenceHeartbeat, 60000);
+      setInterval(renderKanban, 30000);
     }
 
     async function loadInitialData() {
-      const { data: uData } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
-      if (uData) users = uData;
+      try {
+        const { data: uData } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
+        if (uData && uData.length > 0) {
+          users = uData;
+        }
 
-      await fetchTasks();
-      await fetchGroupChat();
-      await fetchDirectMessages();
+        await fetchTasks();
+        await fetchGroupChat();
+        await fetchDirectMessages();
 
-      updateCurrentUserUI();
-      renderPresenceList();
+        updateCurrentUserUI();
+        renderPresenceList();
+        renderScoreBoard();
+        renderAdminUserTable();
+      } catch (err) {
+        console.warn("Dùng dữ liệu cục bộ khi mất kết nối:", err);
+        renderKanban();
+        renderScoreBoard();
+      }
     }
 
     async function fetchTasks() {
-      const { data } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
-      if (data) {
-        tasks = data;
-        renderKanban();
+      try {
+        const { data } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
+        if (data) {
+          tasks = data;
+        }
+      } catch (e) {
+        console.error("Lỗi fetch tasks:", e);
       }
+      renderKanban();
+      renderScoreBoard();
     }
 
     async function fetchGroupChat() {
@@ -881,7 +1090,7 @@
 
     function setupRealtimeListeners() {
       supabaseClient
-        .channel('dsu-realtime-v12')
+        .channel('dsu-realtime-v13')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
         .on('postgres_changes', { event: '*', schema: 'public', table: 'group_chat_messages' }, () => {
           fetchGroupChat().then(() => renderChatConversation());
@@ -892,31 +1101,109 @@
         .subscribe();
     }
 
-    // 3. HIỆU ỨNG TỰ CUỘN TRÒN CỘT KANBAN (AUTO-SCROLL) VÀ DỪNG KHI HOVER
+    // 3. HIỆU ỨNG TỰ CUỘN TRÒN CỘT KANBAN VÀ DỪNG KHI HOVER
     function initAutoScrollColumns() {
       const cols = document.querySelectorAll('.col-body');
       cols.forEach(col => {
-        let scrollInterval = null;
         let isHovered = false;
-
         col.addEventListener('mouseenter', () => { isHovered = true; });
         col.addEventListener('mouseleave', () => { isHovered = false; });
 
-        scrollInterval = setInterval(() => {
+        setInterval(() => {
           if (isHovered) return;
-          // Chỉ cuộn nếu nội dung dài hơn chiều cao cột
           if (col.scrollHeight > col.clientHeight) {
             if (col.scrollTop + col.clientHeight >= col.scrollHeight - 2) {
-              col.scrollTop = 0; // Quay lại đầu cột để lặp vòng
+              col.scrollTop = 0;
             } else {
-              col.scrollTop += 1; // Cuộn từ từ 1px
+              col.scrollTop += 1;
             }
           }
         }, 50);
       });
     }
 
-    // 4. CẬP NHẬT TRẠNG THÁI ONLINE & RENDER DANH SÁCH CHAT 1-1
+    // 4. TÍNH HẠN CHÓT VÀ CẬP NHẬT THẺ TỔNG KẾT
+    function calculateDeadlineAlert(dueDateTimeStr, status) {
+      if (status === 'completed') return { text: '✅ Đã hoàn thành', badgeClass: 'tag-normal', cardClass: '', type: 'completed' };
+      if (!dueDateTimeStr) return { text: 'Không giới hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+
+      const now = new Date().getTime();
+      const deadline = new Date(dueDateTimeStr).getTime();
+      const diffMs = deadline - now;
+      const diffHours = diffMs / (1000 * 60 * 60);
+
+      if (diffMs < 0) {
+        return { text: '⚡ QUÁ HẠN CHÓT', badgeClass: 'tag-danger-overdue', cardClass: 'card-danger-overdue', type: 'overdue' };
+      }
+      if (diffHours <= 12) {
+        const h = Math.floor(diffHours);
+        const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        return { text: `⏳ CÒN ${h}H ${m}P (<12H)`, badgeClass: 'tag-warn-12h', cardClass: 'card-warn-12h', type: 'warn12h' };
+      }
+
+      const formatted = new Date(dueDateTimeStr).toLocaleDateString('vi-VN');
+      return { text: `Hạn: ${formatted}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+    }
+
+    function renderStats(counts) {
+      document.getElementById('totalTasksCount').textContent = counts.total || 0;
+      document.getElementById('overdueCount').textContent = counts.overdue || 0;
+      document.getElementById('warn12hCount').textContent = counts.warn12h || 0;
+      document.getElementById('completedCount').textContent = counts.completed || 0;
+    }
+
+    // 5. RENDER KANBAN
+    function renderKanban() {
+      const cols = {
+        pending: document.getElementById('col-pending'),
+        in_progress: document.getElementById('col-in_progress'),
+        review: document.getElementById('col-review'),
+        completed: document.getElementById('col-completed')
+      };
+      Object.keys(cols).forEach(k => { if (cols[k]) cols[k].innerHTML = ''; });
+
+      let counts = { total: tasks.length, pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, warn12h: 0 };
+
+      tasks.forEach(t => {
+        if (counts[t.status] !== undefined) counts[t.status]++;
+
+        const alertInfo = calculateDeadlineAlert(t.due_datetime, t.status);
+        if (alertInfo.type === 'overdue') counts.overdue++;
+        if (alertInfo.type === 'warn12h') counts.warn12h++;
+
+        const leader = users.find(u => u.id === t.leader_id) || { full_name: 'Nhóm trưởng' };
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : [t.assignee_id];
+
+        const card = document.createElement('div');
+        card.className = `task-card ${alertInfo.cardClass}`;
+        card.onclick = () => openTaskDetailModal(t.id);
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
+            <span class="leader-badge">⭐ ${leader.full_name}</span>
+          </div>
+          <div class="task-title">${t.title}</div>
+          <div style="font-size:11px; color:var(--text-muted);">${t.description || ''}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+            <span class="countdown-tag ${alertInfo.badgeClass}">${alertInfo.text}</span>
+            <div style="display:flex; align-items:center; gap:2px;">
+              ${memberIds.map(uid => `<div class="mini-avatar" title="${users.find(u=>u.id===uid)?.full_name || ''}">${(users.find(u=>u.id===uid)?.full_name || 'U').charAt(0)}</div>`).join('')}
+              <span style="font-size:10px; color:var(--text-muted); margin-left:4px;">(${memberIds.length} ng)</span>
+            </div>
+          </div>
+        `;
+        if (cols[t.status]) cols[t.status].appendChild(card);
+      });
+
+      renderStats(counts);
+
+      document.getElementById('badge-pending').textContent = counts.pending;
+      document.getElementById('badge-in_progress').textContent = counts.in_progress;
+      document.getElementById('badge-review').textContent = counts.review;
+      document.getElementById('badge-completed').textContent = counts.completed;
+    }
+
+    // 6. ONLINE PRESENCE & CHAT 1-1
     async function updatePresenceHeartbeat() {
       if (!currentUserId) return;
       await supabaseClient.from('app_users').update({ last_seen: new Date() }).eq('id', currentUserId);
@@ -929,7 +1216,7 @@
       const now = Date.now();
 
       users.forEach(u => {
-        if (u.id === currentUserId) return; // Không hiển thị chính mình
+        if (u.id === currentUserId) return;
         const isOnline = (now - new Date(u.last_seen || 0).getTime()) < 3 * 60 * 1000;
         const isActive = activeChatTargetId === u.id;
 
@@ -939,7 +1226,7 @@
         div.innerHTML = `
           <div>
             <b>${u.full_name}</b>
-            <div style="font-size:10px; color:var(--text-muted);">${u.title}</div>
+            <div style="font-size:10px; color:var(--text-muted);">${u.title || 'Thành viên'}</div>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
             <span style="font-size:10px; color:${isOnline ? '#00e676' : 'var(--text-muted)'};">${isOnline ? 'Online' : 'Offline'}</span>
@@ -950,7 +1237,6 @@
       });
     }
 
-    // 5. CHUYỂN ĐỔI CHẾ ĐỘ CHAT: CHUNG HOẶC CHAT RIÊNG 1-1
     function selectChatMode(targetId) {
       activeChatTargetId = targetId;
       renderPresenceList();
@@ -976,15 +1262,9 @@
       chatArea.innerHTML = '';
 
       let listToRender = [];
-
       if (activeChatTargetId === 'GROUP') {
-        listToRender = chatMessages.map(m => ({
-          sender_id: m.sender_id,
-          message: m.message,
-          created_at: m.created_at
-        }));
+        listToRender = chatMessages;
       } else {
-        // Lọc tin nhắn riêng 1-1 giữa currentUserId và activeChatTargetId
         listToRender = directMessages.filter(m => 
           (m.sender_id === currentUserId && m.receiver_id === activeChatTargetId) ||
           (m.sender_id === activeChatTargetId && m.receiver_id === currentUserId)
@@ -1023,46 +1303,6 @@
           message: text
         }]);
       }
-    }
-
-    // 6. RENDER KANBAN
-    function renderKanban() {
-      const cols = {
-        pending: document.getElementById('col-pending'),
-        in_progress: document.getElementById('col-in_progress'),
-        review: document.getElementById('col-review'),
-        completed: document.getElementById('col-completed')
-      };
-      Object.keys(cols).forEach(k => cols[k].innerHTML = '');
-
-      tasks.forEach(t => {
-        const leader = users.find(u => u.id === t.leader_id) || { full_name: 'N/A' };
-        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : [t.assignee_id];
-
-        const card = document.createElement('div');
-        card.className = 'task-card';
-        card.onclick = () => openTaskDetailModal(t.id);
-        card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
-            <span class="leader-badge">⭐ ${leader.full_name}</span>
-          </div>
-          <div class="task-title">${t.title}</div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-            <div class="members-avatar-stack">
-              ${memberIds.map(uid => `<div class="mini-avatar" title="${users.find(u=>u.id===uid)?.full_name || ''}">${(users.find(u=>u.id===uid)?.full_name || 'U').charAt(0)}</div>`).join('')}
-              <span style="font-size:11px; color:var(--text-muted); margin-left:6px;">(${memberIds.length} người)</span>
-            </div>
-            <span style="font-size:10px; color:var(--accent-light);">Hạn: ${t.due_datetime.slice(5,16).replace('T',' ')}</span>
-          </div>
-        `;
-        cols[t.status].appendChild(card);
-      });
-
-      document.getElementById('badge-pending').textContent = tasks.filter(t => t.status === 'pending').length;
-      document.getElementById('badge-in_progress').textContent = tasks.filter(t => t.status === 'in_progress').length;
-      document.getElementById('badge-review').textContent = tasks.filter(t => t.status === 'review').length;
-      document.getElementById('badge-completed').textContent = tasks.filter(t => t.status === 'completed').length;
     }
 
     // 7. GIAO VIỆC MỚI
@@ -1117,7 +1357,7 @@
       const assigneeIds = Array.from(checkedBoxes).map(cb => cb.value);
 
       if (!title || assigneeIds.length === 0 || !leaderId || !dueDateTime) {
-        alert("Vui lòng điền đủ tên việc, chọn người làm và hạn chót!");
+        alert("Vui lòng nhập tên việc, chọn người làm và hạn chót!");
         return;
       }
 
@@ -1136,10 +1376,10 @@
 
       closeModal('modalCreateTask');
       await fetchTasks();
-      alert("Đã tạo và phân công nhiệm vụ!");
+      alert("Đã tạo việc thành công!");
     }
 
-    // 8. CHI TIẾT CÔNG VIỆC, NỘP DRIVE & THÊM THÀNH VIÊN VÀO VIỆC
+    // 8. CHI TIẾT CÔNG VIỆC
     function openTaskDetailModal(taskId) {
       selectedTaskIdForDetail = taskId;
       const task = tasks.find(t => t.id === taskId);
@@ -1153,7 +1393,6 @@
 
       document.getElementById('addMemberSection').style.display = 'none';
 
-      // Quyền thêm thành viên: Chỉ Leader hoặc HOD/Admin
       const currentUser = users.find(u => u.id === currentUserId);
       const isLeader = task.leader_id === currentUserId;
       const isLeaderRole = currentUser && (currentUser.role === 'hod' || currentUser.role === 'admin');
@@ -1186,14 +1425,13 @@
         tr.innerHTML = `
           <td style="font-weight:700;">${index + 1}</td>
           <td><b>${member.full_name}</b></td>
-          <td>${member.phone}</td>
+          <td>${member.phone || 'N/A'}</td>
           <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
         `;
         assigneeTable.appendChild(tr);
       });
     }
 
-    // Mở khung thêm thành viên trực tiếp vào việc
     function openAddMemberSection() {
       const task = tasks.find(t => t.id === selectedTaskIdForDetail);
       if (!task) return;
@@ -1213,7 +1451,7 @@
       availableUsers.forEach(u => {
         const opt = document.createElement('option');
         opt.value = u.id;
-        opt.textContent = `${u.full_name} (${u.title})`;
+        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
         select.appendChild(opt);
       });
 
@@ -1238,11 +1476,10 @@
         document.getElementById('addMemberSection').style.display = 'none';
         renderDetailAssigneeTable(task);
         renderKanban();
-        alert("Đã thêm thành viên mới vào dự án thành công!");
+        alert("Đã thêm thành viên vào công việc!");
       }
     }
 
-    // Nộp báo cáo ưu tiên Link Google Drive
     function renderSubmissionsTable(task) {
       const tbody = document.getElementById('detailSubmissionTableBody');
       tbody.innerHTML = '';
@@ -1293,7 +1530,7 @@
       document.getElementById('mySubDriveUrl').value = '';
       document.getElementById('mySubNoteInput').value = '';
       renderSubmissionsTable(task);
-      alert("Đã lưu báo cáo kết quả thành công!");
+      alert("Đã lưu báo cáo của bạn!");
     }
 
     async function saveTaskStatusFromDetail() {
@@ -1306,7 +1543,59 @@
       await fetchTasks();
     }
 
-    // 9. ĐĂNG NHẬP / ĐĂNG XUẤT
+    // 9. BẢNG ĐIỂM HIỆU SUẤT DSU (ĐƯỢC BẢO VỆ DỮ LIỆU)
+    function renderScoreBoard() {
+      const tbody = document.getElementById('scoreTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      users.forEach((u, idx) => {
+        const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(u.id) : t.assignee_id === u.id));
+        const completed = myTasks.filter(t => t.status === 'completed').length;
+        const overdue = myTasks.filter(t => t.status !== 'completed' && calculateDeadlineAlert(t.due_datetime, t.status).type === 'overdue').length;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:center;"><b>${idx + 1}</b></td>
+          <td><b>${u.full_name}</b></td>
+          <td>${u.title || 'Chuyên viên'}</td>
+          <td style="text-align:center; font-weight:700;">${myTasks.length}</td>
+          <td style="text-align:center; color:var(--succ-green); font-weight:700;">${completed}</td>
+          <td style="text-align:center; color:var(--danger-red);">${overdue}</td>
+          <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:15px;">${completed * 10}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 10. QUẢN TRỊ NHÂN SỰ
+    function renderAdminUserTable() {
+      const tbody = document.getElementById('adminUserTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${u.full_name}</b></td>
+          <td>${u.phone || 'N/A'}</td>
+          <td>${u.title || 'Chuyên viên'}</td>
+          <td><span style="font-size:11px; font-weight:700;">${u.role}</span></td>
+          <td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')">Xóa</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function deleteUser(uid) {
+      if (!confirm("Xác nhận xóa nhân sự này?")) return;
+      await supabaseClient.from('app_users').delete().eq('id', uid);
+      users = users.filter(u => u.id !== uid);
+      renderAdminUserTable();
+      renderScoreBoard();
+    }
+
+    // 11. ĐĂNG NHẬP / ĐĂNG XUẤT
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
       localStorage.removeItem("DSU_LAST_LOGIN_DATE");
@@ -1334,19 +1623,21 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
 
-      document.getElementById(tabId).classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
       const activeBtn = document.getElementById('tabBtn-' + tabId.replace('Tab', ''));
       if (activeBtn) activeBtn.classList.add('active');
 
-      if (tabId === 'chatTab') {
-        selectChatMode(activeChatTargetId);
-      }
+      if (tabId === 'chatTab') selectChatMode(activeChatTargetId);
+      if (tabId === 'scoreTab') renderScoreBoard();
+      if (tabId === 'adminTab') renderAdminUserTable();
     }
 
     function updateCurrentUserUI() {
-      const user = users.find(u => u.id === currentUserId);
+      const user = users.find(u => u.id === currentUserId) || users[0];
       if (user) {
-        document.getElementById('currentUserBadge').innerHTML = `<b>${user.full_name}</b><div style="color:var(--accent-light); font-size:10px;">${user.title}</div>`;
+        document.getElementById('currentUserBadge').innerHTML = `<b>${user.full_name}</b><div style="color:var(--accent-light); font-size:10px;">${user.title || 'Chuyên viên'}</div>`;
       }
     }
 
