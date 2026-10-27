@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* THEME SYSTEM (DARK & LIGHT) */
+    /* THEME SYSTEM */
     html[data-theme="dark"] {
       --bg-dark: #0B1528;
       --bg-card: #11203B;
@@ -348,6 +348,17 @@
       padding: 12px;
       margin-bottom: 6px;
     }
+
+    .locked-task-notice {
+      background: rgba(240, 138, 36, 0.12);
+      border: 1px solid var(--warn-orange);
+      color: var(--warn-orange);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -385,9 +396,7 @@
     </div>
   </header>
 
-  <!-- ======================================================== -->
-  <!-- NAVIGATION TABS (HƯỚNG DẪN ĐƯỢC XẾP CUỐI CÙNG BÊN PHẢI) -->
-  <!-- ======================================================== -->
+  <!-- NAVIGATION TABS -->
   <nav class="nav-tabs-bar">
     <button class="nav-tab-btn active" id="tabBtn-tasks" onclick="switchMainTab('tasksTab')">
       📋 Bảng Công việc (Kanban)
@@ -427,10 +436,9 @@
         </div>
       </section>
 
-      <!-- THANH TÁC VỤ: CÓ NÚT XUẤT BÁO CÁO CHO TẤT CẢ THÀNH VIÊN -->
+      <!-- THANH TÁC VỤ -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
         <div style="display:flex; gap:10px; align-items:center;">
-          <!-- NÚT XUẤT BÁO CÁO CHO TẤT CẢ THÀNH VIÊN -->
           <button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">
             📊 Xuất Báo Cáo Kết Quả (Excel/CSV)
           </button>
@@ -439,7 +447,7 @@
           </button>
         </div>
         <div style="font-size:12px; color:var(--accent-light);">
-          ✨ Bấm vào thẻ việc bất kỳ để xem, nộp kết quả Drive hoặc bổ sung thành viên.
+          ✨ Nhấp vào thẻ việc bất kỳ để xem, nộp kết quả Drive hoặc quản lý thành viên.
         </div>
       </div>
 
@@ -559,18 +567,16 @@
       <div class="guide-grid">
         <div class="guide-card">
           <div class="guide-role-title">🎖️ Ban Lãnh Đạo (Trưởng / Phó Trung tâm)</div>
-          <div class="guide-step">1. <b>Giao việc:</b> Bấm <i>"+ Giao việc mới"</i>, chọn các nhân sự phối hợp, chỉ định 1 Leader phụ trách chính và thời hạn.</div>
-          <div class="guide-step">2. <b>Thêm người vào việc đang chạy:</b> Mở chi tiết việc, bấm <i>"➕ Thêm thành viên"</i> để bổ sung người ngay tức khắc.</div>
-          <div class="guide-step">3. <b>Điều chỉnh Leader:</b> Có toàn quyền đổi Nhóm trưởng mới hoặc loại bớt người khỏi nhiệm vụ bất kỳ lúc nào.</div>
-          <div class="guide-step">4. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive của nhân viên và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
+          <div class="guide-step">1. <b>Giao việc & Điều chỉnh:</b> Bấm <i>"+ Giao việc mới"</i>. Có quyền Đổi Leader, Thêm thành viên, hoặc <b>Xóa bỏ công việc</b> nếu giao nhầm.</div>
+          <div class="guide-step">2. <b>Mở lại việc đã xong:</b> Công việc đã Hoàn thành chỉ Lãnh đạo mới có quyền kéo lại tình trạng và gia hạn Deadline.</div>
+          <div class="guide-step">3. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive của nhân viên và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
         </div>
 
         <div class="guide-card">
           <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
           <div class="guide-step">1. <b>Trách nhiệm:</b> Là người đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
-          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Có quyền chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>.</div>
+          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Có quyền chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>. Khi việc đã Hoàn thành thì quyền bị khóa lại.</div>
           <div class="guide-step">3. <b>Bổ sung nhân sự:</b> Được quyền bấm <i>"➕ Thêm thành viên"</i> nếu cần thêm đồng nghiệp hỗ trợ.</div>
-          <div class="guide-step">4. <b>Đôn đốc nộp báo cáo:</b> Nhắc các thành viên dán link Google Drive hoặc nộp file trước mốc 09h00 sáng.</div>
         </div>
 
         <div class="guide-card">
@@ -582,9 +588,8 @@
 
         <div class="guide-card">
           <div class="guide-role-title">⚙️ Quản Trị Viên (Web Admin)</div>
-          <div class="guide-step">1. <b>Quản lý tài khoản:</b> Cấp tài khoản mới, phân chức danh Trưởng/Phó Trung tâm cho nhân sự.</div>
-          <div class="guide-step">2. <b>Sửa đổi thông tin:</b> Chỉnh sửa SĐT, Email hoặc đặt lại mật khẩu cho nhân sự đăng ký nhầm.</div>
-          <div class="guide-step">3. <b>Kho lưu trữ:</b> Kết nối link Google Drive 100GB dùng chung cho toàn đơn vị.</div>
+          <div class="guide-step">1. <b>Toàn quyền hệ thống:</b> Cấp tài khoản mới, phân quyền Trưởng/Phó Trung tâm, xóa bỏ việc giao nhầm.</div>
+          <div class="guide-step">2. <b>Mở lại việc đã hoàn thành:</b> Có quyền chỉnh sửa Deadline và kéo lại trạng thái các công việc đã kết thúc.</div>
         </div>
       </div>
     </div>
@@ -638,9 +643,9 @@
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC                 -->
-  <!-- ========================================== -->
+  <!-- ======================================================== -->
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC (ĐẦY ĐỦ QUẢN TRỊ LÃNH ĐẠO/ADMIN) -->
+  <!-- ======================================================== -->
   <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
@@ -651,9 +656,21 @@
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalTaskDetail')">✕</button>
       </div>
       <div class="modal-body">
+        
+        <!-- THÔNG BÁO KHI CÔNG VIỆC ĐÃ HOÀN THÀNH -->
+        <div id="completedNoticeBox" class="locked-task-notice">
+          🔒 <b>Công việc đã hoàn thành:</b> Chỉ có Lãnh đạo (Trưởng/Phó phòng) hoặc Admin mới có quyền mở lại để tiếp tục xử lý hoặc chỉnh sửa giờ Deadline.
+        </div>
+
         <div class="grid-2">
-          <div style="font-size:12px;">Hạn chót: <b id="detailDueDateTime"></b></div>
-          <div style="font-size:12px;" id="detailCountdownBadgeWrap"></div>
+          <div class="form-group">
+            <label>Hạn chót hoàn thành:</label>
+            <input type="datetime-local" id="detailDueDateTimeInput" class="form-control" style="font-weight:700;">
+          </div>
+          <div style="display:flex; flex-direction:column; justify-content:center;">
+            <label>Tình trạng hạn chót:</label>
+            <div id="detailCountdownBadgeWrap" style="margin-top:4px;"></div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -666,20 +683,37 @@
           <a id="detailDriveLinkTag" href="#" target="_blank" class="btn btn-drive btn-sm">Mở tệp Google Drive</a>
         </div>
 
-        <!-- BẢNG PHÂN CÔNG THÀNH VIÊN -->
+        <!-- BẢNG PHÂN CÔNG THÀNH VIÊN (CÓ NÚT THÊM, XÓA & ĐỔI LEADER) -->
         <div class="form-group">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <label>📋 Bảng phân công thành viên:</label>
-            <button class="btn btn-primary btn-sm" id="btnAddMemberBtn" onclick="openAddMemberSection()" style="display:none;">
-              ➕ Thêm thành viên
-            </button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+            <label>📋 Bảng phân công thành viên & Nhóm trưởng:</label>
+            <div style="display:flex; gap:6px;">
+              <!-- Nút Thêm thành viên -->
+              <button class="btn btn-primary btn-sm" id="btnAddMemberBtn" onclick="openAddMemberSection()" style="display:none;">
+                ➕ Thêm thành viên
+              </button>
+              <!-- Nút Đổi Leader (Chỉ Trưởng/Phó/Admin) -->
+              <button class="btn btn-warning btn-sm" id="btnChangeLeaderBtn" onclick="openChangeLeaderSection()" style="display:none;">
+                🔄 Đổi Leader
+              </button>
+            </div>
           </div>
 
+          <!-- KHUNG CHỌN THÊM THÀNH VIÊN -->
           <div id="addMemberSection" style="display:none; background:rgba(37,99,201,0.12); border:1px dashed var(--accent-blue); padding:10px; border-radius:6px; margin-bottom:8px;">
             <div style="font-size:12px; font-weight:700; color:var(--accent-light); margin-bottom:6px;">Chọn nhân sự để thêm vào nhiệm vụ này:</div>
             <div style="display:flex; gap:8px;">
               <select id="selectNewMember" class="form-control" style="flex:1;"></select>
               <button class="btn btn-success btn-sm" onclick="submitAddMemberToTask()">Xác nhận thêm</button>
+            </div>
+          </div>
+
+          <!-- KHUNG ĐỔI LEADER -->
+          <div id="changeLeaderSection" style="display:none; background:rgba(240,138,36,0.12); border:1px dashed var(--warn-orange); padding:10px; border-radius:6px; margin-bottom:8px;">
+            <div style="font-size:12px; font-weight:700; color:var(--warn-orange); margin-bottom:6px;">Chọn Nhóm trưởng (Leader) mới:</div>
+            <div style="display:flex; gap:8px;">
+              <select id="selectNewLeader" class="form-control" style="flex:1;"></select>
+              <button class="btn btn-warning btn-sm" onclick="submitChangeTaskLeader()">Lưu Leader mới</button>
             </div>
           </div>
 
@@ -690,6 +724,7 @@
                 <th>Thành viên</th>
                 <th>SĐT (Zalo)</th>
                 <th>Vai trò</th>
+                <th style="text-align:right;" id="thMemberAction">Thao tác</th>
               </tr>
             </thead>
             <tbody id="detailAssigneeTableBody"></tbody>
@@ -713,18 +748,18 @@
         </div>
 
         <!-- FORM NỘP BÁO CÁO -->
-        <div class="form-group gdrive-highlight-box">
+        <div class="form-group gdrive-highlight-box" id="mySubSectionWrap">
           <label style="font-weight:700; color:#fff;">📤 Nộp Báo Cáo Của Bạn (Ưu tiên Link Drive):</label>
           <input type="url" id="mySubDriveUrl" class="form-control" placeholder="Dán link Google Drive chứa file kết quả..." style="margin-bottom:6px; margin-top:4px;">
           <div style="display:flex; gap:8px;">
             <input type="text" id="mySubNoteInput" class="form-control" placeholder="Ghi chú kết quả..." style="flex:1;">
-            <button class="btn btn-warning btn-sm" onclick="submitMyTaskResult()">Lưu kết quả</button>
+            <button class="btn btn-warning btn-sm" id="btnSubmitMySub" onclick="submitMyTaskResult()">Lưu kết quả</button>
           </div>
         </div>
 
         <!-- ĐỔI TRẠNG THÁI -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
-          <label>🔄 Trạng thái công việc (Quyền Leader / Lãnh đạo):</label>
+          <label>🔄 Trạng thái công việc:</label>
           <select id="detailStatusSelect" class="form-control" style="font-weight:700;">
             <option value="pending">1. Chờ tiếp nhận</option>
             <option value="in_progress">2. Đang thực hiện</option>
@@ -733,16 +768,23 @@
           </select>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
-        <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Lưu trạng thái</button>
+      
+      <!-- FOOTER: CÓ NÚT XÓA CÔNG VIỆC DÀNH CHO LÃNH ĐẠO / ADMIN -->
+      <div class="modal-footer" style="justify-content:space-between;">
+        <!-- NÚT XÓA CÔNG VIỆC (GIAO NHẦM HOẶC VIẾT SAI) -->
+        <button class="btn btn-danger btn-sm" id="btnDeleteTaskPermanent" onclick="submitDeleteTaskPermanent()" style="display:none;">
+          🗑️ Xóa công việc này (Giao nhầm/Viết sai)
+        </button>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
+          <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Lưu thay đổi</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- MODAL: ĐĂNG NHẬP (CÓ ĐỔI MK & ĐĂNG KÝ MỚI) -->
-  <!-- ========================================== -->
+  <!-- MODAL: ĐĂNG NHẬP -->
   <div class="modal-backdrop" id="modalAuth" style="display:none;">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
@@ -768,7 +810,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐỔI MẬT KHẨU NHANH (NHẬP ĐÚNG HỌ TÊN VÀ GÕ MẬT KHẨU MỚI) -->
+  <!-- MODAL: ĐỔI MẬT KHẨU NHANH -->
   <div class="modal-backdrop" id="modalQuickChangePass" style="display:none;">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
@@ -777,14 +819,14 @@
       </div>
       <div class="modal-body">
         <p style="font-size:12px; color:var(--text-muted);">
-          Nhập chính xác <b>Họ và tên</b> của bạn và nhập <b>Mật khẩu mới</b> để cập nhật ngay:
+          Nhập chính xác <b>Họ và tên</b> và <b>SĐT Zalo</b> của bạn để đặt lại mật khẩu mới:
         </p>
         <div class="form-group">
           <label>Họ và tên nhân viên *:</label>
           <input type="text" id="changePassFullName" class="form-control" placeholder="VD: Vũ Tiến Dũng" required>
         </div>
         <div class="form-group">
-          <label>Số điện thoại Zalo (để xác thực thêm) *:</label>
+          <label>Số điện thoại Zalo *:</label>
           <input type="tel" id="changePassPhone" class="form-control" placeholder="VD: 0787307004" required>
         </div>
         <div class="form-group">
@@ -794,12 +836,12 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal('modalQuickChangePass')">Hủy</button>
-        <button class="btn btn-primary" onclick="submitQuickChangePass()">Xác nhận đổi mật khẩu</button>
+        <button class="btn btn-primary" onclick="submitQuickChangePass()">Xác nhận đổi</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN MỚI TỪ MÀN HÌNH ĐĂNG NHẬP -->
+  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN MỚI -->
   <div class="modal-backdrop" id="modalPublicRegister" style="display:none;">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
@@ -832,7 +874,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V16.0                     -->
+  <!-- JAVASCRIPT LOGIC V17.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -870,19 +912,15 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Giao diện Sáng" : "Giao diện Tối";
     }
 
-    // 2. KHỞI TẠO APP
+    // 2. KHỞI TẠO HỆ THỐNG
     async function initApp() {
       initTheme();
       if (!currentUserId) {
         logoutUser();
         return;
       }
-
       await loadInitialData();
       setupRealtime();
-
-      // TỰ ĐỘNG DỌN DẸP VIỆC HOÀN THÀNH > 35 NGÀY
-      cleanupCompletedTasks35Days();
     }
 
     async function loadInitialData() {
@@ -915,108 +953,40 @@
 
     function setupRealtime() {
       supabaseClient
-        .channel('dsu-realtime-v16')
+        .channel('dsu-realtime-v17')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => fetchTasks())
         .subscribe();
     }
 
-    // 3. TỰ ĐỘNG XÓA DỮ LIỆU ĐÃ HOÀN THÀNH SAU 35 NGÀY
-    async function cleanupCompletedTasks35Days() {
-      const THIRTY_FIVE_DAYS_MS = 35 * 24 * 60 * 60 * 1000;
-      const now = Date.now();
-
-      // Gọi hàm RPC trên Supabase nếu có
-      supabaseClient.rpc('cleanup_completed_tasks_35_days').then(() => {});
-
-      // Lọc cục bộ các việc đã hoàn thành quá 35 ngày
-      const oldCompletedTaskIds = tasks.filter(t => {
-        if (t.status !== 'completed') return false;
-        const taskAge = now - new Date(t.updated_at || t.created_at).getTime();
-        return taskAge > THIRTY_FIVE_DAYS_MS;
-      }).map(t => t.id);
-
-      if (oldCompletedTaskIds.length > 0) {
-        await supabaseClient.from('tasks').delete().in('id', oldCompletedTaskIds);
-        tasks = tasks.filter(t => !oldCompletedTaskIds.includes(t.id));
-        renderKanban();
-        renderScoreBoard();
-      }
-    }
-
-    // 4. XUẤT BÁO CÁO KẾT QUẢ CHO TẤT CẢ THÀNH VIÊN (CSV/EXCEL)
-    function exportTasksReportCSV() {
-      if (tasks.length === 0) {
-        alert("Hiện tại chưa có dữ liệu công việc để xuất báo cáo!");
-        return;
-      }
-
-      // Tạo tiêu đề cột CSV
-      let csvContent = "\uFEFF"; // Byte Order Mark để hiển thị tiếng Việt có dấu chuẩn trên Excel
-      csvContent += "STT,Mã Công Việc,Tên Nhiệm Vụ,Mức Ưu Tiên,Nhóm Trưởng (Leader),Các Thành Viên Tham Gia,Hạn Chót,Trạng Thái,Link Google Drive Báo Cáo,Ghi Chú Kết Quả\n";
-
-      tasks.forEach((t, index) => {
-        const leader = users.find(u => u.id === t.leader_id)?.full_name || 'N/A';
-        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-        const memberNames = memberIds.map(uid => users.find(u => u.id === uid)?.full_name || 'N/A').join(" | ");
-        
-        let statusText = "Chờ tiếp nhận";
-        if (t.status === 'in_progress') statusText = "Đang thực hiện";
-        if (t.status === 'review') statusText = "Chờ duyệt báo cáo";
-        if (t.status === 'completed') statusText = "Đã hoàn thành";
-
-        const subs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
-        const resultNotes = subs.map(s => `${s.userName}: ${s.note || ''} [${s.driveUrl || ''}]`).join(" ; ");
-
-        const row = [
-          index + 1,
-          `"${t.task_code || 'TSK'}"`,
-          `"${(t.title || '').replace(/"/g, '""')}"`,
-          `"${t.priority || 'medium'}"`,
-          `"${leader}"`,
-          `"${memberNames}"`,
-          `"${t.due_datetime ? new Date(t.due_datetime).toLocaleString('vi-VN') : ''}"`,
-          `"${statusText}"`,
-          `"${t.drive_link || ''}"`,
-          `"${resultNotes.replace(/"/g, '""')}"`
-        ];
-
-        csvContent += row.join(",") + "\n";
-      });
-
-      // Tạo file tải về máy
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", `DSU_BaoCao_TTKTDVKH_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    // 5. TÍNH DEADLINE
+    // 3. TÍNH DEADLINE
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') return { text: '✅ Đã hoàn thành', badgeClass: 'tag-normal', cardClass: '', type: 'completed' };
       if (!dueDateTimeStr) return { text: 'Không giới hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
 
-      const now = new Date().getTime();
-      const deadline = new Date(dueDateTimeStr).getTime();
-      const diffMs = deadline - now;
-      const diffHours = diffMs / (1000 * 60 * 60);
+      try {
+        const now = new Date().getTime();
+        const deadline = new Date(dueDateTimeStr).getTime();
+        if (isNaN(deadline)) return { text: 'Chưa đặt hạn', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
 
-      if (diffMs < 0) {
-        return { text: '⚡ QUÁ HẠN CHÓT', badgeClass: 'tag-danger-overdue', cardClass: 'card-danger-overdue', type: 'overdue' };
-      }
-      if (diffHours <= 12) {
-        const h = Math.floor(diffHours);
-        const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        return { text: `⏳ CÒN ${h}H ${m}P`, badgeClass: 'tag-warn-12h', cardClass: 'card-warn-12h', type: 'warn12h' };
-      }
+        const diffMs = deadline - now;
+        const diffHours = diffMs / (1000 * 60 * 60);
 
-      return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+        if (diffMs < 0) {
+          return { text: '⚡ QUÁ HẠN CHÓT', badgeClass: 'tag-danger-overdue', cardClass: 'card-danger-overdue', type: 'overdue' };
+        }
+        if (diffHours <= 12) {
+          const h = Math.floor(diffHours);
+          const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          return { text: `⏳ CÒN ${h}H ${m}P`, badgeClass: 'tag-warn-12h', cardClass: 'card-warn-12h', type: 'warn12h' };
+        }
+
+        return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+      } catch (e) {
+        return { text: 'Hạn chót', badgeClass: 'tag-normal', cardClass: '', type: 'normal' };
+      }
     }
 
-    // 6. RENDER KANBAN
+    // 4. RENDER KANBAN
     function renderKanban() {
       const cols = {
         pending: document.getElementById('col-pending'),
@@ -1041,10 +1011,10 @@
 
         const card = document.createElement('div');
         card.className = `task-card ${alertInfo.cardClass}`;
-        card.onclick = (e) => {
+        card.addEventListener('click', (e) => {
           e.stopPropagation();
           openTaskDetailModal(t.id);
-        };
+        });
 
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1076,22 +1046,32 @@
       document.getElementById('badge-completed').textContent = counts.completed;
     }
 
-    // 7. CHI TIẾT CÔNG VIỆC
+    // 5. CHI TIẾT CÔNG VIỆC (ĐẦY ĐỦ PHÂN QUYỀN LÃNH ĐẠO/ADMIN)
     function openTaskDetailModal(taskId) {
       if (!taskId) return;
       selectedTaskIdForDetail = taskId;
+
       const task = tasks.find(t => String(t.id) === String(taskId));
       if (!task) return;
 
       document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
       document.getElementById('detailTaskTitle').textContent = task.title || '(Không có tiêu đề)';
-      document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú)';
-      document.getElementById('detailDueDateTime').textContent = task.due_datetime ? new Date(task.due_datetime).toLocaleString('vi-VN') : 'Không giới hạn';
+      document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú chỉ đạo)';
+      
+      // Định dạng ngày giờ vào input datetime-local
+      const dueInput = document.getElementById('detailDueDateTimeInput');
+      if (task.due_datetime) {
+        dueInput.value = new Date(task.due_datetime).toISOString().slice(0, 16);
+      } else {
+        dueInput.value = '';
+      }
+
       document.getElementById('detailStatusSelect').value = task.status || 'pending';
 
       const alertInfo = calculateDeadlineAlert(task.due_datetime, task.status);
       document.getElementById('detailCountdownBadgeWrap').innerHTML = `<span style="font-weight:700; color:var(--warn-orange);">${alertInfo.text}</span>`;
 
+      // Link Google Drive
       const driveWrap = document.getElementById('detailDriveLinkWrap');
       const driveTag = document.getElementById('detailDriveLinkTag');
       if (task.drive_link && task.drive_link.trim() !== '') {
@@ -1101,38 +1081,96 @@
         driveWrap.style.display = 'none';
       }
 
-      renderDetailAssigneeTable(task);
-      renderSubmissionsTable(task);
-
+      // Kiểm tra quyền
       const currentUser = users.find(u => u.id === currentUserId) || {};
       const isLeader = task.leader_id === currentUserId;
       const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+      const isTaskCompleted = task.status === 'completed';
 
-      const btnAddMember = document.getElementById('btnAddMemberBtn');
-      const selectStatus = document.getElementById('detailStatusSelect');
-      const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
-
-      if (isLeader || isLeaderRole) {
-        btnAddMember.style.display = 'inline-flex';
-        selectStatus.disabled = false;
-        btnSaveStatus.disabled = false;
+      // Nút Xóa công việc: Chỉ Trưởng/Phó hoặc Admin mới có quyền
+      const btnDelete = document.getElementById('btnDeleteTaskPermanent');
+      if (isLeaderRole) {
+        btnDelete.style.display = 'inline-flex';
       } else {
-        btnAddMember.style.display = 'none';
-        selectStatus.disabled = true;
-        btnSaveStatus.disabled = true;
+        btnDelete.style.display = 'none';
       }
 
+      // Nút Đổi Leader: Chỉ Trưởng/Phó hoặc Admin mới có quyền
+      const btnChangeLeader = document.getElementById('btnChangeLeaderBtn');
+      if (isLeaderRole && !isTaskCompleted) {
+        btnChangeLeader.style.display = 'inline-flex';
+      } else {
+        btnChangeLeader.style.display = 'none';
+      }
+
+      // Nút Thêm thành viên: Leader hoặc Trưởng/Phó/Admin (khi chưa hoàn thành)
+      const btnAddMember = document.getElementById('btnAddMemberBtn');
+      if ((isLeader || isLeaderRole) && !isTaskCompleted) {
+        btnAddMember.style.display = 'inline-flex';
+      } else {
+        btnAddMember.style.display = 'none';
+      }
+
+      // XỬ LÝ KHI VIỆC ĐÃ HOÀN THÀNH:
+      // Nhân viên không được phép sửa hay đổi deadline. Chỉ Trưởng/Phó/Admin mới có quyền kéo lại.
+      const noticeBox = document.getElementById('completedNoticeBox');
+      const selectStatus = document.getElementById('detailStatusSelect');
+      const btnSaveStatus = document.getElementById('btnSaveTaskStatus');
+      const mySubWrap = document.getElementById('mySubSectionWrap');
+
+      if (isTaskCompleted) {
+        noticeBox.style.display = 'block';
+        if (isLeaderRole) {
+          // Lãnh đạo/Admin được quyền mở lại và chỉnh giờ
+          selectStatus.disabled = false;
+          dueInput.disabled = false;
+          btnSaveStatus.disabled = false;
+          mySubWrap.style.display = 'block';
+        } else {
+          // Nhân viên bị khóa cứng
+          selectStatus.disabled = true;
+          dueInput.disabled = true;
+          btnSaveStatus.disabled = true;
+          mySubWrap.style.display = 'none';
+        }
+      } else {
+        noticeBox.style.display = 'none';
+        dueInput.disabled = !isLeaderRole; // Chỉ Lãnh đạo mới được chỉnh sửa hạn chót
+        mySubWrap.style.display = 'block';
+
+        if (isLeader || isLeaderRole) {
+          selectStatus.disabled = false;
+          btnSaveStatus.disabled = false;
+        } else {
+          selectStatus.disabled = true;
+          btnSaveStatus.disabled = true;
+        }
+      }
+
+      // Ẩn các khung phụ
       document.getElementById('addMemberSection').style.display = 'none';
+      document.getElementById('changeLeaderSection').style.display = 'none';
+
+      // Render danh sách thành viên và bài nộp
+      renderDetailAssigneeTable(task, isLeaderRole && !isTaskCompleted);
+      renderSubmissionsTable(task);
+
       document.getElementById('modalTaskDetail').style.display = 'flex';
     }
 
-    function renderDetailAssigneeTable(task) {
+    // Render bảng thành viên có Nút XÓA từng thành viên
+    function renderDetailAssigneeTable(task, canManageMembers) {
       const assigneeTable = document.getElementById('detailAssigneeTableBody');
       assigneeTable.innerHTML = '';
       
       let memberIds = [];
       if (Array.isArray(task.assignees_json)) memberIds = task.assignees_json;
       else if (task.assignee_id) memberIds = [task.assignee_id];
+
+      if (memberIds.length === 0) {
+        assigneeTable.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Chưa gán thành viên.</td></tr>';
+        return;
+      }
 
       memberIds.forEach((uid, index) => {
         const member = users.find(u => u.id === uid) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
@@ -1143,33 +1181,164 @@
           <td><b>${member.full_name}</b></td>
           <td>${member.phone || 'N/A'}</td>
           <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
+          <td style="text-align:right;">
+            ${(canManageMembers && !isLeader) ? `
+              <button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="removeMemberFromTask('${uid}')">🗑️ Xóa</button>
+            ` : (isLeader ? '<span style="font-size:10px; color:var(--text-muted);">(Leader)</span>' : '')}
+          </td>
         `;
         assigneeTable.appendChild(tr);
       });
     }
 
-    function renderSubmissionsTable(task) {
-      const tbody = document.getElementById('detailSubmissionTableBody');
-      tbody.innerHTML = '';
-      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+    // 6. XÓA THÀNH VIÊN KHỎI NHIỆM VỤ ĐANG CHẠY
+    async function removeMemberFromTask(userIdToRemove) {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
 
-      if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo kết quả.</td></tr>';
+      const member = users.find(u => u.id === userIdToRemove);
+      if (!confirm(`Bạn có chắc chắn muốn loại bỏ nhân sự [${member?.full_name || 'này'}] khỏi nhóm công việc này?`)) return;
+
+      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
+      memberIds = memberIds.filter(id => id !== userIdToRemove);
+
+      const { error } = await supabaseClient.from('tasks').update({
+        assignees_json: memberIds,
+        updated_at: new Date()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.assignees_json = memberIds;
+        const currentUser = users.find(u => u.id === currentUserId) || {};
+        const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+        renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
+        renderKanban();
+        alert("Đã xóa thành viên khỏi nhóm công việc thành công!");
+      } else {
+        alert("Lỗi xóa thành viên: " + error.message);
+      }
+    }
+
+    // 7. ĐỔI LEADER (QUYỀN TRƯỞNG / PHÓ / ADMIN)
+    function openChangeLeaderSection() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+
+      const sec = document.getElementById('changeLeaderSection');
+      const select = document.getElementById('selectNewLeader');
+      select.innerHTML = '';
+
+      let memberIds = Array.isArray(task.assignees_json) ? task.assignees_json : [task.assignee_id];
+      const memberUsers = users.filter(u => memberIds.includes(u.id) && u.id !== task.leader_id);
+
+      if (memberUsers.length === 0) {
+        alert("Cần có ít nhất 2 thành viên trong nhóm để có thể chuyển đổi vị trí Leader!");
         return;
       }
 
-      subs.forEach(sub => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${sub.userName || 'Thành viên'}</b></td>
-          <td>${sub.note || '(Không)'}</td>
-          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive Báo Cáo</a>` : '(Chưa kèm link)'}</td>
-          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
-        `;
-        tbody.appendChild(tr);
+      memberUsers.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
+        select.appendChild(opt);
       });
+
+      sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
     }
 
+    async function submitChangeTaskLeader() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const newLeaderId = document.getElementById('selectNewLeader').value;
+      if (!task || !newLeaderId) return;
+
+      const newLeaderUser = users.find(u => u.id === newLeaderId);
+
+      const { error } = await supabaseClient.from('tasks').update({
+        leader_id: newLeaderId,
+        assignee_id: newLeaderId,
+        updated_at: new Date()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.leader_id = newLeaderId;
+        task.assignee_id = newLeaderId;
+        document.getElementById('changeLeaderSection').style.display = 'none';
+
+        const currentUser = users.find(u => u.id === currentUserId) || {};
+        const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+        renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
+        renderKanban();
+        alert(`Đã đổi Nhóm trưởng (Leader) thành công cho đồng chí: ${newLeaderUser?.full_name}!`);
+      } else {
+        alert("Lỗi đổi Leader: " + error.message);
+      }
+    }
+
+    // 8. XÓA CÔNG VIỆC VĨNH VIỄN (GIAO NHẦM HOẶC VIẾT SAI)
+    async function submitDeleteTaskPermanent() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+
+      const currentUser = users.find(u => u.id === currentUserId) || {};
+      if (currentUser.role !== 'hod' && currentUser.role !== 'admin') {
+        alert("Chỉ có Trưởng / Phó Trung tâm hoặc Admin mới có thẩm quyền xóa bỏ công việc này!");
+        return;
+      }
+
+      if (!confirm(`CẢNH BÁO: Bạn có chắc chắn muốn XÓA VĨNH VIỄN công việc [${task.title}] không?\n(Thao tác này chỉ dùng khi giao nhầm hoặc viết sai thông tin)`)) {
+        return;
+      }
+
+      const { error } = await supabaseClient.from('tasks').delete().eq('id', task.id);
+      if (!error) {
+        tasks = tasks.filter(t => t.id !== task.id);
+        closeModal('modalTaskDetail');
+        renderKanban();
+        renderScoreBoard();
+        alert("Đã xóa công việc khỏi hệ thống thành công!");
+      } else {
+        alert("Lỗi xóa công việc: " + error.message);
+      }
+    }
+
+    // 9. LƯU THAY ĐỔI TRẠNG THÁI & DEADLINE (CÓ BẢO VỆ KHI VIỆC ĐÃ HOÀN THÀNH)
+    async function saveTaskStatusFromDetail() {
+      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      if (!task) return;
+
+      const newStatus = document.getElementById('detailStatusSelect').value;
+      const newDueDateTime = document.getElementById('detailDueDateTimeInput').value;
+      const currentUser = users.find(u => u.id === currentUserId) || {};
+      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+
+      // Nếu việc ban đầu đã completed mà muốn chuyển lại: Bắt buộc phải là Lãnh đạo/Admin
+      if (task.status === 'completed' && newStatus !== 'completed' && !isLeaderRole) {
+        alert("Chỉ có Trưởng / Phó Trung tâm hoặc Admin mới có quyền mở lại công việc đã hoàn thành!");
+        return;
+      }
+
+      let updateData = { status: newStatus, updated_at: new Date() };
+
+      // Nếu có thay đổi ngày giờ hạn chót (và là Lãnh đạo/Admin)
+      if (newDueDateTime && isLeaderRole) {
+        updateData.due_datetime = newDueDateTime;
+      }
+
+      const { error } = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
+      if (!error) {
+        task.status = newStatus;
+        if (newDueDateTime && isLeaderRole) task.due_datetime = newDueDateTime;
+
+        closeModal('modalTaskDetail');
+        renderKanban();
+        renderScoreBoard();
+        alert("Đã lưu cập nhật công việc thành công!");
+      } else {
+        alert("Lỗi: " + error.message);
+      }
+    }
+
+    // 10. THÊM THÀNH VIÊN VÀ NỘP BÁO CÁO
     function openAddMemberSection() {
       const task = tasks.find(t => t.id === selectedTaskIdForDetail);
       if (!task) return;
@@ -1212,10 +1381,35 @@
       if (!error) {
         task.assignees_json = memberIds;
         document.getElementById('addMemberSection').style.display = 'none';
-        renderDetailAssigneeTable(task);
+
+        const currentUser = users.find(u => u.id === currentUserId) || {};
+        const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+        renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
         renderKanban();
         alert("Đã thêm thành viên vào công việc thành công!");
       }
+    }
+
+    function renderSubmissionsTable(task) {
+      const tbody = document.getElementById('detailSubmissionTableBody');
+      tbody.innerHTML = '';
+      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+
+      if (subs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo kết quả.</td></tr>';
+        return;
+      }
+
+      subs.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${sub.userName || 'Thành viên'}</b></td>
+          <td>${sub.note || '(Không)'}</td>
+          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     async function submitMyTaskResult() {
@@ -1250,21 +1444,7 @@
       }
     }
 
-    async function saveTaskStatusFromDetail() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
-      if (!task) return;
-      const newStatus = document.getElementById('detailStatusSelect').value;
-
-      const { error } = await supabaseClient.from('tasks').update({ status: newStatus, updated_at: new Date() }).eq('id', task.id);
-      if (!error) {
-        task.status = newStatus;
-        closeModal('modalTaskDetail');
-        renderKanban();
-        renderScoreBoard();
-      }
-    }
-
-    // 8. TẠO VIỆC MỚI
+    // 11. GIAO VIỆC MỚI
     function openCreateTaskModal() {
       document.getElementById('taskTitle').value = '';
       document.getElementById('taskDesc').value = '';
@@ -1339,7 +1519,56 @@
       }
     }
 
-    // 9. ĐỔI MẬT KHẨU TỪ MÀN HÌNH ĐĂNG NHẬP (NHẬP ĐÚNG TÊN & MẬT KHẨU MỚI)
+    // 12. XUẤT BÁO CÁO KẾT QUẢ CHO TẤT CẢ THÀNH VIÊN (CSV/EXCEL)
+    function exportTasksReportCSV() {
+      if (tasks.length === 0) {
+        alert("Chưa có dữ liệu công việc để xuất báo cáo!");
+        return;
+      }
+
+      let csvContent = "\uFEFF";
+      csvContent += "STT,Mã Việc,Tên Nhiệm Vụ,Mức Ưu Tiên,Nhóm Trưởng (Leader),Thành Viên Phối Hợp,Hạn Chót,Trạng Thái,Link Drive,Kết Quả Báo Cáo\n";
+
+      tasks.forEach((t, index) => {
+        const leader = users.find(u => u.id === t.leader_id)?.full_name || 'N/A';
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
+        const memberNames = memberIds.map(uid => users.find(u => u.id === uid)?.full_name || 'N/A').join(" | ");
+        
+        let statusText = "Chờ tiếp nhận";
+        if (t.status === 'in_progress') statusText = "Đang thực hiện";
+        if (t.status === 'review') statusText = "Chờ duyệt báo cáo";
+        if (t.status === 'completed') statusText = "Đã hoàn thành";
+
+        const subs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
+        const resultNotes = subs.map(s => `${s.userName}: ${s.note || ''} [${s.driveUrl || ''}]`).join(" ; ");
+
+        const row = [
+          index + 1,
+          `"${t.task_code || 'TSK'}"`,
+          `"${(t.title || '').replace(/"/g, '""')}"`,
+          `"${t.priority || 'medium'}"`,
+          `"${leader}"`,
+          `"${memberNames}"`,
+          `"${t.due_datetime ? new Date(t.due_datetime).toLocaleString('vi-VN') : ''}"`,
+          `"${statusText}"`,
+          `"${t.drive_link || ''}"`,
+          `"${resultNotes.replace(/"/g, '""')}"`
+        ];
+
+        csvContent += row.join(",") + "\n";
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `DSU_BaoCao_TTKTDVKH_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 13. ĐỔI MẬT KHẨU TỪ LOGIN & ĐĂNG KÝ
     function openChangePassFromLogin() {
       document.getElementById('changePassFullName').value = '';
       document.getElementById('changePassPhone').value = '';
@@ -1372,7 +1601,6 @@
       }
     }
 
-    // 10. ĐĂNG KÝ TÀI KHOẢN MỚI TỪ MÀN HÌNH ĐĂNG NHẬP
     function openRegisterFromLogin() {
       document.getElementById('regFullNameInput').value = '';
       document.getElementById('regPhoneInput').value = '';
@@ -1410,7 +1638,7 @@
       }
     }
 
-    // 11. BẢNG TÍNH ĐIỂM
+    // 14. BẢNG TÍNH ĐIỂM
     function renderScoreBoard() {
       const tbody = document.getElementById('scoreTableBody');
       if (!tbody) return;
@@ -1435,7 +1663,7 @@
       });
     }
 
-    // 12. QUẢN TRỊ NHÂN SỰ
+    // 15. QUẢN TRỊ NHÂN SỰ
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
       if (!tbody) return;
@@ -1461,7 +1689,7 @@
       renderScoreBoard();
     }
 
-    // 13. AUTH & TABS
+    // 16. AUTH & TABS
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
       currentUserId = null;
