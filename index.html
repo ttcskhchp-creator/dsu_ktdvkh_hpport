@@ -2,7 +2,7 @@
 <html lang="vi" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
@@ -13,10 +13,10 @@
   <style>
     /* THEME SYSTEM */
     html[data-theme="dark"] {
-      --bg-dark: #0B1528;
-      --bg-card: #11203B;
-      --bg-surface: #182C4E;
-      --border-color: #263F6A;
+      --bg-dark: #0A1324;
+      --bg-card: #101F38;
+      --bg-surface: #172A4B;
+      --border-color: #25406C;
       --accent-blue: #2563C9;
       --accent-light: #8DB8FF;
       --warn-orange: #F08A24;
@@ -25,16 +25,17 @@
       --text-main: #F4F6FA;
       --text-muted: #9FB0C9;
       --gold-star: #FFD700;
-      --shadow-color: rgba(0,0,0,0.4);
+      --shadow-color: rgba(0,0,0,0.45);
       --bg-art-opacity: 0.12;
-      --ticker-bg: #132747;
+      --ticker-bg: #122543;
+      --ticker-border: #2B4877;
     }
 
     html[data-theme="light"] {
-      --bg-dark: #EAEFF8;
+      --bg-dark: #EDF2F9;
       --bg-card: #FFFFFF;
-      --bg-surface: #F2F5FA;
-      --border-color: #D6DDE8;
+      --bg-surface: #F3F6FA;
+      --border-color: #D3DCED;
       --accent-blue: #2563C9;
       --accent-light: #1D4C9E;
       --warn-orange: #D47317;
@@ -45,7 +46,8 @@
       --gold-star: #D4A017;
       --shadow-color: rgba(19, 35, 63, 0.08);
       --bg-art-opacity: 0.08;
-      --ticker-bg: #E1E8F5;
+      --ticker-bg: #E3EAF7;
+      --ticker-border: #C8D6EC;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -73,7 +75,7 @@
     .bg-art-robot { right: 15px; bottom: 15px; width: 160px; height: 140px; }
     @media (max-width: 768px) { .bg-art-item { display: none; } }
 
-    /* HEADER */
+    /* HEADER CHUẨN ĐẸP */
     header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -98,10 +100,10 @@
       border-radius: 4px;
       letter-spacing: 1px;
     }
-    .brand-title { font-size: 13px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 4px; line-height: 1.3; }
-    .brand-sub { font-size: 10px; color: var(--accent-light); font-weight: 600; display: none; }
+    .brand-title { font-size: 13.5px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 4px; line-height: 1.3; }
+    .brand-sub { font-size: 10.5px; color: var(--accent-light); font-weight: 600; display: none; }
     @media (min-width: 768px) {
-      .brand-title { font-size: 14.5px; }
+      .brand-title { font-size: 15px; }
       .brand-sub { display: block; }
     }
 
@@ -111,17 +113,17 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 5px 10px;
+      padding: 5px 11px;
       border-radius: 20px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
 
-    /* NÚT HỘP THƯ BÁO CÁO CHỜ DUYỆT */
+    /* HỘP THƯ BÁO CÁO CHỜ DUYỆT */
     .inbox-btn-wrap {
       position: relative;
       display: inline-flex;
@@ -132,12 +134,12 @@
       border: 1px solid var(--border-color);
       color: var(--text-main);
       font-size: 15px;
-      padding: 5px 10px;
+      padding: 5px 11px;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       transition: all 0.2s;
     }
     .inbox-icon-btn:hover {
@@ -148,17 +150,19 @@
       background: var(--danger-red);
       color: #fff;
       font-size: 10px;
-      padding: 1px 5px;
+      padding: 1px 6px;
       border-radius: 99px;
       font-weight: 800;
       margin-left: 2px;
     }
 
-    /* THANH THÔNG BÁO BỀ NGANG DƯỚI HEADER (TICKER TỔNG) */
+    /* ======================================================== */
+    /* THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG ĐỚP CHỮ MINI        */
+    /* ======================================================== */
     .global-announcement-bar {
       background: var(--ticker-bg);
-      border-bottom: 1px solid var(--border-color);
-      padding: 7px 16px;
+      border-bottom: 1px solid var(--ticker-border);
+      padding: 7px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -166,16 +170,31 @@
       overflow: hidden;
       position: relative;
       z-index: 90;
+      box-shadow: inset 0 -1px 3px rgba(0,0,0,0.05);
     }
-    .speaker-icon {
-      font-size: 16px;
-      animation: speakerPulse 1.5s infinite;
+    .dino-avatar-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
       flex-shrink: 0;
+      user-select: none;
+      transition: transform 0.2s;
     }
-    @keyframes speakerPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+    .dino-avatar-wrap:hover {
+      transform: scale(1.3) rotate(5deg);
     }
+    .dino-chomp-anim {
+      animation: dinoBite 0.6s ease-in-out;
+    }
+    @keyframes dinoBite {
+      0% { transform: scale(1) translateX(0); }
+      30% { transform: scale(1.35) rotate(-10deg) translateX(4px); }
+      60% { transform: scale(1.1) rotate(10deg) translateX(8px); }
+      100% { transform: scale(1) translateX(0); }
+    }
+
     .announcement-text-slider {
       flex: 1;
       white-space: nowrap;
@@ -183,7 +202,19 @@
       text-overflow: ellipsis;
       color: var(--text-main);
       font-weight: 600;
-      transition: opacity 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+    }
+    .text-slide-out {
+      opacity: 0;
+      transform: translateX(18px) scale(0.95);
+      filter: blur(2px);
+    }
+    .text-slide-in {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
     }
 
     /* NAVIGATION TABS */
@@ -207,7 +238,7 @@
       font-family: inherit;
       font-size: 12.5px;
       font-weight: 600;
-      padding: 10px 14px;
+      padding: 11px 15px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -227,7 +258,7 @@
       font-family: inherit;
       font-size: 12.5px;
       font-weight: 600;
-      padding: 6px 12px;
+      padding: 6px 13px;
       border-radius: 6px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -252,7 +283,7 @@
     /* LAYOUT */
     .container {
       flex: 1;
-      padding: 16px;
+      padding: 14px 16px;
       max-width: 1440px;
       margin: 0 auto;
       width: 100%;
@@ -346,7 +377,7 @@
       overflow-y: auto;
     }
 
-    /* NHÃN THẺ TASK ĐẶC BIỆT */
+    /* NHÃN ĐẶC BIỆT */
     .tag-boss-review {
       background: linear-gradient(135deg, #FF6B6B, #FF8E53);
       color: #fff;
@@ -358,7 +389,13 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      animation: pulseAttention 1.5s infinite;
     }
+    @keyframes pulseAttention {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
     .tag-fix-request {
       background: #D93838;
       color: #fff;
@@ -386,7 +423,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 14px;
+      padding: 13px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -458,7 +495,7 @@
     @media (min-width: 992px) { .chat-main-card { height: auto; } }
 
     .chat-list-header {
-      padding: 12px 16px;
+      padding: 11px 15px;
       border-bottom: 1px solid var(--border-color);
       font-weight: 700;
       font-size: 13px;
@@ -499,7 +536,7 @@
       gap: 12px;
     }
     .chat-bubble {
-      max-width: 80%;
+      max-width: 82%;
       padding: 8px 12px;
       border-radius: 8px;
       font-size: 13px;
@@ -579,11 +616,11 @@
     .dsu-table th { background: var(--bg-surface); color: var(--accent-light); padding: 10px 12px; border-bottom: 2px solid var(--border-color); font-weight: 700; font-size: 12px; }
     .dsu-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
 
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(11, 21, 40, 0.85); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 19, 36, 0.88); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
     .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
-    .modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
-    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+    .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
     .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -653,10 +690,10 @@
     </div>
   </header>
 
-  <!-- THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER TỔNG HỢP) -->
+  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ -->
   <div class="global-announcement-bar">
-    <span class="speaker-icon">📢</span>
-    <div id="globalAnnouncementText" class="announcement-text-slider">
+    <div id="dinoMascot" class="dino-avatar-wrap" title="Chào mừng bạn đến với DSU! Chạm vào tôi để chơi nhé!">🦖</div>
+    <div id="globalAnnouncementText" class="announcement-text-slider text-slide-in">
       Đang tải thông tin nhiệm vụ và lời chào...
     </div>
   </div>
@@ -876,7 +913,7 @@
 
         <div class="guide-card">
           <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
-          <div class="guide-step">1. <b>Trách nhiệm:</b> Đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
+          <div class="guide-step">1. <b>Trách nhiệm:</b> Đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc. Hãy nhanh chóng tiếp nhận việc từ cột 1 sang cột 2.</div>
           <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Chuyển việc sang <i>"Chờ duyệt báo cáo"</i> khi cả nhóm đã nộp đủ tài liệu. Thẻ sẽ gắn nhãn <i>"Sếp ơi duyệt đi"</i> và dừng đếm giờ.</div>
         </div>
 
@@ -960,7 +997,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Tên công việc *</label>
-          <input type="text" id="taskTitle" class="form-control" placeholder="VD: Giải phóng tàu container Tân Vũ..." required>
+          <input type="text" id="taskTitle" class="form-control" placeholder="VD: Triển khai kế hoạch khai thác tuần mới..." required>
         </div>
         <div class="form-group">
           <label>Nội dung chỉ đạo</label>
@@ -1104,7 +1141,6 @@
       
       <div class="modal-footer" style="justify-content:space-between;">
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <!-- NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT) -->
           <button class="btn btn-warning btn-sm" id="btnRejectFixTask" onclick="rejectTaskToInProgress()" style="display:none;">
             ↩️ Trả về yêu cầu sửa
           </button>
@@ -1242,7 +1278,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V22.0                     -->
+  <!-- JAVASCRIPT LOGIC V22.2                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1265,6 +1301,8 @@
     let selectedTaskIdForDetail = null;
 
     let unreadChatCounts = { group: 0 };
+    let lastReadTimeMap = JSON.parse(localStorage.getItem("DSU_LAST_READ_MAP") || "{}");
+
     let activeChatPeerId = localStorage.getItem("DSU_ACTIVE_CHAT_PEER") || null;
     if (activeChatPeerId === "null" || activeChatPeerId === "undefined") activeChatPeerId = null;
 
@@ -1273,7 +1311,6 @@
     let chatPollingTimer = null;
     let lastCheckedMessageTime = new Date().toISOString();
 
-    // Quản lý thông báo chờ duyệt đã đọc
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
     // 1. THEME
@@ -1292,7 +1329,7 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Sáng" : "Tối";
     }
 
-    // 2. KHỞI TẠO APP & ĐỒNG BỘ
+    // 2. KHỞI TẠO APP
     async function initApp() {
       initTheme();
       if (!currentUserId) {
@@ -1313,6 +1350,16 @@
       switchMainTab(savedTab);
       if (savedTab === 'chatTab' && activeChatPeerId) {
         openDirectChat(activeChatPeerId);
+      }
+
+      // Khủng long nhảy nhót khi người dùng click vào
+      const dino = document.getElementById('dinoMascot');
+      if (dino) {
+        dino.addEventListener('click', () => {
+          dino.classList.remove('dino-chomp-anim');
+          void dino.offsetWidth;
+          dino.classList.add('dino-chomp-anim');
+        });
       }
     }
 
@@ -1345,15 +1392,13 @@
       updateReviewInboxUI();
     }
 
-    // TỰ ĐỘNG TẢI LẠI TRANG / CẬP NHẬT KHI CÓ TASK MỚI HOẶC ĐỔI TRẠNG THÁI
     function setupRealtime() {
       try {
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v22')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
-            console.log("⚡ Nhận thay đổi task realtime:", payload);
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v22.2')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
           .subscribe();
@@ -1367,7 +1412,7 @@
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // 3. THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER)
+    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & THANH THÔNG BÁO THAY ĐỔI
     let tickerIndex = 0;
     function startAnnouncementTicker() {
       updateAnnouncementMessage();
@@ -1376,61 +1421,77 @@
 
     function updateAnnouncementMessage() {
       const el = document.getElementById('globalAnnouncementText');
+      const dino = document.getElementById('dinoMascot');
       if (!el || !currentUserId) return;
 
       const user = users.find(u => String(u.id) === String(currentUserId));
       const userName = user ? user.full_name : "Đồng chí";
 
-      // 1. Phân tích các task của người dùng
+      // 1. Lời chào theo giờ thực tế trong ngày
+      const currentHour = new Date().getHours();
+      let greeting = "Chào buổi sáng!";
+      if (currentHour >= 12 && currentHour < 18) {
+        greeting = "Chào buổi chiều!";
+      } else if (currentHour >= 18 || currentHour < 5) {
+        greeting = "Chào buổi tối!";
+      }
+
+      // Lời chúc nghiệp vụ chung
+      const wishes = [
+        "chúc bạn một ca làm việc an toàn, phối hợp nhịp nhàng và hiệu quả cao!",
+        "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc các chỉ tiêu công tác đề ra!",
+        "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn chuẩn xác và đúng hạn!",
+        "chúc bạn luôn tràn đầy nhiệt huyết và năng lượng tích cực trong công việc!"
+      ];
+      const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+
+      const pendingTasksForLeader = tasks.filter(t => t.status === 'pending' && String(t.leader_id) === String(currentUserId));
       const myActiveTasks = tasks.filter(t => {
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
         return memberIds.includes(currentUserId) && t.status !== 'completed';
       });
 
-      // Lời chúc ngẫu nhiên theo thời gian thực
-      const hour = new Date().getHours();
-      let greeting = "Chào buổi sáng!";
-      if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều!";
-      else if (hour >= 18) greeting = "Chào buổi tối!";
+      let nextMessage = "";
+      const step = tickerIndex % 3;
 
-      const wishes = [
-        "chúc bạn một ca làm việc thuận lợi, an toàn và hiệu quả cao!",
-        "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc mọi chỉ tiêu!",
-        "chúc bạn luôn tràn đầy năng lượng, giải phóng tàu nhanh chóng!",
-        "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn đúng hạn!"
-      ];
-      const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-
-      let message = "";
-      if (tickerIndex % 2 === 0) {
-        // Lời chào & lời chúc
-        message = `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
+      if (pendingTasksForLeader.length > 0 && step === 0) {
+        const firstPending = pendingTasksForLeader[0];
+        nextMessage = `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
+      } else if (step === 1) {
+        nextMessage = `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
       } else {
-        // Lời nhắc nhở công việc cá nhân
         if (myActiveTasks.length === 0) {
-          message = `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn có một ngày làm việc tuyệt vời!`;
+          nextMessage = `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn có một ngày làm việc tuyệt vời!`;
         } else {
-          const taskNames = myActiveTasks.map(t => `[${t.title}]`).join("; ");
-          
-          // Tìm task sắp hết hạn (<12h) hoặc quá hạn
+          const taskNames = myActiveTasks.map(t => `[${escapeHtml(t.title)}]`).join("; ");
           const urgentTask = myActiveTasks.find(t => {
             const al = calculateDeadlineAlert(t.due_datetime, t.status);
             return al.type === 'overdue' || al.type === 'warn6h' || al.type === 'warn12h';
           });
 
           if (urgentTask) {
-            message = `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó task <b>[${urgentTask.title}]</b> đang sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
+            nextMessage = `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó nhiệm vụ <b>[${escapeHtml(urgentTask.title)}]</b> sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
           } else {
-            message = `📌 <b>${userName}</b> đang phụ trách các task: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
+            nextMessage = `📌 <b>${userName}</b> đang phụ trách các nhiệm vụ: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
           }
         }
       }
 
-      el.style.opacity = 0;
+      // KÍCH HOẠT HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ
+      if (dino) {
+        dino.classList.remove('dino-chomp-anim');
+        void dino.offsetWidth;
+        dino.classList.add('dino-chomp-anim');
+      }
+
+      el.classList.remove('text-slide-in');
+      el.classList.add('text-slide-out');
+
       setTimeout(() => {
-        el.innerHTML = message;
-        el.style.opacity = 1;
-      }, 300);
+        el.innerHTML = nextMessage;
+        el.classList.remove('text-slide-out');
+        el.classList.add('text-slide-in');
+      }, 400);
 
       tickerIndex++;
     }
@@ -1471,7 +1532,6 @@
       } else {
         reviewTasks.forEach(t => {
           const leader = users.find(u => String(u.id) === String(t.leader_id)) || { full_name: 'Nhóm trưởng' };
-          const isDismissed = dismissedReviewTaskIds.includes(String(t.id));
           const item = document.createElement('div');
           item.style.background = 'var(--bg-surface)';
           item.style.border = '1px solid var(--border-color)';
@@ -1522,13 +1582,13 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT BÁO CÁO)
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT)
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       if (!task) return;
 
-      const reason = prompt("Nhập nội dung/lý do yêu cầu sửa đổi gửi cho nhóm:", "Báo cáo chưa đủ số liệu, đề nghị bổ sung chi tiết!");
+      const reason = prompt("Nhập nội dung/lý do yêu cầu sửa đổi gửi cho nhóm:", "Báo cáo chưa đủ nội dung, đề nghị rà soát và bổ sung!");
       if (reason === null) return;
 
       let desc = task.description || '';
@@ -1556,7 +1616,7 @@
       }
     }
 
-    // 6. CHAT LIVE & 1-1 LOGIC VÀ THÔNG BÁO NHẤP NHÁY
+    // 6. CHAT LIVE & 1-1 LOGIC
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
     }
@@ -1564,9 +1624,8 @@
     function openGroupChat() {
       activeChatPeerId = null;
       localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
-      unreadChatCounts['group'] = 0;
       document.getElementById('chatRoomTitle').textContent = '🌐 Chat Nhóm chung';
-      hideChatTicker();
+      markCurrentRoomAsRead('group');
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
@@ -1576,13 +1635,20 @@
       if (String(uid) === String(currentUserId)) return;
       activeChatPeerId = uid;
       localStorage.setItem("DSU_ACTIVE_CHAT_PEER", uid);
-      unreadChatCounts[String(uid)] = 0;
       const u = users.find(x => String(x.id) === String(uid));
       document.getElementById('chatRoomTitle').textContent = '🔒 Chat riêng — ' + (u?.full_name || 'Đồng nghiệp');
-      hideChatTicker();
+      markCurrentRoomAsRead(String(uid));
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
+    }
+
+    function markCurrentRoomAsRead(targetKey) {
+      const key = targetKey || (activeChatPeerId === null ? 'group' : String(activeChatPeerId));
+      unreadChatCounts[key] = 0;
+      lastReadTimeMap[key] = new Date().toISOString();
+      localStorage.setItem("DSU_LAST_READ_MAP", JSON.stringify(lastReadTimeMap));
+      hideChatTicker();
     }
 
     function setupPresence() {
@@ -1649,32 +1715,43 @@
       const isGroupMsg = !msg.recipient_id || msg.room_key === 'group';
       const senderObj = users.find(x => String(x.id) === senderIdStr) || { full_name: 'Đồng nghiệp' };
 
+      const msgTime = new Date(msg.created_at).getTime();
+
       if (isGroupMsg) {
-        if (activeChatPeerId !== null || !document.getElementById('chatTab').classList.contains('active')) {
-          unreadChatCounts['group'] = (unreadChatCounts['group'] || 0) + 1;
+        const lastRead = lastReadTimeMap['group'] ? new Date(lastReadTimeMap['group']).getTime() : 0;
+        if (msgTime > lastRead) {
+          if (activeChatPeerId !== null || !document.getElementById('chatTab').classList.contains('active')) {
+            unreadChatCounts['group'] = (unreadChatCounts['group'] || 0) + 1;
+          }
         }
       } else {
         if (String(msg.recipient_id) === String(currentUserId)) {
-          if (String(activeChatPeerId) !== senderIdStr || !document.getElementById('chatTab').classList.contains('active')) {
-            unreadChatCounts[senderIdStr] = (unreadChatCounts[senderIdStr] || 0) + 1;
+          const lastRead = lastReadTimeMap[senderIdStr] ? new Date(lastReadTimeMap[senderIdStr]).getTime() : 0;
+          if (msgTime > lastRead) {
+            if (String(activeChatPeerId) !== senderIdStr || !document.getElementById('chatTab').classList.contains('active')) {
+              unreadChatCounts[senderIdStr] = (unreadChatCounts[senderIdStr] || 0) + 1;
+            }
           }
         }
       }
 
       const chatTabBtn = document.getElementById('tabBtn-chat');
-      if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
+      const totalUnread = Object.values(unreadChatCounts).reduce((a, b) => a + b, 0);
+      if (chatTabBtn && totalUnread > 0 && !chatTabBtn.classList.contains('active')) {
         chatTabBtn.classList.add('chat-tab-alert');
         chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span class="unread-badge-pill">MỚI</span>';
       }
 
       const ticker = document.getElementById('chatLiveTicker');
       const tickerText = document.getElementById('chatTickerText');
-      if (ticker && tickerText) {
+      if (ticker && tickerText && totalUnread > 0) {
         tickerText.textContent = `⚡ Chú ý có tin nhắn từ [${senderObj.full_name}] gửi cho bạn!`;
         ticker.style.display = 'flex';
       }
 
-      document.title = `💬 Có tin nhắn từ ${senderObj.full_name}!`;
+      if (totalUnread > 0) {
+        document.title = `💬 Có tin nhắn từ ${senderObj.full_name}!`;
+      }
       renderChatUsers();
     }
 
@@ -1684,12 +1761,7 @@
     }
 
     function markCurrentChatAsRead() {
-      if (activeChatPeerId === null) {
-        unreadChatCounts['group'] = 0;
-      } else {
-        unreadChatCounts[String(activeChatPeerId)] = 0;
-      }
-      hideChatTicker();
+      markCurrentRoomAsRead();
       renderChatUsers();
       updateTabChatAlertUI();
       alert("Đã đánh dấu xem xong! Sẽ không báo tin mới cho đến khi có tin nhắn tiếp theo.");
@@ -1711,8 +1783,7 @@
       localStorage.setItem("DSU_ACTIVE_TAB", tabId);
       if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
       if (tabId === 'chatTab') {
-        if (activeChatPeerId === null) unreadChatCounts['group'] = 0;
-        else unreadChatCounts[String(activeChatPeerId)] = 0;
+        markCurrentRoomAsRead();
         renderChatUsers(); 
         updateTabChatAlertUI();
         loadChatMessages(); 
@@ -1837,6 +1908,7 @@
           renderChatMessages();
         }
         lastCheckedMessageTime = data[0].created_at;
+        markCurrentRoomAsRead();
       }
       i.value = '';
     }
@@ -1882,7 +1954,6 @@
       }
     }
 
-    // ĐĂNG KÝ TÀI KHOẢN & ĐỔI MẬT KHẨU
     function openSignup() {
       closeModal('modalAuth');
       document.getElementById('signupName').value = '';
@@ -1956,12 +2027,11 @@
       }
     }
 
-    // 7. TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO" HOẶC "HOÀN THÀNH"
+    // 7. TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO"
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') {
         return { text: '✅ Đã hoàn thành', cardClass: '', type: 'completed' };
       }
-      // KHI CHUYỂN SANG CHỜ DUYỆT BÁO CÁO: TỰ ĐỘNG KHÔNG ĐẾM GIỜ NỮA
       if (status === 'review') {
         return { text: '⏳ Đang chờ Lãnh đạo duyệt', cardClass: '', type: 'review' };
       }
@@ -2020,7 +2090,6 @@
           openTaskDetailModal(t.id);
         });
 
-        // GẮN NHÃN ĐẶC BIỆT: "SẾP ƠI DUYỆT ĐI" HOẶC "YÊU CẦU SỬA LẠI"
         let statusBadgeHtml = '';
         if (t.status === 'review') {
           statusBadgeHtml = `<span class="tag-boss-review">📢 Sếp ơi duyệt đi</span>`;
@@ -2099,11 +2168,9 @@
       const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
       const isTaskCompleted = task.status === 'completed';
 
-      // Nút xóa việc vĩnh viễn
       const btnDelete = document.getElementById('btnDeleteTaskPermanent');
       btnDelete.style.display = isLeaderRole ? 'inline-flex' : 'none';
 
-      // Nút trả về yêu cầu sửa lại (chỉ hiện khi việc đang chờ duyệt và người mở là Sếp/Admin)
       const btnRejectFix = document.getElementById('btnRejectFixTask');
       if (btnRejectFix) {
         btnRejectFix.style.display = (isLeaderRole && task.status === 'review') ? 'inline-flex' : 'none';
@@ -2292,7 +2359,6 @@
         updated_at: new Date().toISOString() 
       };
 
-      // Nếu chuyển trạng thái thì xóa cờ yêu cầu sửa cũ
       if (newStatus !== 'in_progress') {
         updateData.fix_requested = false;
       }
@@ -2732,8 +2798,7 @@
       if (tabId === 'scoreTab') renderScoreBoard();
       if (tabId === 'adminTab') renderAdminUserTable();
       if (tabId === 'chatTab') { 
-        if (activeChatPeerId === null) unreadChatCounts['group'] = 0;
-        else unreadChatCounts[String(activeChatPeerId)] = 0;
+        markCurrentRoomAsRead();
         renderChatUsers(); 
         updateTabChatAlertUI();
         loadChatMessages(); 
