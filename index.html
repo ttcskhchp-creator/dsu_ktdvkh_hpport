@@ -123,6 +123,25 @@
       gap: 5px;
     }
 
+    .lunar-btn {
+      background: rgba(255, 215, 0, 0.12);
+      border: 1px solid var(--gold-star);
+      color: var(--gold-star);
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .lunar-btn:hover {
+      background: rgba(255, 215, 0, 0.25);
+      transform: scale(1.03);
+    }
+
     .inbox-btn-wrap {
       position: relative;
       display: inline-flex;
@@ -569,7 +588,7 @@
       justify-content: space-between;
     }
 
-    /* TOAST THÔNG BÁO GIAO VIỆC MỚI NỔI TRÊN MÀN HÌNH */
+    /* TOAST THÔNG BÁO */
     .task-toast-alert {
       position: fixed;
       top: 68px;
@@ -595,7 +614,7 @@
     }
 
     /* ======================================================== */
-    /* CHÂN TRANG ĐẸP MẮT: PACMAN CHẠY CHẠY & PHÁO HOA MINI     */
+    /* CHÂN TRANG: PACMAN & PHÁO HOA                            */
     /* ======================================================== */
     footer.app-footer {
       background: var(--bg-card);
@@ -618,7 +637,6 @@
       z-index: 2;
     }
 
-    /* DẢI PAC-MAN CHẠY NGANG CHÂN TRANG */
     .pacman-track {
       position: relative;
       width: 100%;
@@ -686,7 +704,6 @@
       100% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* FIREWORKS MINI CANVAS */
     #fireworksCanvas {
       position: absolute;
       bottom: 0;
@@ -698,39 +715,36 @@
       opacity: 0.6;
     }
 
-    /* TABLES & MODALS */
-    .dsu-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-    .dsu-table th { background: var(--bg-surface); color: var(--accent-light); padding: 10px 12px; border-bottom: 2px solid var(--border-color); font-weight: 700; font-size: 12px; }
-    .dsu-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
-
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 19, 36, 0.88); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-    .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
-    .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
-    .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 576px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-    .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 100%; }
-    
-    .gdrive-highlight-box {
-      background: rgba(26, 115, 232, 0.12);
-      border: 1px solid #1a73e8;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 6px;
+    /* CARD LỊCH ÂM CHI TIẾT TRONG MODAL */
+    .lunar-modal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
-
-    .locked-task-notice {
-      background: rgba(240, 138, 36, 0.12);
-      border: 1px solid var(--warn-orange);
-      color: var(--warn-orange);
-      padding: 8px 12px;
+    @media (min-width: 576px) {
+      .lunar-modal-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .lunar-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .lunar-hour-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 11.5px;
+      margin: 3px 2px;
       font-weight: 600;
-      display: none;
+    }
+    .lunar-hour-current {
+      border-color: var(--gold-star) !important;
+      background: rgba(255, 215, 0, 0.15) !important;
+      color: var(--gold-star) !important;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
     }
   </style>
 </head>
@@ -760,6 +774,11 @@
       </div>
     </div>
     <div class="header-user">
+      <!-- NÚT LỊCH ÂM LỊCH -->
+      <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
+        <span id="headerLunarIcon">🌙</span> <span id="headerLunarText">Lịch Âm</span>
+      </button>
+
       <button class="theme-toggle-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
       </button>
@@ -777,12 +796,12 @@
     </div>
   </header>
 
-  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG -->
+  <!-- THANH THÔNG BÁO KHỦNG LONG MINI ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG -->
   <div class="global-announcement-bar">
     <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào chú khủng long để chơi!">🦖</div>
     <div class="announcement-container" id="announcementContainer">
       <div id="globalAnnouncementText" class="announcement-text-slider">
-        Đang tải thông tin nhiệm vụ và lời chào...
+        Đang tải thông tin nhiệm vụ và âm lịch...
       </div>
     </div>
   </div>
@@ -1022,12 +1041,11 @@
   </main>
 
   <!-- ========================================== -->
-  <!-- FOOTER ĐẸP MẮT: PAC-MAN & PHÁO HOA MINI    -->
+  <!-- FOOTER: PACMAN & PHÁO HOA MINI             -->
   <!-- ========================================== -->
   <footer class="app-footer">
     <canvas id="fireworksCanvas"></canvas>
     
-    <!-- Dải Pac-man chạy ăn hạt năng lượng -->
     <div class="pacman-track">
       <div class="pacman-dots">
         <div class="dot-pellet"></div>
@@ -1054,13 +1072,61 @@
 
     <div class="footer-content">
       <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
-      <div>⚡ Hệ thống DSU v23.0 · Đồng bộ Realtime & An toàn dữ liệu</div>
+      <div>⚡ Hệ thống DSU v24.0 · Âm Lịch & Giờ Hoàng Đạo Tích Hợp</div>
     </div>
   </footer>
 
   <!-- ========================================== -->
   <!-- MODALS                                     -->
   <!-- ========================================== -->
+
+  <!-- MODAL: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO (ÂM LỊCH) -->
+  <div class="modal-backdrop" id="modalLunarCalendar">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px; color:var(--gold-star); display:flex; align-items:center; gap:6px;">
+          📅 Lịch Vạn Niên & Giờ Hoàng Đạo Công Tác
+        </h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalLunarCalendar')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div style="font-size:12px; color:var(--accent-light); font-weight:700;">Chọn ngày tra cứu:</div>
+          <input type="date" id="lunarDatePicker" class="form-control" style="max-width:180px; padding:4px 8px;" onchange="onLunarDateChange(this.value)">
+        </div>
+
+        <div class="lunar-modal-grid" style="margin-top:6px;">
+          <!-- Khung Ngày Dương & Âm -->
+          <div class="lunar-box" style="border-left:4px solid var(--accent-blue);">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">DƯƠNG LỊCH</div>
+            <div id="lunarSolarDateText" style="font-size:18px; font-weight:800; color:var(--accent-light); margin-top:2px;"></div>
+            <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--gold-star); font-weight:700;">ÂM LỊCH VIỆT NAM</div>
+            <div id="lunarDateText" style="font-size:20px; font-weight:800; color:var(--gold-star); margin-top:2px;"></div>
+            <div id="lunarCanChiText" style="font-size:12px; font-weight:600; color:var(--text-main); margin-top:4px;"></div>
+            <div id="lunarDayTypeText" style="font-size:11.5px; font-weight:700; margin-top:4px;"></div>
+          </div>
+
+          <!-- Khung Giờ Hoàng Đạo -->
+          <div class="lunar-box" style="border-left:4px solid var(--gold-star);">
+            <div style="font-size:11.5px; font-weight:700; color:var(--gold-star); margin-bottom:6px;">⭐ 6 Khung Giờ Hoàng Đạo (Giờ Tốt):</div>
+            <div id="lunarAuspiciousHoursList"></div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">* Khung giờ viền vàng rực là giờ tốt đang diễn ra hiện tại.</div>
+          </div>
+        </div>
+
+        <!-- Khung Lời khuyên công tác -->
+        <div class="lunar-box" style="border-left:4px solid var(--succ-green);">
+          <div style="font-size:12px; font-weight:700; color:var(--succ-green); margin-bottom:4px;">💡 Ghi Chú & Lời Khuyên Tác Nghiệp Trong Ngày:</div>
+          <div id="lunarAdviceText" style="font-size:12.5px; line-height:1.5; color:var(--text-main);"></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button class="btn btn-drive btn-sm" onclick="openExternalLunarWeb()">🌐 Xem chi tiết trên Vansu.net</button>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalLunarCalendar')">Đóng</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
   <div class="modal-backdrop" id="modalReviewInbox">
@@ -1404,7 +1470,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V23.0                     -->
+  <!-- JAVASCRIPT LOGIC V24.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1440,6 +1506,231 @@
 
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
+    // ==========================================
+    // THUẬT TOÁN ÂM LỊCH VIỆT NAM (HỒ NGỌC ĐỨC)
+    // ==========================================
+    const CAN_NAMES = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const CHI_NAMES = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    const TIET_KHI = ["Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết", "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập"];
+
+    function jdFromDate(dd, mm, yy) {
+      let a = Math.floor((14 - mm) / 12);
+      let y = yy + 4800 - a;
+      let m = mm + 12 * a - 3;
+      let jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083;
+      return jd;
+    }
+
+    function getNewMoonDay(k, timeZone) {
+      let T = k / 1236.85;
+      let T2 = T * T;
+      let T3 = T2 * T;
+      let dr = Math.PI / 180;
+      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.0107306 * T3;
+      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M);
+      C1 -= 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(2 * dr * Mpr);
+      C1 -= 0.0004 * Math.sin(3 * dr * Mpr);
+      C1 += 0.0104 * Math.sin(2 * dr * F) - 0.0051 * Math.sin((M + Mpr) * dr);
+      C1 -= 0.0074 * Math.sin((M - Mpr) * dr) + 0.0004 * Math.sin((2 * F + M) * dr);
+      C1 -= 0.0004 * Math.sin((2 * F - M) * dr) - 0.0006 * Math.sin((2 * F + Mpr) * dr);
+      C1 += 0.0010 * Math.sin((2 * F - Mpr) * dr) + 0.0005 * Math.sin((M + 2 * Mpr) * dr);
+      let JdNew = Jd1 + C1;
+      return Math.floor(JdNew + 0.5 + timeZone / 24);
+    }
+
+    function getSunLongitude(jdn, timeZone) {
+      let T = (jdn - 2451545.5 - timeZone / 24) / 36525;
+      let dr = Math.PI / 180;
+      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T * T - 0.00000048 * T * T * T;
+      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T * T;
+      let DL = (1.914600 - 0.004817 * T - 0.000014 * T * T) * Math.sin(dr * M);
+      DL += (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      let L = L0 + DL;
+      L = L * dr;
+      L = L - Math.PI * 2 * Math.floor(L / (Math.PI * 2));
+      return Math.floor(L / (Math.PI / 6));
+    }
+
+    function getLunarMonth11(yy, timeZone) {
+      let off = jdFromDate(31, 12, yy) - 2415021;
+      let k = Math.floor(off / 29.530588853);
+      let nm = getNewMoonDay(k, timeZone);
+      let sunLong = getSunLongitude(nm, timeZone);
+      if (sunLong >= 9) nm = getNewMoonDay(k - 1, timeZone);
+      return nm;
+    }
+
+    function getLeapMonthOffset(a11, timeZone) {
+      let k = Math.floor((a11 - 2415021.076998695) / 29.530588853 + 0.5);
+      let last = 0;
+      let i = 1;
+      let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+      while (true) {
+        last = arc;
+        i++;
+        arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+        if (arc === last || i > 14) break;
+      }
+      return i - 1;
+    }
+
+    function convertSolarToLunar(dd, mm, yy, timeZone = 7) {
+      let dayNumber = jdFromDate(dd, mm, yy);
+      let k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
+      let monthStart = getNewMoonDay(k + 1, timeZone);
+      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
+      let a11 = getLunarMonth11(yy, timeZone);
+      let b11 = a11;
+      let lunarYear = yy;
+      if (a11 >= monthStart) {
+        lunarYear = yy;
+        a11 = getLunarMonth11(yy - 1, timeZone);
+      } else {
+        lunarYear = yy + 1;
+        b11 = getLunarMonth11(yy + 1, timeZone);
+      }
+      let lunarDay = dayNumber - monthStart + 1;
+      let diff = Math.floor((monthStart - a11) / 29);
+      let lunarLeap = false;
+      let lunarMonth = diff + 11;
+      if ((b11 - a11) > 365) {
+        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
+        if (diff >= leapMonthDiff) {
+          lunarMonth = diff + 10;
+          if (diff === leapMonthDiff) lunarLeap = true;
+        }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear--;
+      return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap, jd: dayNumber };
+    }
+
+    // TÍNH CAN CHI VÀ GIỜ HOÀNG ĐẠO
+    function getLunarDetails(dd, mm, yy) {
+      const lunar = convertSolarToLunar(dd, mm, yy, 7);
+      const jd = lunar.jd;
+
+      const canYear = CAN_NAMES[(lunar.year - 4) % 10];
+      const chiYear = CHI_NAMES[(lunar.year - 4) % 12];
+      const canChiYear = `${canYear} ${chiYear}`;
+
+      const canDay = CAN_NAMES[(jd + 9) % 10];
+      const chiDay = CHI_NAMES[(jd + 1) % 12];
+      const canChiDay = `${canDay} ${chiDay}`;
+
+      const canMonth = CAN_NAMES[((lunar.year * 12 + lunar.month + 3) % 10)];
+      const chiMonth = CHI_NAMES[(lunar.month + 1) % 12];
+      const canChiMonth = `${canMonth} ${chiMonth}`;
+
+      // Xác định 6 Giờ Hoàng Đạo theo Chi của ngày
+      const chiDayIndex = (jd + 1) % 12; // 0: Tý, 1: Sửu... 11: Hợi
+      const auspiciousHourMap = {
+        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ], // Tý, Ngọ
+        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ], // Sửu, Mùi
+        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ], // Dần, Thân
+        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ], // Mão, Dậu
+        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ], // Thìn, Tuất
+        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]  // Tỵ, Hợi
+      };
+
+      const groupIdx = chiDayIndex % 6;
+      const hoursList = auspiciousHourMap[groupIdx] || [];
+
+      // Kiểm tra ngày hoàng đạo / hắc đạo
+      const isHoangDaoDay = (jd % 2 === 0);
+
+      return {
+        lunarDay: lunar.day,
+        lunarMonth: lunar.month,
+        lunarYear: lunar.year,
+        isLeap: lunar.leap,
+        canChiDay,
+        canChiMonth,
+        canChiYear,
+        hoursList,
+        isHoangDaoDay
+      };
+    }
+
+    function updateHeaderLunarBadge() {
+      const now = new Date();
+      const info = getLunarDetails(now.getDate(), now.getMonth() + 1, now.getFullYear());
+      const btnText = document.getElementById('headerLunarText');
+      if (btnText) {
+        btnText.innerHTML = `${info.lunarDay}/${info.lunarMonth} Âm`;
+      }
+    }
+
+    function openLunarModal(selectedDateStr) {
+      const picker = document.getElementById('lunarDatePicker');
+      let targetDate = new Date();
+      if (selectedDateStr) {
+        targetDate = new Date(selectedDateStr);
+      }
+      const y = targetDate.getFullYear();
+      const m = targetDate.getMonth() + 1;
+      const d = targetDate.getDate();
+
+      if (picker) {
+        picker.value = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      }
+
+      const info = getLunarDetails(d, m, y);
+
+      document.getElementById('lunarSolarDateText').textContent = `Thứ ${targetDate.getDay() === 0 ? 'CN' : targetDate.getDay() + 1}, ${d}/${m}/${y}`;
+      document.getElementById('lunarDateText').textContent = `Ngày ${info.lunarDay} Tháng ${info.lunarMonth} ${info.isLeap ? '(Nhuận)' : ''}`;
+      document.getElementById('lunarCanChiText').textContent = `Can chi: Ngày ${info.canChiDay} · Tháng ${info.canChiMonth} · Năm ${info.canChiYear}`;
+
+      const dayTypeEl = document.getElementById('lunarDayTypeText');
+      if (info.isHoangDaoDay) {
+        dayTypeEl.innerHTML = `<span style="color:#00e676;">● Ngày Hoàng Đạo (Tốt lành, hanh thông)</span>`;
+      } else {
+        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange);">● Ngày Hắc Đạo (Nên cẩn trọng, chú ý quy trình)</span>`;
+      }
+
+      // Render 6 giờ hoàng đạo
+      const currH = new Date().getHours();
+      const hoursBox = document.getElementById('lunarAuspiciousHoursList');
+      hoursBox.innerHTML = info.hoursList.map(h => {
+        let isNow = false;
+        if (h.hStart === 23) {
+          isNow = (currH >= 23 || currH < 1);
+        } else {
+          isNow = (currH >= h.hStart && currH < h.hEnd);
+        }
+        return `<span class="lunar-hour-badge ${isNow ? 'lunar-hour-current' : ''}">Giờ ${h.name} (${h.time})</span>`;
+      }).join(' ');
+
+      // Lời khuyên tác nghiệp
+      const adviceEl = document.getElementById('lunarAdviceText');
+      if (info.isHoangDaoDay) {
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, nghiệm thu báo cáo công việc, triển khai kế hoạch giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra an toàn thiết bị cẩu bãi và cầu tàu trong các khung giờ cao điểm.`;
+      } else {
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát lại số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động và quy tắc an toàn khai thác tại Tân Vũ.`;
+      }
+
+      document.getElementById('modalLunarCalendar').style.display = 'flex';
+    }
+
+    function onLunarDateChange(val) {
+      if (val) openLunarModal(val);
+    }
+
+    function openExternalLunarWeb() {
+      const picker = document.getElementById('lunarDatePicker');
+      const val = picker ? picker.value : '';
+      let url = 'https://vansu.net/lich-am.html';
+      if (val) {
+        url = `https://vansu.net/lich-van-nien.html`;
+      }
+      window.open(url, '_blank');
+    }
+
     // 1. THEME
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
@@ -1459,6 +1750,8 @@
     // 2. KHỞI TẠO APP
     async function initApp() {
       initTheme();
+      updateHeaderLunarBadge();
+
       if (!currentUserId) {
         logoutUser();
         return;
@@ -1468,7 +1761,7 @@
       setupPresence();
       await loadChatMessages();
       startChatPolling();
-      startTasksPolling(); // Polling ngầm tránh bỏ sót task
+      startTasksPolling();
       startAnnouncementTicker();
       initFireworks();
 
@@ -1508,7 +1801,7 @@
       }
     }
 
-    // ÂM THANH CHIME THÔNG BÁO GIAO VIỆC MỚI (WEB AUDIO API)
+    // ÂM THANH CHIME THÔNG BÁO GIAO VIỆC MỚI
     function playNotificationChime() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1518,12 +1811,12 @@
         const gain = ctx.createGain();
 
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(587.33, now); // D5
-        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+        osc1.frequency.setValueAtTime(587.33, now);
+        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.15);
 
         osc2.type = 'triangle';
         osc2.frequency.setValueAtTime(880, now + 0.15);
-        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.35); // D6
+        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.35);
 
         gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
@@ -1537,11 +1830,10 @@
         osc1.stop(now + 0.15);
         osc2.stop(now + 0.45);
       } catch (e) {
-        console.log("Audio ctx chưa được tương tác:", e);
+        console.log("Audio ctx:", e);
       }
     }
 
-    // HIỂN THỊ TOAST POPUP THÔNG BÁO KHI ĐƯỢC GIAO VIỆC
     function showNewTaskToast(task) {
       playNotificationChime();
       const toast = document.createElement('div');
@@ -1568,7 +1860,6 @@
         const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
         if (!error && data) {
           if (!isInitial) {
-            // Kiểm tra xem có task mới nào vừa xuất hiện mà phân công cho mình không
             data.forEach(t => {
               if (!knownTaskIds.has(String(t.id))) {
                 const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
@@ -1596,9 +1887,8 @@
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v23')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
-            console.log("⚡ Nhận sự kiện Realtime Tasks:", payload);
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
           .subscribe();
@@ -1607,7 +1897,6 @@
       }
     }
 
-    // POLLING DỰ PHÒNG CHO TASKS (MỖI 5 GIÂY QUÉT LẠI TRÁNH TRƯỜNG HỢP WEBSOCKET BỊ ĐỨNG)
     function startTasksPolling() {
       if (taskPollingTimer) clearInterval(taskPollingTimer);
       taskPollingTimer = setInterval(() => {
@@ -1622,7 +1911,7 @@
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & TỰ ĐỘNG CUỘN CHỮ TRÊN MOBILE
+    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & THANH THÔNG BÁO TỔNG HỢP ÂM LỊCH
     let tickerIndex = 0;
     let tickerTimeout = null;
 
@@ -1635,10 +1924,13 @@
       const user = users.find(u => String(u.id) === String(currentUserId));
       const userName = user ? user.full_name : "Đồng chí";
 
-      const currentHour = new Date().getHours();
+      const now = new Date();
+      const currentHour = now.getHours();
       let greeting = "Chào buổi sáng!";
       if (currentHour >= 12 && currentHour < 18) greeting = "Chào buổi chiều!";
       else if (currentHour >= 18 || currentHour < 5) greeting = "Chào buổi tối!";
+
+      const lunarToday = getLunarDetails(now.getDate(), now.getMonth() + 1, now.getFullYear());
 
       const wishes = [
         "chúc bạn một ca làm việc an toàn, phối hợp nhịp nhàng và hiệu quả cao!",
@@ -1654,13 +1946,18 @@
         return memberIds.includes(String(currentUserId)) && t.status !== 'completed';
       });
 
-      const step = tickerIndex % 3;
+      const step = tickerIndex % 4;
       tickerIndex++;
 
+      // Luân phiên 4 thông điệp: 1. Việc mới cần nhận -> 2. Âm lịch & Giờ hoàng đạo -> 3. Lời chào lời chúc -> 4. Nhắc task gấp
       if (pendingTasksForLeader.length > 0 && step === 0) {
         const firstPending = pendingTasksForLeader[0];
         return `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
       } else if (step === 1) {
+        // Thông tin Âm lịch & Giờ hoàng đạo
+        const hoursStr = lunarToday.hoursList.map(h => `${h.name} (${h.time})`).join(", ");
+        return `🌙 <b>Lịch Âm hôm nay:</b> Ngày ${lunarToday.lunarDay}/${lunarToday.lunarMonth} (${lunarToday.canChiDay}) · <b>Giờ Hoàng Đạo tốt:</b> ${hoursStr}`;
+      } else if (step === 2) {
         return `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
       } else {
         if (myActiveTasks.length === 0) {
@@ -1705,7 +2002,7 @@
 
         if (textWidth > containerWidth) {
           const distanceToScroll = textWidth - containerWidth + 50;
-          const scrollSpeed = 38; // pixel/giây
+          const scrollSpeed = 38;
           const duration = distanceToScroll / scrollSpeed;
 
           setTimeout(() => {
@@ -1813,7 +2110,7 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (TỰ ĐỘNG BỎ QUA NẾU CHƯA CÓ CỘT FIX_REQUESTED)
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT)
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
@@ -1833,7 +2130,6 @@
         updated_at: new Date().toISOString()
       };
 
-      // Thử update kèm fix_requested, nếu supabase báo thiếu cột thì update không có cột này
       let { error } = await supabaseClient.from('tasks').update({ ...updatePayload, fix_requested: true }).eq('id', task.id);
       if (error && error.message.includes('fix_requested')) {
         const retryRes = await supabaseClient.from('tasks').update(updatePayload).eq('id', task.id);
@@ -1915,7 +2211,6 @@
       const btnDelChat = document.getElementById('btnDeleteChatRange');
       if (btnDelChat) btnDelChat.style.display = canDeleteChat ? 'inline-flex' : 'none';
 
-      // Nút Chat Nhóm chung
       const groupUnread = unreadChatCounts['group'] || 0;
       const groupBtn = document.createElement('button');
       groupBtn.className = 'user-presence-item' + (activeChatPeerId === null ? ' active' : '') + (groupUnread > 0 ? ' peer-unread-alert' : '');
@@ -1923,7 +2218,6 @@
       groupBtn.onclick = () => openGroupChat();
       box.appendChild(groupBtn);
 
-      // Danh sách nhân sự 1-1
       users.filter(u => String(u.id) !== String(currentUserId)).forEach(u => {
         const uidStr = String(u.id);
         const unreadNum = unreadChatCounts[uidStr] || 0;
@@ -2596,13 +2890,16 @@
         updated_at: new Date().toISOString() 
       };
 
+      if (newStatus !== 'in_progress') {
+        updateData.fix_requested = false;
+      }
+
       if (newDueDateTimeVal && isLeaderRole) {
         updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
       }
 
       closeModal('modalTaskDetail');
 
-      // Tự động bỏ qua lỗi nếu CSDL chưa có cột fix_requested
       let { error } = await supabaseClient.from('tasks').update({ ...updateData, fix_requested: false }).eq('id', task.id);
       if (error && error.message.includes('fix_requested')) {
         const retryRes = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
@@ -2813,7 +3110,8 @@
         status: 'pending',
         due_datetime: dueIsoString,
         drive_link: driveLink || null,
-        member_submissions: []
+        member_submissions: [],
+        fix_requested: false
       };
 
       const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
@@ -3061,7 +3359,7 @@
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
 
-    // 15. HIỆU ỨNG PHÁO HOA MINI DƯỚI FOOTER (CANVAS SPARKS)
+    // 15. HIỆU ỨNG PHÁO HOA MINI DƯỚI FOOTER
     function initFireworks() {
       const canvas = document.getElementById('fireworksCanvas');
       if (!canvas) return;
@@ -3107,7 +3405,7 @@
           const p = particles[i];
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.02; // trọng lực nhẹ
+          p.vy += 0.02;
           p.alpha -= 0.015;
 
           if (p.alpha <= 0) {
