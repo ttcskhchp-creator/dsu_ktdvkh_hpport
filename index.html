@@ -75,22 +75,42 @@
     .bg-art-robot { right: 15px; bottom: 65px; width: 160px; height: 140px; }
     @media (max-width: 768px) { .bg-art-item { display: none; } }
 
-    /* HEADER */
+    /* HEADER RESPONSIVE */
     header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       padding: 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 20px var(--shadow-color);
-      flex-wrap: wrap;
+      box-shadow: 0 4px 16px var(--shadow-color);
+    }
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    @media (min-width: 992px) {
+      .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
-    .brand-wrap { display: flex; align-items: center; gap: 10px; }
     .badge-port {
       background: var(--accent-blue);
       color: #fff;
@@ -100,20 +120,40 @@
       border-radius: 4px;
       letter-spacing: 1px;
     }
-    .brand-title { font-size: 13.5px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 4px; line-height: 1.3; }
+    .brand-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.3;
+    }
     .brand-sub { font-size: 10.5px; color: var(--accent-light); font-weight: 600; display: none; }
     @media (min-width: 768px) {
       .brand-title { font-size: 15px; }
       .brand-sub { display: block; }
     }
 
-    .header-user { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    @media (max-width: 991px) {
+      .header-actions {
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
 
     .theme-toggle-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 20px;
       font-size: 11.5px;
       font-weight: 700;
@@ -123,6 +163,7 @@
       gap: 5px;
     }
 
+    /* NÚT LỊCH DƯƠNG + ÂM KẾT HỢP */
     .lunar-btn {
       background: rgba(255, 215, 0, 0.12);
       border: 1px solid var(--gold-star);
@@ -136,10 +177,11 @@
       align-items: center;
       gap: 5px;
       transition: all 0.2s;
+      white-space: nowrap;
     }
     .lunar-btn:hover {
       background: rgba(255, 215, 0, 0.25);
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .inbox-btn-wrap {
@@ -151,13 +193,13 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      font-size: 15px;
-      padding: 5px 11px;
+      font-size: 14px;
+      padding: 5px 10px;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: all 0.2s;
     }
     .inbox-icon-btn:hover {
@@ -168,13 +210,13 @@
       background: var(--danger-red);
       color: #fff;
       font-size: 10px;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 99px;
       font-weight: 800;
       margin-left: 2px;
     }
 
-    /* THANH THÔNG BÁO KHỦNG LONG ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG */
+    /* THANH THÔNG BÁO KHỦNG LONG MINI ĐỚP CHỮ & TỰ CUỘN TRÊN ĐIỆN THOẠI */
     .global-announcement-bar {
       background: var(--ticker-bg);
       border-bottom: 1px solid var(--ticker-border);
@@ -349,7 +391,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      height: 520px;
+      min-height: 140px;
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 8px var(--shadow-color);
@@ -613,9 +655,7 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* ======================================================== */
-    /* CHÂN TRANG: PACMAN & PHÁO HOA                            */
-    /* ======================================================== */
+    /* FOOTER */
     footer.app-footer {
       background: var(--bg-card);
       border-top: 1px solid var(--border-color);
@@ -715,11 +755,51 @@
       opacity: 0.6;
     }
 
-    /* CARD LỊCH ÂM CHI TIẾT TRONG MODAL */
+    /* ======================================================== */
+    /* MODAL OVERLAY: CỐ ĐỊNH ẨN TUYỆT ĐỐI BẰNG CSS           */
+    /* ======================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(8, 15, 30, 0.85);
+      backdrop-filter: blur(4px);
+      display: none; /* CỐ ĐỊNH ẨN MẶC ĐỊNH */
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 14px;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .modal-header { padding: 14px 18px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-footer { padding: 14px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 576px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 100%; }
+
+    /* CARD LỊCH ÂM TRONG MODAL */
     .lunar-modal-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 12px;
     }
     @media (min-width: 576px) {
       .lunar-modal-grid { grid-template-columns: 1fr 1fr; }
@@ -728,7 +808,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 14px;
+      padding: 12px 14px;
     }
     .lunar-hour-badge {
       display: inline-block;
@@ -736,7 +816,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      font-size: 11.5px;
+      font-size: 11px;
       margin: 3px 2px;
       font-weight: 600;
     }
@@ -766,37 +846,41 @@
 
   <!-- HEADER -->
   <header>
-    <div class="brand-wrap">
-      <span class="badge-port">HP PORT · DSU</span>
-      <div>
-        <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</div>
-        <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
-      </div>
-    </div>
-    <div class="header-user">
-      <!-- NÚT LỊCH ÂM LỊCH -->
-      <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
-        <span id="headerLunarIcon">🌙</span> <span id="headerLunarText">Lịch Âm</span>
-      </button>
-
-      <button class="theme-toggle-btn" onclick="toggleTheme()">
-        <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
-      </button>
-
-      <!-- HỘP THƯ BÁO CÁO CHỜ DUYỆT (✉️) -->
-      <div class="inbox-btn-wrap">
-        <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
-          ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
+    <div class="header-container">
+      <div class="brand-wrap">
+        <div class="brand-left">
+          <span class="badge-port">HP PORT · DSU</span>
+          <div>
+            <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</div>
+            <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
+          </div>
+        </div>
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+          <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
         </button>
       </div>
 
-      <div id="currentUserBadge" style="font-size: 11.5px; text-align: right; margin-left:4px;"></div>
-      <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
-      <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
+      <div class="header-actions">
+        <!-- NÚT LỊCH DƯƠNG + ÂM HIỂN THỊ ĐỒNG THỜI -->
+        <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
+          <span id="headerLunarText">📅 Đang tải ngày...</span>
+        </button>
+
+        <!-- HỘP THƯ BÁO CÁO CHỜ DUYỆT (✉️) -->
+        <div class="inbox-btn-wrap">
+          <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
+            ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
+          </button>
+        </div>
+
+        <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
+        <div id="currentUserBadge" style="font-size: 11.5px; text-align: right;"></div>
+        <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
+      </div>
     </div>
   </header>
 
-  <!-- THANH THÔNG BÁO KHỦNG LONG MINI ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG -->
+  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ & TỰ CUỘN TRÊN ĐIỆN THOẠI -->
   <div class="global-announcement-bar">
     <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào chú khủng long để chơi!">🦖</div>
     <div class="announcement-container" id="announcementContainer">
@@ -925,7 +1009,6 @@
           
           <div id="chatMessages" class="chat-messages-area"></div>
           
-          <!-- DÒNG THÔNG BÁO TIN NHẮN MỚI NGAY TRÊN KHUNG GÕ -->
           <div id="chatLiveTicker" class="chat-live-ticker">
             <span id="chatTickerText">⚡ Chú ý có tin nhắn mới!</span>
             <button class="btn btn-sm" style="background:transparent; color:#ffb469; padding:0 4px; font-weight:800;" onclick="hideChatTicker()">✕</button>
@@ -1040,12 +1123,9 @@
 
   </main>
 
-  <!-- ========================================== -->
-  <!-- FOOTER: PACMAN & PHÁO HOA MINI             -->
-  <!-- ========================================== -->
+  <!-- FOOTER: PACMAN & PHÁO HOA MINI -->
   <footer class="app-footer">
     <canvas id="fireworksCanvas"></canvas>
-    
     <div class="pacman-track">
       <div class="pacman-dots">
         <div class="dot-pellet"></div>
@@ -1072,17 +1152,17 @@
 
     <div class="footer-content">
       <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
-      <div>⚡ Hệ thống DSU v24.0 · Âm Lịch & Giờ Hoàng Đạo Tích Hợp</div>
+      <div>⚡ Hệ thống DSU v24.1 · Âm & Dương Lịch Song Hành</div>
     </div>
   </footer>
 
-  <!-- ========================================== -->
-  <!-- MODALS                                     -->
-  <!-- ========================================== -->
+  <!-- ======================================================== -->
+  <!-- MODALS (TẤT CẢ ĐỀU CÓ STYLE="DISPLAY:NONE;" MẶC ĐỊNH)   -->
+  <!-- ======================================================== -->
 
-  <!-- MODAL: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO (ÂM LỊCH) -->
-  <div class="modal-backdrop" id="modalLunarCalendar">
-    <div class="modal-box" style="max-width: 620px;">
+  <!-- MODAL 1: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO (ÂM - DƯƠNG SONG HÀNH) -->
+  <div class="modal-backdrop" id="modalLunarCalendar" style="display:none;">
+    <div class="modal-box">
       <div class="modal-header">
         <h3 style="font-size:15px; color:var(--gold-star); display:flex; align-items:center; gap:6px;">
           📅 Lịch Vạn Niên & Giờ Hoàng Đạo Công Tác
@@ -1091,7 +1171,7 @@
       </div>
       <div class="modal-body">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-          <div style="font-size:12px; color:var(--accent-light); font-weight:700;">Chọn ngày tra cứu:</div>
+          <div style="font-size:12px; color:var(--accent-light); font-weight:700;">Tra cứu ngày bất kỳ:</div>
           <input type="date" id="lunarDatePicker" class="form-control" style="max-width:180px; padding:4px 8px;" onchange="onLunarDateChange(this.value)">
         </div>
 
@@ -1099,10 +1179,10 @@
           <!-- Khung Ngày Dương & Âm -->
           <div class="lunar-box" style="border-left:4px solid var(--accent-blue);">
             <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">DƯƠNG LỊCH</div>
-            <div id="lunarSolarDateText" style="font-size:18px; font-weight:800; color:var(--accent-light); margin-top:2px;"></div>
+            <div id="lunarSolarDateText" style="font-size:17px; font-weight:800; color:var(--accent-light); margin-top:2px;"></div>
             <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0;">
             <div style="font-size:11px; text-transform:uppercase; color:var(--gold-star); font-weight:700;">ÂM LỊCH VIỆT NAM</div>
-            <div id="lunarDateText" style="font-size:20px; font-weight:800; color:var(--gold-star); margin-top:2px;"></div>
+            <div id="lunarDateText" style="font-size:19px; font-weight:800; color:var(--gold-star); margin-top:2px;"></div>
             <div id="lunarCanChiText" style="font-size:12px; font-weight:600; color:var(--text-main); margin-top:4px;"></div>
             <div id="lunarDayTypeText" style="font-size:11.5px; font-weight:700; margin-top:4px;"></div>
           </div>
@@ -1111,25 +1191,25 @@
           <div class="lunar-box" style="border-left:4px solid var(--gold-star);">
             <div style="font-size:11.5px; font-weight:700; color:var(--gold-star); margin-bottom:6px;">⭐ 6 Khung Giờ Hoàng Đạo (Giờ Tốt):</div>
             <div id="lunarAuspiciousHoursList"></div>
-            <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">* Khung giờ viền vàng rực là giờ tốt đang diễn ra hiện tại.</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">* Khung giờ viền vàng rực là giờ hoàng đạo hiện tại.</div>
           </div>
         </div>
 
         <!-- Khung Lời khuyên công tác -->
         <div class="lunar-box" style="border-left:4px solid var(--succ-green);">
-          <div style="font-size:12px; font-weight:700; color:var(--succ-green); margin-bottom:4px;">💡 Ghi Chú & Lời Khuyên Tác Nghiệp Trong Ngày:</div>
+          <div style="font-size:12px; font-weight:700; color:var(--succ-green); margin-bottom:4px;">💡 Ghi Chú & Lời Khuyên Tác Nghiệp:</div>
           <div id="lunarAdviceText" style="font-size:12.5px; line-height:1.5; color:var(--text-main);"></div>
         </div>
       </div>
       <div class="modal-footer" style="justify-content:space-between;">
-        <button class="btn btn-drive btn-sm" onclick="openExternalLunarWeb()">🌐 Xem chi tiết trên Vansu.net</button>
+        <button class="btn btn-drive btn-sm" onclick="openExternalLunarWeb()">🌐 Nguồn tra cứu Vansu.net</button>
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalLunarCalendar')">Đóng</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
-  <div class="modal-backdrop" id="modalReviewInbox">
+  <!-- MODAL 2: HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
+  <div class="modal-backdrop" id="modalReviewInbox" style="display:none;">
     <div class="modal-box" style="max-width: 540px;">
       <div class="modal-header">
         <h3 style="font-size:15px; color:var(--accent-blue); display:flex; align-items:center; gap:6px;">
@@ -1139,7 +1219,7 @@
       </div>
       <div class="modal-body">
         <p style="font-size:12px; color:var(--text-muted);">
-          Danh sách các nhiệm vụ vừa chuyển sang trạng thái <b>Chờ duyệt báo cáo</b>:
+          Danh sách các nhiệm vụ đang ở trạng thái <b>Chờ duyệt báo cáo</b>:
         </p>
         <div id="inboxReviewList" style="max-height: 320px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;"></div>
       </div>
@@ -1152,8 +1232,8 @@
     </div>
   </div>
 
-  <!-- MODAL: XÓA LỊCH SỬ CHAT TỔNG HỢP -->
-  <div class="modal-backdrop" id="modalDeleteChatRange">
+  <!-- MODAL 3: XÓA LỊCH SỬ CHAT TỔNG HỢP -->
+  <div class="modal-backdrop" id="modalDeleteChatRange" style="display:none;">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
         <h3 style="font-size:15px; color:var(--danger-red);">🗑️ Xóa Lịch Sử Chat (Chung & Riêng)</h3>
@@ -1179,8 +1259,8 @@
     </div>
   </div>
 
-  <!-- MODAL: GIAO VIỆC MỚI -->
-  <div class="modal-backdrop" id="modalCreateTask">
+  <!-- MODAL 4: GIAO VIỆC MỚI -->
+  <div class="modal-backdrop" id="modalCreateTask" style="display:none;">
     <div class="modal-box">
       <div class="modal-header">
         <h3 style="font-size:15px;">Giao công việc mới</h3>
@@ -1224,8 +1304,8 @@
     </div>
   </div>
 
-  <!-- MODAL: CHI TIẾT CÔNG VIỆC -->
-  <div class="modal-backdrop" id="modalTaskDetail">
+  <!-- MODAL 5: CHI TIẾT CÔNG VIỆC -->
+  <div class="modal-backdrop" id="modalTaskDetail" style="display:none;">
     <div class="modal-box">
       <div class="modal-header">
         <div>
@@ -1348,7 +1428,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐĂNG NHẬP -->
+  <!-- MODAL 6: ĐĂNG NHẬP -->
   <div class="modal-backdrop" id="modalAuth" style="display:none;">
     <div class="modal-box" style="max-width: 380px;">
       <div class="modal-header">
@@ -1372,8 +1452,8 @@
     </div>
   </div>
 
-  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN -->
-  <div class="modal-backdrop" id="modalSignup">
+  <!-- MODAL 7: ĐĂNG KÝ TÀI KHOẢN -->
+  <div class="modal-backdrop" id="modalSignup" style="display:none;">
     <div class="modal-box" style="max-width: 480px;">
       <div class="modal-header">
         <h3 style="font-size:15px;">Đăng ký tài khoản DSU</h3>
@@ -1424,8 +1504,8 @@
     </div>
   </div>
 
-  <!-- MODAL: QUẢN TRỊ NHÂN SỰ ADMIN -->
-  <div class="modal-backdrop" id="modalRegister">
+  <!-- MODAL 8: QUẢN TRỊ NHÂN SỰ ADMIN -->
+  <div class="modal-backdrop" id="modalRegister" style="display:none;">
     <div class="modal-box">
       <div class="modal-header">
         <h3 id="modalRegisterTitle" style="font-size:15px;">Quản trị hồ sơ nhân sự</h3>
@@ -1470,7 +1550,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V24.0                     -->
+  <!-- JAVASCRIPT LOGIC V24.1                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1511,7 +1591,6 @@
     // ==========================================
     const CAN_NAMES = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const CHI_NAMES = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
-    const TIET_KHI = ["Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết", "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập"];
 
     function jdFromDate(dd, mm, yy) {
       let a = Math.floor((14 - mm) / 12);
@@ -1610,7 +1689,6 @@
       return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap, jd: dayNumber };
     }
 
-    // TÍNH CAN CHI VÀ GIỜ HOÀNG ĐẠO
     function getLunarDetails(dd, mm, yy) {
       const lunar = convertSolarToLunar(dd, mm, yy, 7);
       const jd = lunar.jd;
@@ -1627,21 +1705,18 @@
       const chiMonth = CHI_NAMES[(lunar.month + 1) % 12];
       const canChiMonth = `${canMonth} ${chiMonth}`;
 
-      // Xác định 6 Giờ Hoàng Đạo theo Chi của ngày
-      const chiDayIndex = (jd + 1) % 12; // 0: Tý, 1: Sửu... 11: Hợi
+      const chiDayIndex = (jd + 1) % 12;
       const auspiciousHourMap = {
-        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ], // Tý, Ngọ
-        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ], // Sửu, Mùi
-        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ], // Dần, Thân
-        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ], // Mão, Dậu
-        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ], // Thìn, Tuất
-        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]  // Tỵ, Hợi
+        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
+        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
+        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ],
+        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
+        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
+        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]
       };
 
       const groupIdx = chiDayIndex % 6;
       const hoursList = auspiciousHourMap[groupIdx] || [];
-
-      // Kiểm tra ngày hoàng đạo / hắc đạo
       const isHoangDaoDay = (jd % 2 === 0);
 
       return {
@@ -1657,12 +1732,16 @@
       };
     }
 
+    // CẬP NHẬT NÚT HEADER: HIỂN THỊ CẢ NGÀY DƯƠNG VÀ ÂM (VD: 📅 28/10 · 19/9 Âm)
     function updateHeaderLunarBadge() {
       const now = new Date();
-      const info = getLunarDetails(now.getDate(), now.getMonth() + 1, now.getFullYear());
+      const d = now.getDate();
+      const m = now.getMonth() + 1;
+      const y = now.getFullYear();
+      const info = getLunarDetails(d, m, y);
       const btnText = document.getElementById('headerLunarText');
       if (btnText) {
-        btnText.innerHTML = `${info.lunarDay}/${info.lunarMonth} Âm`;
+        btnText.innerHTML = `📅 ${d}/${m} · ${info.lunarDay}/${info.lunarMonth} Âm`;
       }
     }
 
@@ -1670,7 +1749,10 @@
       const picker = document.getElementById('lunarDatePicker');
       let targetDate = new Date();
       if (selectedDateStr) {
-        targetDate = new Date(selectedDateStr);
+        const parts = selectedDateStr.split('-');
+        if (parts.length === 3) {
+          targetDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        }
       }
       const y = targetDate.getFullYear();
       const m = targetDate.getMonth() + 1;
@@ -1681,37 +1763,37 @@
       }
 
       const info = getLunarDetails(d, m, y);
+      const dayNames = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+      const dayName = dayNames[targetDate.getDay()];
 
-      document.getElementById('lunarSolarDateText').textContent = `Thứ ${targetDate.getDay() === 0 ? 'CN' : targetDate.getDay() + 1}, ${d}/${m}/${y}`;
+      document.getElementById('lunarSolarDateText').textContent = `${dayName}, ${d}/${m}/${y}`;
       document.getElementById('lunarDateText').textContent = `Ngày ${info.lunarDay} Tháng ${info.lunarMonth} ${info.isLeap ? '(Nhuận)' : ''}`;
       document.getElementById('lunarCanChiText').textContent = `Can chi: Ngày ${info.canChiDay} · Tháng ${info.canChiMonth} · Năm ${info.canChiYear}`;
 
       const dayTypeEl = document.getElementById('lunarDayTypeText');
       if (info.isHoangDaoDay) {
-        dayTypeEl.innerHTML = `<span style="color:#00e676;">● Ngày Hoàng Đạo (Tốt lành, hanh thông)</span>`;
+        dayTypeEl.innerHTML = `<span style="color:#00e676; font-weight:700;">● Ngày Hoàng Đạo (Tốt lành, thuận lợi)</span>`;
       } else {
-        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange);">● Ngày Hắc Đạo (Nên cẩn trọng, chú ý quy trình)</span>`;
+        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange); font-weight:700;">● Ngày Hắc Đạo (Cẩn trọng quy trình)</span>`;
       }
 
-      // Render 6 giờ hoàng đạo
       const currH = new Date().getHours();
+      const isToday = (new Date().toDateString() === targetDate.toDateString());
       const hoursBox = document.getElementById('lunarAuspiciousHoursList');
       hoursBox.innerHTML = info.hoursList.map(h => {
         let isNow = false;
-        if (h.hStart === 23) {
-          isNow = (currH >= 23 || currH < 1);
-        } else {
-          isNow = (currH >= h.hStart && currH < h.hEnd);
+        if (isToday) {
+          if (h.hStart === 23) isNow = (currH >= 23 || currH < 1);
+          else isNow = (currH >= h.hStart && currH < h.hEnd);
         }
         return `<span class="lunar-hour-badge ${isNow ? 'lunar-hour-current' : ''}">Giờ ${h.name} (${h.time})</span>`;
       }).join(' ');
 
-      // Lời khuyên tác nghiệp
       const adviceEl = document.getElementById('lunarAdviceText');
       if (info.isHoangDaoDay) {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, nghiệm thu báo cáo công việc, triển khai kế hoạch giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra an toàn thiết bị cẩu bãi và cầu tàu trong các khung giờ cao điểm.`;
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, ký duyệt báo cáo, bốc dỡ giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra bảo hộ lao động và an toàn thiết bị cẩu bãi trong các khung giờ cao điểm.`;
       } else {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát lại số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động và quy tắc an toàn khai thác tại Tân Vũ.`;
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường Tân Vũ.`;
       }
 
       document.getElementById('modalLunarCalendar').style.display = 'flex';
@@ -1726,7 +1808,7 @@
       const val = picker ? picker.value : '';
       let url = 'https://vansu.net/lich-am.html';
       if (val) {
-        url = `https://vansu.net/lich-van-nien.html`;
+        url = 'https://vansu.net/lich-van-nien.html';
       }
       window.open(url, '_blank');
     }
@@ -1751,6 +1833,13 @@
     async function initApp() {
       initTheme();
       updateHeaderLunarBadge();
+
+      // Đóng modal khi bấm ra ngoài vùng nền mờ
+      document.querySelectorAll('.modal-backdrop').forEach(mb => {
+        mb.addEventListener('click', (e) => {
+          if (e.target === mb) mb.style.display = 'none';
+        });
+      });
 
       if (!currentUserId) {
         logoutUser();
@@ -1801,7 +1890,6 @@
       }
     }
 
-    // ÂM THANH CHIME THÔNG BÁO GIAO VIỆC MỚI
     function playNotificationChime() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1887,7 +1975,7 @@
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24')
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.1')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -1949,14 +2037,12 @@
       const step = tickerIndex % 4;
       tickerIndex++;
 
-      // Luân phiên 4 thông điệp: 1. Việc mới cần nhận -> 2. Âm lịch & Giờ hoàng đạo -> 3. Lời chào lời chúc -> 4. Nhắc task gấp
       if (pendingTasksForLeader.length > 0 && step === 0) {
         const firstPending = pendingTasksForLeader[0];
         return `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
       } else if (step === 1) {
-        // Thông tin Âm lịch & Giờ hoàng đạo
         const hoursStr = lunarToday.hoursList.map(h => `${h.name} (${h.time})`).join(", ");
-        return `🌙 <b>Lịch Âm hôm nay:</b> Ngày ${lunarToday.lunarDay}/${lunarToday.lunarMonth} (${lunarToday.canChiDay}) · <b>Giờ Hoàng Đạo tốt:</b> ${hoursStr}`;
+        return `🌙 <b>Hôm nay:</b> ${now.getDate()}/${now.getMonth() + 1} Dương lịch (Ngày ${lunarToday.lunarDay}/${lunarToday.lunarMonth} Âm lịch - ${lunarToday.canChiDay}) · <b>Giờ Hoàng Đạo:</b> ${hoursStr}`;
       } else if (step === 2) {
         return `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
       } else {
@@ -2110,7 +2196,7 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT)
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
@@ -2650,6 +2736,13 @@
         if (cols[colKey]) cols[colKey].appendChild(card);
       });
 
+      // Nếu cột trống, hiển thị thông báo nhẹ nhàng
+      Object.keys(cols).forEach(k => {
+        if (cols[k] && cols[k].children.length === 0) {
+          cols[k].innerHTML = `<div style="text-align:center; padding:24px 12px; color:var(--text-muted); font-size:12px;">Chưa có nhiệm vụ nào</div>`;
+        }
+      });
+
       document.getElementById('totalTasksCount').textContent = counts.total;
       document.getElementById('overdueCount').textContent = counts.overdue;
       document.getElementById('warn12hCount').textContent = counts.warn12h;
@@ -2916,7 +3009,7 @@
         renderScoreBoard();
         updateReviewInboxUI();
       } else {
-        alert("Lỗi khi lưu thay đổi lên cơ sở dữ liệu: " + error.message);
+        alert("Lỗi khi lưu thay đổi: " + error.message);
         openTaskDetailModal(task.id);
       }
     }
@@ -3356,7 +3449,11 @@
       }
     }
 
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+
     function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
 
     // 15. HIỆU ỨNG PHÁO HOA MINI DƯỚI FOOTER
