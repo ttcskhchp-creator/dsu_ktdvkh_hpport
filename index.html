@@ -71,11 +71,11 @@
       opacity: var(--bg-art-opacity);
       transition: opacity 0.3s ease;
     }
-    .bg-art-ship { left: 15px; bottom: 10px; width: 170px; height: 140px; }
-    .bg-art-robot { right: 15px; bottom: 15px; width: 160px; height: 140px; }
+    .bg-art-ship { left: 15px; bottom: 60px; width: 170px; height: 140px; }
+    .bg-art-robot { right: 15px; bottom: 65px; width: 160px; height: 140px; }
     @media (max-width: 768px) { .bg-art-item { display: none; } }
 
-    /* HEADER CHUẨN ĐẸP */
+    /* HEADER */
     header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -123,7 +123,6 @@
       gap: 5px;
     }
 
-    /* HỘP THƯ BÁO CÁO CHỜ DUYỆT */
     .inbox-btn-wrap {
       position: relative;
       display: inline-flex;
@@ -156,9 +155,7 @@
       margin-left: 2px;
     }
 
-    /* ======================================================== */
-    /* THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG ĐỚP CHỮ MINI        */
-    /* ======================================================== */
+    /* THANH THÔNG BÁO KHỦNG LONG ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG */
     .global-announcement-bar {
       background: var(--ticker-bg);
       border-bottom: 1px solid var(--ticker-border);
@@ -171,6 +168,7 @@
       position: relative;
       z-index: 90;
       box-shadow: inset 0 -1px 3px rgba(0,0,0,0.05);
+      white-space: nowrap;
     }
     .dino-avatar-wrap {
       display: inline-flex;
@@ -180,14 +178,13 @@
       cursor: pointer;
       flex-shrink: 0;
       user-select: none;
+      z-index: 2;
+      background: var(--ticker-bg);
+      padding-right: 4px;
       transition: transform 0.2s;
     }
-    .dino-avatar-wrap:hover {
-      transform: scale(1.3) rotate(5deg);
-    }
-    .dino-chomp-anim {
-      animation: dinoBite 0.6s ease-in-out;
-    }
+    .dino-avatar-wrap:hover { transform: scale(1.3) rotate(5deg); }
+    .dino-chomp-anim { animation: dinoBite 0.5s ease-in-out; }
     @keyframes dinoBite {
       0% { transform: scale(1) translateX(0); }
       30% { transform: scale(1.35) rotate(-10deg) translateX(4px); }
@@ -195,26 +192,19 @@
       100% { transform: scale(1) translateX(0); }
     }
 
-    .announcement-text-slider {
+    .announcement-container {
       flex: 1;
-      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--text-main);
-      font-weight: 600;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
       display: flex;
       align-items: center;
     }
-    .text-slide-out {
-      opacity: 0;
-      transform: translateX(18px) scale(0.95);
-      filter: blur(2px);
-    }
-    .text-slide-in {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-      filter: blur(0);
+    .announcement-text-slider {
+      display: inline-block;
+      white-space: nowrap;
+      color: var(--text-main);
+      font-weight: 600;
+      will-change: transform;
     }
 
     /* NAVIGATION TABS */
@@ -290,9 +280,7 @@
       position: relative;
       z-index: 1;
     }
-    @media (min-width: 768px) {
-      .container { padding: 20px 24px; }
-    }
+    @media (min-width: 768px) { .container { padding: 20px 24px; } }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
@@ -377,7 +365,7 @@
       overflow-y: auto;
     }
 
-    /* NHÃN ĐẶC BIỆT */
+    /* NHÃN THẺ TASK */
     .tag-boss-review {
       background: linear-gradient(135deg, #FF6B6B, #FF8E53);
       color: #fff;
@@ -581,35 +569,134 @@
       justify-content: space-between;
     }
 
-    /* GUIDE CARDS */
-    .guide-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 768px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
-    .guide-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
+    /* TOAST THÔNG BÁO GIAO VIỆC MỚI NỔI TRÊN MÀN HÌNH */
+    .task-toast-alert {
+      position: fixed;
+      top: 68px;
+      right: 16px;
+      z-index: 2000;
+      background: linear-gradient(135deg, #1d4f9f, #2563C9);
+      color: #fff;
+      padding: 12px 18px;
       border-radius: 10px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 2px 8px var(--shadow-color);
-    }
-    .guide-role-title {
-      font-size: 14.5px;
-      font-weight: 800;
+      border: 1px solid #8DB8FF;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: var(--accent-blue);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      animation: slideInToast 0.4s ease-out;
+      max-width: 380px;
     }
-    .guide-step { font-size: 12.5px; line-height: 1.5; color: var(--text-main); }
-    .guide-step b { color: var(--accent-light); }
+    @keyframes slideInToast {
+      from { transform: translateY(-40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ======================================================== */
+    /* CHÂN TRANG ĐẸP MẮT: PACMAN CHẠY CHẠY & PHÁO HOA MINI     */
+    /* ======================================================== */
+    footer.app-footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 10px 16px;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* DẢI PAC-MAN CHẠY NGANG CHÂN TRANG */
+    .pacman-track {
+      position: relative;
+      width: 100%;
+      height: 24px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.15);
+      border-radius: 6px;
+      border: 1px dashed var(--border-color);
+    }
+    .pacman-runner {
+      position: absolute;
+      left: -80px;
+      top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: pacmanRun 12s linear infinite;
+    }
+    @keyframes pacmanRun {
+      0% { left: -90px; }
+      100% { left: 105%; }
+    }
+    .pacman-character {
+      width: 20px;
+      height: 20px;
+      background: #FFD700;
+      border-radius: 50%;
+      position: relative;
+      animation: pacmanMouth 0.35s infinite alternate;
+    }
+    @keyframes pacmanMouth {
+      0% { clip-path: polygon(100% 74%, 50% 50%, 100% 26%, 100% 0%, 0% 0%, 0% 100%, 100% 100%); }
+      100% { clip-path: polygon(100% 50%, 50% 50%, 100% 50%, 100% 0%, 0% 0%, 0% 100%, 100% 100%); }
+    }
+    .pacman-ghost {
+      font-size: 15px;
+      filter: drop-shadow(0 0 4px #FF6B6B);
+      animation: ghostBob 0.6s infinite alternate;
+    }
+    @keyframes ghostBob {
+      from { transform: translateY(0); }
+      to { transform: translateY(-3px); }
+    }
+    .pacman-dots {
+      position: absolute;
+      top: 9px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+    .dot-pellet {
+      width: 5px;
+      height: 5px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent-light);
+      animation: dotTwinkle 1.5s infinite alternate;
+    }
+    @keyframes dotTwinkle {
+      0% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* FIREWORKS MINI CANVAS */
+    #fireworksCanvas {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
 
     /* TABLES & MODALS */
     .dsu-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
@@ -690,11 +777,13 @@
     </div>
   </header>
 
-  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ -->
+  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ & TRƯỢT TỰ ĐỘNG -->
   <div class="global-announcement-bar">
-    <div id="dinoMascot" class="dino-avatar-wrap" title="Chào mừng bạn đến với DSU! Chạm vào tôi để chơi nhé!">🦖</div>
-    <div id="globalAnnouncementText" class="announcement-text-slider text-slide-in">
-      Đang tải thông tin nhiệm vụ và lời chào...
+    <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào chú khủng long để chơi!">🦖</div>
+    <div class="announcement-container" id="announcementContainer">
+      <div id="globalAnnouncementText" class="announcement-text-slider">
+        Đang tải thông tin nhiệm vụ và lời chào...
+      </div>
     </div>
   </div>
 
@@ -933,10 +1022,47 @@
   </main>
 
   <!-- ========================================== -->
+  <!-- FOOTER ĐẸP MẮT: PAC-MAN & PHÁO HOA MINI    -->
+  <!-- ========================================== -->
+  <footer class="app-footer">
+    <canvas id="fireworksCanvas"></canvas>
+    
+    <!-- Dải Pac-man chạy ăn hạt năng lượng -->
+    <div class="pacman-track">
+      <div class="pacman-dots">
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+        <div class="dot-pellet"></div>
+      </div>
+      <div class="pacman-runner">
+        <div class="pacman-character"></div>
+        <span class="pacman-ghost">👻</span>
+        <span class="pacman-ghost" style="filter: drop-shadow(0 0 4px #00e676);">👾</span>
+      </div>
+    </div>
+
+    <div class="footer-content">
+      <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
+      <div>⚡ Hệ thống DSU v23.0 · Đồng bộ Realtime & An toàn dữ liệu</div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
   <!-- MODALS                                     -->
   <!-- ========================================== -->
 
-  <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN) -->
+  <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
   <div class="modal-backdrop" id="modalReviewInbox">
     <div class="modal-box" style="max-width: 540px;">
       <div class="modal-header">
@@ -1278,7 +1404,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V22.2                     -->
+  <!-- JAVASCRIPT LOGIC V23.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1308,8 +1434,9 @@
 
     let chatRealtimeChannel = null, taskRealtimeChannel = null, presenceChannel = null;
     let onlineUserIds = new Set(), chatMessagesCache = [];
-    let chatPollingTimer = null;
+    let chatPollingTimer = null, taskPollingTimer = null;
     let lastCheckedMessageTime = new Date().toISOString();
+    let knownTaskIds = new Set();
 
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
@@ -1341,7 +1468,9 @@
       setupPresence();
       await loadChatMessages();
       startChatPolling();
+      startTasksPolling(); // Polling ngầm tránh bỏ sót task
       startAnnouncementTicker();
+      initFireworks();
 
       updatePresenceHeartbeat();
       setInterval(updatePresenceHeartbeat, 60000);
@@ -1352,7 +1481,6 @@
         openDirectChat(activeChatPeerId);
       }
 
-      // Khủng long nhảy nhót khi người dùng click vào
       const dino = document.getElementById('dinoMascot');
       if (dino) {
         dino.addEventListener('click', () => {
@@ -1373,17 +1501,88 @@
             localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
           }
         }
-        await fetchTasks();
+        await fetchTasks(true);
         updateCurrentUserUI();
       } catch (e) {
         console.error("Lỗi tải data ban đầu:", e);
       }
     }
 
-    async function fetchTasks() {
+    // ÂM THANH CHIME THÔNG BÁO GIAO VIỆC MỚI (WEB AUDIO API)
+    function playNotificationChime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(587.33, now); // D5
+        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(880, now + 0.15);
+        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.35); // D6
+
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now + 0.15);
+        osc1.stop(now + 0.15);
+        osc2.stop(now + 0.45);
+      } catch (e) {
+        console.log("Audio ctx chưa được tương tác:", e);
+      }
+    }
+
+    // HIỂN THỊ TOAST POPUP THÔNG BÁO KHI ĐƯỢC GIAO VIỆC
+    function showNewTaskToast(task) {
+      playNotificationChime();
+      const toast = document.createElement('div');
+      toast.className = 'task-toast-alert';
+      toast.innerHTML = `
+        <span style="font-size:22px;">🔔</span>
+        <div>
+          <div style="font-size:11px; text-transform:uppercase; color:#FFD700;">Nhiệm vụ mới vừa được giao!</div>
+          <div style="font-size:13px; font-weight:800; margin-top:2px;">${escapeHtml(task.title || 'Nhiệm vụ')}</div>
+          <div style="font-size:11px; opacity:0.9;">Hạn: ${task.due_datetime ? new Date(task.due_datetime).toLocaleString('vi-VN') : 'Không hạn'}</div>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.4s, transform 0.4s';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+        setTimeout(() => toast.remove(), 400);
+      }, 5000);
+    }
+
+    async function fetchTasks(isInitial = false) {
       try {
         const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
-        if (!error && data) tasks = data;
+        if (!error && data) {
+          if (!isInitial) {
+            // Kiểm tra xem có task mới nào vừa xuất hiện mà phân công cho mình không
+            data.forEach(t => {
+              if (!knownTaskIds.has(String(t.id))) {
+                const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
+                const isForMe = memberIds.includes(String(currentUserId)) || String(t.leader_id) === String(currentUserId);
+                if (isForMe && String(t.creator_id) !== String(currentUserId)) {
+                  showNewTaskToast(t);
+                }
+              }
+            });
+          }
+
+          tasks = data;
+          knownTaskIds = new Set(data.map(t => String(t.id)));
+        }
       } catch (err) {
         console.error("Lỗi fetchTasks:", err);
       }
@@ -1397,8 +1596,9 @@
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v22.2')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v23')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+            console.log("⚡ Nhận sự kiện Realtime Tasks:", payload);
             fetchTasks();
           })
           .subscribe();
@@ -1407,61 +1607,64 @@
       }
     }
 
+    // POLLING DỰ PHÒNG CHO TASKS (MỖI 5 GIÂY QUÉT LẠI TRÁNH TRƯỜNG HỢP WEBSOCKET BỊ ĐỨNG)
+    function startTasksPolling() {
+      if (taskPollingTimer) clearInterval(taskPollingTimer);
+      taskPollingTimer = setInterval(() => {
+        if (currentUserId) {
+          fetchTasks();
+        }
+      }, 5000);
+    }
+
     async function updatePresenceHeartbeat() {
       if (!currentUserId) return;
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & THANH THÔNG BÁO THAY ĐỔI
+    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & TỰ ĐỘNG CUỘN CHỮ TRÊN MOBILE
     let tickerIndex = 0;
+    let tickerTimeout = null;
+
     function startAnnouncementTicker() {
-      updateAnnouncementMessage();
-      setInterval(updateAnnouncementMessage, 7000);
+      showNextAnnouncement();
     }
 
-    function updateAnnouncementMessage() {
-      const el = document.getElementById('globalAnnouncementText');
-      const dino = document.getElementById('dinoMascot');
-      if (!el || !currentUserId) return;
-
+    function getAnnouncementContent() {
+      if (!currentUserId) return "Chúc bạn một ca làm việc thuận lợi và hiệu quả!";
       const user = users.find(u => String(u.id) === String(currentUserId));
       const userName = user ? user.full_name : "Đồng chí";
 
-      // 1. Lời chào theo giờ thực tế trong ngày
       const currentHour = new Date().getHours();
       let greeting = "Chào buổi sáng!";
-      if (currentHour >= 12 && currentHour < 18) {
-        greeting = "Chào buổi chiều!";
-      } else if (currentHour >= 18 || currentHour < 5) {
-        greeting = "Chào buổi tối!";
-      }
+      if (currentHour >= 12 && currentHour < 18) greeting = "Chào buổi chiều!";
+      else if (currentHour >= 18 || currentHour < 5) greeting = "Chào buổi tối!";
 
-      // Lời chúc nghiệp vụ chung
       const wishes = [
         "chúc bạn một ca làm việc an toàn, phối hợp nhịp nhàng và hiệu quả cao!",
         "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc các chỉ tiêu công tác đề ra!",
         "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn chuẩn xác và đúng hạn!",
-        "chúc bạn luôn tràn đầy nhiệt huyết và năng lượng tích cực trong công việc!"
+        "chúc bạn luôn tràn đầy năng lượng tích cực trong công việc!"
       ];
       const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
 
       const pendingTasksForLeader = tasks.filter(t => t.status === 'pending' && String(t.leader_id) === String(currentUserId));
       const myActiveTasks = tasks.filter(t => {
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-        return memberIds.includes(currentUserId) && t.status !== 'completed';
+        return memberIds.includes(String(currentUserId)) && t.status !== 'completed';
       });
 
-      let nextMessage = "";
       const step = tickerIndex % 3;
+      tickerIndex++;
 
       if (pendingTasksForLeader.length > 0 && step === 0) {
         const firstPending = pendingTasksForLeader[0];
-        nextMessage = `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
+        return `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
       } else if (step === 1) {
-        nextMessage = `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
+        return `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
       } else {
         if (myActiveTasks.length === 0) {
-          nextMessage = `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn có một ngày làm việc tuyệt vời!`;
+          return `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn một ngày làm việc tuyệt vời!`;
         } else {
           const taskNames = myActiveTasks.map(t => `[${escapeHtml(t.title)}]`).join("; ");
           const urgentTask = myActiveTasks.find(t => {
@@ -1470,30 +1673,58 @@
           });
 
           if (urgentTask) {
-            nextMessage = `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó nhiệm vụ <b>[${escapeHtml(urgentTask.title)}]</b> sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
+            return `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó nhiệm vụ <b>[${escapeHtml(urgentTask.title)}]</b> sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
           } else {
-            nextMessage = `📌 <b>${userName}</b> đang phụ trách các nhiệm vụ: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
+            return `📌 <b>${userName}</b> đang phụ trách các nhiệm vụ: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
           }
         }
       }
+    }
 
-      // KÍCH HOẠT HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ
+    function showNextAnnouncement() {
+      const container = document.getElementById('announcementContainer');
+      const textEl = document.getElementById('globalAnnouncementText');
+      const dino = document.getElementById('dinoMascot');
+      if (!container || !textEl) return;
+
+      if (tickerTimeout) clearTimeout(tickerTimeout);
+
       if (dino) {
         dino.classList.remove('dino-chomp-anim');
         void dino.offsetWidth;
         dino.classList.add('dino-chomp-anim');
       }
 
-      el.classList.remove('text-slide-in');
-      el.classList.add('text-slide-out');
+      textEl.style.transition = 'none';
+      textEl.style.transform = 'translateX(0px)';
+      textEl.innerHTML = getAnnouncementContent();
 
       setTimeout(() => {
-        el.innerHTML = nextMessage;
-        el.classList.remove('text-slide-out');
-        el.classList.add('text-slide-in');
-      }, 400);
+        const containerWidth = container.offsetWidth;
+        const textWidth = textEl.scrollWidth;
 
-      tickerIndex++;
+        if (textWidth > containerWidth) {
+          const distanceToScroll = textWidth - containerWidth + 50;
+          const scrollSpeed = 38; // pixel/giây
+          const duration = distanceToScroll / scrollSpeed;
+
+          setTimeout(() => {
+            textEl.style.transition = `transform ${duration}s linear`;
+            textEl.style.transform = `translateX(-${distanceToScroll}px)`;
+
+            tickerTimeout = setTimeout(() => {
+              showNextAnnouncement();
+            }, (duration + 2) * 1000);
+          }, 1200);
+
+        } else {
+          textEl.style.transition = 'none';
+          textEl.style.transform = 'translateX(0px)';
+          tickerTimeout = setTimeout(() => {
+            showNextAnnouncement();
+          }, 6500);
+        }
+      }, 100);
     }
 
     // 4. HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN)
@@ -1582,7 +1813,7 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT)
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (TỰ ĐỘNG BỎ QUA NẾU CHƯA CÓ CỘT FIX_REQUESTED)
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
@@ -1596,12 +1827,18 @@
 
       closeModal('modalTaskDetail');
 
-      const { error } = await supabaseClient.from('tasks').update({
+      let updatePayload = {
         status: 'in_progress',
         description: desc,
-        fix_requested: true,
         updated_at: new Date().toISOString()
-      }).eq('id', task.id);
+      };
+
+      // Thử update kèm fix_requested, nếu supabase báo thiếu cột thì update không có cột này
+      let { error } = await supabaseClient.from('tasks').update({ ...updatePayload, fix_requested: true }).eq('id', task.id);
+      if (error && error.message.includes('fix_requested')) {
+        const retryRes = await supabaseClient.from('tasks').update(updatePayload).eq('id', task.id);
+        error = retryRes.error;
+      }
 
       if (!error) {
         task.status = 'in_progress';
@@ -1612,7 +1849,7 @@
         updateReviewInboxUI();
         alert("Đã trả về trạng thái 'Đang thực hiện' và gắn nhãn [Yêu cầu sửa lại]!");
       } else {
-        alert("Lỗi cập nhật Supabase: " + error.message);
+        alert("Lỗi cập nhật: " + error.message);
       }
     }
 
@@ -2359,21 +2596,22 @@
         updated_at: new Date().toISOString() 
       };
 
-      if (newStatus !== 'in_progress') {
-        updateData.fix_requested = false;
-      }
-
       if (newDueDateTimeVal && isLeaderRole) {
         updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
       }
 
       closeModal('modalTaskDetail');
 
-      const { error } = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
+      // Tự động bỏ qua lỗi nếu CSDL chưa có cột fix_requested
+      let { error } = await supabaseClient.from('tasks').update({ ...updateData, fix_requested: false }).eq('id', task.id);
+      if (error && error.message.includes('fix_requested')) {
+        const retryRes = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
+        error = retryRes.error;
+      }
 
       if (!error) {
         task.status = newStatus;
-        if (newStatus !== 'in_progress') task.fix_requested = false;
+        task.fix_requested = false;
         if (newDueDateTimeVal && isLeaderRole) {
           task.due_datetime = updateData.due_datetime;
         }
@@ -2575,8 +2813,7 @@
         status: 'pending',
         due_datetime: dueIsoString,
         drive_link: driveLink || null,
-        member_submissions: [],
-        fix_requested: false
+        member_submissions: []
       };
 
       const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
@@ -2823,6 +3060,75 @@
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
+
+    // 15. HIỆU ỨNG PHÁO HOA MINI DƯỚI FOOTER (CANVAS SPARKS)
+    function initFireworks() {
+      const canvas = document.getElementById('fireworksCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = canvas.offsetWidth;
+      let h = canvas.height = canvas.offsetHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+      });
+
+      let particles = [];
+      const colors = ['#FFD700', '#2563C9', '#8DB8FF', '#00e676', '#FF6B6B', '#F08A24'];
+
+      function createFirework() {
+        if (particles.length > 50) return;
+        const x = Math.random() * w;
+        const y = Math.random() * (h * 0.7) + (h * 0.2);
+        const count = 12;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count;
+          const speed = Math.random() * 2 + 1;
+          particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1,
+            color: color,
+            radius: Math.random() * 1.8 + 1
+          });
+        }
+      }
+
+      setInterval(createFirework, 2800);
+
+      function loop() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.02; // trọng lực nhẹ
+          p.alpha -= 0.015;
+
+          if (p.alpha <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = p.color;
+          ctx.fill();
+          ctx.restore();
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
 
     window.onload = initApp;
   </script>
