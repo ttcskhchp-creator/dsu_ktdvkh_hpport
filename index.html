@@ -27,6 +27,7 @@
       --gold-star: #FFD700;
       --shadow-color: rgba(0,0,0,0.4);
       --bg-art-opacity: 0.12;
+      --ticker-bg: #132747;
     }
 
     html[data-theme="light"] {
@@ -44,6 +45,7 @@
       --gold-star: #D4A017;
       --shadow-color: rgba(19, 35, 63, 0.08);
       --bg-art-opacity: 0.08;
+      --ticker-bg: #E1E8F5;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -59,7 +61,7 @@
       transition: background 0.25s, color 0.25s;
     }
 
-    /* ĐỒ HỌA NỀN CẢNG BIỂN & ROBOT */
+    /* ĐỒ HỌA NỀN CẢNG BIỂN */
     .bg-art-item {
       position: fixed;
       pointer-events: none;
@@ -69,10 +71,7 @@
     }
     .bg-art-ship { left: 15px; bottom: 10px; width: 170px; height: 140px; }
     .bg-art-robot { right: 15px; bottom: 15px; width: 160px; height: 140px; }
-
-    @media (max-width: 768px) {
-      .bg-art-item { display: none; }
-    }
+    @media (max-width: 768px) { .bg-art-item { display: none; } }
 
     /* HEADER */
     header {
@@ -106,7 +105,7 @@
       .brand-sub { display: block; }
     }
 
-    .header-user { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .header-user { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .theme-toggle-btn {
       background: var(--bg-surface);
@@ -122,7 +121,72 @@
       gap: 4px;
     }
 
-    /* NAVIGATION TABS (TỐI ƯU CUỘN NGANG TRÊN MOBILE) */
+    /* NÚT HỘP THƯ BÁO CÁO CHỜ DUYỆT */
+    .inbox-btn-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .inbox-icon-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .inbox-icon-btn:hover {
+      border-color: var(--accent-light);
+      background: var(--border-color);
+    }
+    .inbox-badge {
+      background: var(--danger-red);
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 99px;
+      font-weight: 800;
+      margin-left: 2px;
+    }
+
+    /* THANH THÔNG BÁO BỀ NGANG DƯỚI HEADER (TICKER TỔNG) */
+    .global-announcement-bar {
+      background: var(--ticker-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      overflow: hidden;
+      position: relative;
+      z-index: 90;
+    }
+    .speaker-icon {
+      font-size: 16px;
+      animation: speakerPulse 1.5s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes speakerPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .announcement-text-slider {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-main);
+      font-weight: 600;
+      transition: opacity 0.4s ease;
+    }
+
+    /* NAVIGATION TABS */
     .nav-tabs-bar {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -131,9 +195,9 @@
       gap: 4px;
       z-index: 10;
       overflow-x: auto;
-      scrollbar-width: none; /* Firefox */
+      scrollbar-width: none;
     }
-    .nav-tabs-bar::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+    .nav-tabs-bar::-webkit-scrollbar { display: none; }
     
     .nav-tab-btn {
       background: transparent;
@@ -230,9 +294,7 @@
     }
     .stat-lbl { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
     .stat-val { font-size: 20px; font-weight: 800; margin-top: 4px; color: var(--text-main); }
-    @media (min-width: 768px) {
-      .stat-val { font-size: 24px; }
-    }
+    @media (min-width: 768px) { .stat-val { font-size: 24px; } }
 
     /* KANBAN BOARD */
     .kanban-grid {
@@ -255,9 +317,8 @@
       box-shadow: 0 2px 8px var(--shadow-color);
       overflow: hidden;
     }
-    @media (min-width: 1024px) {
-      .kanban-col { height: 600px; }
-    }
+    @media (min-width: 1024px) { .kanban-col { height: 600px; } }
+
     .col-header {
       padding: 12px 16px;
       background: var(--bg-surface);
@@ -285,7 +346,33 @@
       overflow-y: auto;
     }
 
-    /* TASK CARD & HIỆU ỨNG NHẤP NHÁY DEADLINE (<6H VÀ QUÁ HẠN) */
+    /* NHÃN THẺ TASK ĐẶC BIỆT */
+    .tag-boss-review {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      color: #fff;
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tag-fix-request {
+      background: #D93838;
+      color: #fff;
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(217, 56, 56, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* TASK CARD & HIỆU ỨNG DEADLINE */
     @keyframes taskBlinkYellow {
       0%, 100% { border-color: var(--warn-orange); box-shadow: 0 0 4px rgba(240, 138, 36, 0.4); }
       50% { border-color: #ffeb3b; box-shadow: 0 0 16px rgba(255, 235, 59, 0.9); }
@@ -346,7 +433,7 @@
       border: 1px solid var(--bg-card);
     }
 
-    /* CHAT LIVE VÀ CHAT 1-1 (TỐI ƯU RESPONSIVE MƯỢT MÀ) */
+    /* CHAT LIVE & 1-1 */
     .chat-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -354,12 +441,8 @@
       height: auto;
     }
     @media (min-width: 992px) {
-      .chat-layout {
-        grid-template-columns: 280px 1fr;
-        height: 600px;
-      }
+      .chat-layout { grid-template-columns: 280px 1fr; height: 600px; }
     }
-
     .user-list-card, .chat-main-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -370,13 +453,9 @@
       box-shadow: 0 2px 8px var(--shadow-color);
     }
     .user-list-card { max-height: 200px; }
-    @media (min-width: 992px) {
-      .user-list-card { max-height: none; }
-    }
+    @media (min-width: 992px) { .user-list-card { max-height: none; } }
     .chat-main-card { height: 500px; }
-    @media (min-width: 992px) {
-      .chat-main-card { height: auto; }
-    }
+    @media (min-width: 992px) { .chat-main-card { height: auto; } }
 
     .chat-list-header {
       padding: 12px 16px;
@@ -406,9 +485,7 @@
       width: 100%;
       text-align: left;
     }
-    .user-presence-item:hover, .user-presence-item.active {
-      background: rgba(37, 99, 201, 0.12);
-    }
+    .user-presence-item:hover, .user-presence-item.active { background: rgba(37, 99, 201, 0.12); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .dot-online { background: #00e676; box-shadow: 0 0 8px #00e676; }
     .dot-offline { background: #9e9e9e; }
@@ -432,7 +509,7 @@
     .bubble-me { align-self: flex-end; background: var(--accent-blue); color: #fff; }
     .bubble-other { align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); }
 
-    /* HIỆU ỨNG NHẤP NHÁY VÀ TICKER CHÚ Ý */
+    /* NHẤP NHÁY TAB & CHAT TICKER */
     @keyframes chatNotificationBlink {
       0%, 100% { border-color: var(--border-color); box-shadow: 0 0 0px transparent; }
       50% { border-color: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.9); background: rgba(0, 230, 118, 0.12); }
@@ -473,9 +550,7 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 768px) {
-      .guide-grid { grid-template-columns: repeat(2, 1fr); }
-    }
+    @media (min-width: 768px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
     .guide-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -512,9 +587,7 @@
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
     .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 576px) {
-      .grid-2 { grid-template-columns: 1fr 1fr; }
-    }
+    @media (min-width: 576px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
     .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 100%; }
     
     .gdrive-highlight-box {
@@ -566,11 +639,27 @@
       <button class="theme-toggle-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
       </button>
+
+      <!-- HỘP THƯ BÁO CÁO CHỜ DUYỆT (✉️) -->
+      <div class="inbox-btn-wrap">
+        <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
+          ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
+        </button>
+      </div>
+
       <div id="currentUserBadge" style="font-size: 11.5px; text-align: right; margin-left:4px;"></div>
       <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
       <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
     </div>
   </header>
+
+  <!-- THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER TỔNG HỢP) -->
+  <div class="global-announcement-bar">
+    <span class="speaker-icon">📢</span>
+    <div id="globalAnnouncementText" class="announcement-text-slider">
+      Đang tải thông tin nhiệm vụ và lời chào...
+    </div>
+  </div>
 
   <!-- NAVIGATION TABS -->
   <nav class="nav-tabs-bar">
@@ -626,7 +715,7 @@
           </button>
         </div>
         <div style="font-size:11.5px; color:var(--accent-light);">
-          ✨ Chạm vào thẻ việc để xem chi tiết hoặc nộp báo cáo.
+          ✨ Chạm vào thẻ việc để xem chi tiết, nộp báo cáo hoặc xét duyệt.
         </div>
       </div>
 
@@ -781,26 +870,25 @@
         <div class="guide-card">
           <div class="guide-role-title">🎖️ Ban Lãnh Đạo (Trưởng / Phó Trung tâm)</div>
           <div class="guide-step">1. <b>Giao việc & Điều chỉnh:</b> Bấm <i>"+ Giao việc"</i>. Có quyền Đổi Leader, Thêm thành viên, hoặc <b>Xóa bỏ công việc</b>.</div>
-          <div class="guide-step">2. <b>Mở lại việc đã xong:</b> Lãnh đạo có quyền kéo lại trạng thái và gia hạn Deadline.</div>
-          <div class="guide-step">3. <b>Nghiệm thu:</b> Kiểm tra báo cáo Google Drive và chuyển trạng thái sang <i>"4. Đã hoàn thành"</i> để chốt điểm DSU.</div>
+          <div class="guide-step">2. <b>Mở lại việc đã xong & Duyệt báo cáo:</b> Có quyền phê duyệt hoàn thành hoặc bấm <i>"↩️ Trả về yêu cầu sửa"</i> để nhóm tiếp tục hoàn thiện.</div>
+          <div class="guide-step">3. <b>Hộp thư xét duyệt:</b> Biểu tượng bức thư ✉️ góc trên giúp lãnh đạo nhận thông báo ngay khi có task gửi duyệt.</div>
         </div>
 
         <div class="guide-card">
           <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
           <div class="guide-step">1. <b>Trách nhiệm:</b> Đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
-          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Chuyển việc từ <i>"Chờ tiếp nhận" ➔ "Đang làm" ➔ "Chờ duyệt"</i>.</div>
-          <div class="guide-step">3. <b>Bổ sung nhân sự:</b> Được quyền bấm <i>"➕ Thêm thành viên"</i> hỗ trợ.</div>
+          <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Chuyển việc sang <i>"Chờ duyệt báo cáo"</i> khi cả nhóm đã nộp đủ tài liệu. Thẻ sẽ gắn nhãn <i>"Sếp ơi duyệt đi"</i> và dừng đếm giờ.</div>
         </div>
 
         <div class="guide-card">
           <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện (Staff)</div>
-          <div class="guide-step">1. <b>Theo dõi công việc:</b> Chú ý các thẻ nhấp nháy vàng (&lt;6h) và nhấp nháy đỏ (quá hạn).</div>
+          <div class="guide-step">1. <b>Theo dõi công việc:</b> Chú ý loa phát thanh chạy chữ nhắc việc và các thẻ nhấp nháy vàng (&lt;6h) hoặc đỏ (quá hạn).</div>
           <div class="guide-step">2. <b>Nộp kết quả:</b> Bấm vào việc, dán link Google Drive chứa file kết quả và bấm <i>"Lưu kết quả"</i>.</div>
         </div>
 
         <div class="guide-card">
           <div class="guide-role-title">⚙️ Quản Trị Viên (Web Admin)</div>
-          <div class="guide-step">1. <b>Toàn quyền hệ thống:</b> Cấp tài khoản mới, phân quyền nhân sự, dọn dẹp lịch sử chat toàn hệ thống theo khoảng thời gian.</div>
+          <div class="guide-step">1. <b>Toàn quyền hệ thống:</b> Cấp tài khoản mới, phân quyền nhân sự, xóa lịch sử chat và quản trị toàn bộ báo cáo.</div>
         </div>
       </div>
     </div>
@@ -811,6 +899,30 @@
   <!-- MODALS                                     -->
   <!-- ========================================== -->
 
+  <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN) -->
+  <div class="modal-backdrop" id="modalReviewInbox">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px; color:var(--accent-blue); display:flex; align-items:center; gap:6px;">
+          ✉️ Hộp Thư Báo Cáo Chờ Duyệt
+        </h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalReviewInbox')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted);">
+          Danh sách các nhiệm vụ vừa chuyển sang trạng thái <b>Chờ duyệt báo cáo</b>:
+        </p>
+        <div id="inboxReviewList" style="max-height: 320px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button class="btn btn-outline btn-sm" id="btnClearInboxBtn" onclick="clearAllReviewInbox()" style="color:var(--danger-red); border-color:var(--danger-red); display:none;">
+          🗑️ Đánh dấu đã đọc tất cả
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalReviewInbox')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: XÓA LỊCH SỬ CHAT TỔNG HỢP -->
   <div class="modal-backdrop" id="modalDeleteChatRange">
     <div class="modal-box" style="max-width: 440px;">
@@ -820,7 +932,7 @@
       </div>
       <div class="modal-body">
         <p style="font-size:12px; color:var(--text-muted);">
-          Chọn khoảng thời gian để xóa sạch toàn bộ tin nhắn trong khoảng này trên toàn hệফর্ম:
+          Chọn khoảng thời gian để xóa sạch toàn bộ tin nhắn trong khoảng này trên toàn hệ thống:
         </p>
         <div class="form-group">
           <label>Từ thời điểm (Bắt đầu) *:</label>
@@ -991,9 +1103,15 @@
       </div>
       
       <div class="modal-footer" style="justify-content:space-between;">
-        <button class="btn btn-danger btn-sm" id="btnDeleteTaskPermanent" onclick="submitDeleteTaskPermanent()" style="display:none;">
-          🗑️ Xóa công việc này
-        </button>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <!-- NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT) -->
+          <button class="btn btn-warning btn-sm" id="btnRejectFixTask" onclick="rejectTaskToInProgress()" style="display:none;">
+            ↩️ Trả về yêu cầu sửa
+          </button>
+          <button class="btn btn-danger btn-sm" id="btnDeleteTaskPermanent" onclick="submitDeleteTaskPermanent()" style="display:none;">
+            🗑️ Xóa việc này
+          </button>
+        </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button class="btn btn-outline" onclick="closeModal('modalTaskDetail')">Đóng</button>
           <button class="btn btn-primary" id="btnSaveTaskStatus" onclick="saveTaskStatusFromDetail()">Lưu thay đổi</button>
@@ -1124,7 +1242,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V21.9                     -->
+  <!-- JAVASCRIPT LOGIC V22.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1150,10 +1268,13 @@
     let activeChatPeerId = localStorage.getItem("DSU_ACTIVE_CHAT_PEER") || null;
     if (activeChatPeerId === "null" || activeChatPeerId === "undefined") activeChatPeerId = null;
 
-    let chatRealtimeChannel = null, presenceChannel = null;
+    let chatRealtimeChannel = null, taskRealtimeChannel = null, presenceChannel = null;
     let onlineUserIds = new Set(), chatMessagesCache = [];
     let chatPollingTimer = null;
     let lastCheckedMessageTime = new Date().toISOString();
+
+    // Quản lý thông báo chờ duyệt đã đọc
+    let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
     // 1. THEME
     function initTheme() {
@@ -1171,7 +1292,7 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Sáng" : "Tối";
     }
 
-    // 2. KHỞI TẠO APP & GIỮ NGUYÊN TRẠNG THÁI KHI RELOAD
+    // 2. KHỞI TẠO APP & ĐỒNG BỘ
     async function initApp() {
       initTheme();
       if (!currentUserId) {
@@ -1183,6 +1304,7 @@
       setupPresence();
       await loadChatMessages();
       startChatPolling();
+      startAnnouncementTicker();
 
       updatePresenceHeartbeat();
       setInterval(updatePresenceHeartbeat, 60000);
@@ -1207,7 +1329,7 @@
         await fetchTasks();
         updateCurrentUserUI();
       } catch (e) {
-        console.error("Lỗi:", e);
+        console.error("Lỗi tải data ban đầu:", e);
       }
     }
 
@@ -1216,19 +1338,22 @@
         const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
         if (!error && data) tasks = data;
       } catch (err) {
-        console.error("Fetch err:", err);
+        console.error("Lỗi fetchTasks:", err);
       }
       renderKanban();
       renderScoreBoard();
+      updateReviewInboxUI();
     }
 
+    // TỰ ĐỘNG TẢI LẠI TRANG / CẬP NHẬT KHI CÓ TASK MỚI HOẶC ĐỔI TRẠNG THÁI
     function setupRealtime() {
       try {
-        if (chatRealtimeChannel) {
-          supabaseClient.removeChannel(chatRealtimeChannel);
+        if (taskRealtimeChannel) {
+          supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        chatRealtimeChannel = supabaseClient.channel('dsu-realtime-v21.9')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v22')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+            console.log("⚡ Nhận thay đổi task realtime:", payload);
             fetchTasks();
           })
           .subscribe();
@@ -1242,7 +1367,196 @@
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // CHAT LIVE & 1-1 LOGIC VÀ THÔNG BÁO NHẤP NHÁY
+    // 3. THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER)
+    let tickerIndex = 0;
+    function startAnnouncementTicker() {
+      updateAnnouncementMessage();
+      setInterval(updateAnnouncementMessage, 7000);
+    }
+
+    function updateAnnouncementMessage() {
+      const el = document.getElementById('globalAnnouncementText');
+      if (!el || !currentUserId) return;
+
+      const user = users.find(u => String(u.id) === String(currentUserId));
+      const userName = user ? user.full_name : "Đồng chí";
+
+      // 1. Phân tích các task của người dùng
+      const myActiveTasks = tasks.filter(t => {
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
+        return memberIds.includes(currentUserId) && t.status !== 'completed';
+      });
+
+      // Lời chúc ngẫu nhiên theo thời gian thực
+      const hour = new Date().getHours();
+      let greeting = "Chào buổi sáng!";
+      if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều!";
+      else if (hour >= 18) greeting = "Chào buổi tối!";
+
+      const wishes = [
+        "chúc bạn một ca làm việc thuận lợi, an toàn và hiệu quả cao!",
+        "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc mọi chỉ tiêu!",
+        "chúc bạn luôn tràn đầy năng lượng, giải phóng tàu nhanh chóng!",
+        "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn đúng hạn!"
+      ];
+      const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+
+      let message = "";
+      if (tickerIndex % 2 === 0) {
+        // Lời chào & lời chúc
+        message = `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
+      } else {
+        // Lời nhắc nhở công việc cá nhân
+        if (myActiveTasks.length === 0) {
+          message = `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn có một ngày làm việc tuyệt vời!`;
+        } else {
+          const taskNames = myActiveTasks.map(t => `[${t.title}]`).join("; ");
+          
+          // Tìm task sắp hết hạn (<12h) hoặc quá hạn
+          const urgentTask = myActiveTasks.find(t => {
+            const al = calculateDeadlineAlert(t.due_datetime, t.status);
+            return al.type === 'overdue' || al.type === 'warn6h' || al.type === 'warn12h';
+          });
+
+          if (urgentTask) {
+            message = `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó task <b>[${urgentTask.title}]</b> đang sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
+          } else {
+            message = `📌 <b>${userName}</b> đang phụ trách các task: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
+          }
+        }
+      }
+
+      el.style.opacity = 0;
+      setTimeout(() => {
+        el.innerHTML = message;
+        el.style.opacity = 1;
+      }, 300);
+
+      tickerIndex++;
+    }
+
+    // 4. HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN)
+    function updateReviewInboxUI() {
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const canReview = ['admin', 'hod'].includes(currentUser.role);
+      const badge = document.getElementById('inboxReviewBadge');
+
+      const reviewTasks = tasks.filter(t => t.status === 'review');
+      const unreadReviewTasks = reviewTasks.filter(t => !dismissedReviewTaskIds.includes(String(t.id)));
+
+      if (badge) {
+        if (unreadReviewTasks.length > 0 && canReview) {
+          badge.textContent = unreadReviewTasks.length;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    }
+
+    function openReviewInboxModal() {
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const canReview = ['admin', 'hod'].includes(currentUser.role);
+      const listContainer = document.getElementById('inboxReviewList');
+      const clearBtn = document.getElementById('btnClearInboxBtn');
+      if (!listContainer) return;
+
+      const reviewTasks = tasks.filter(t => t.status === 'review');
+      listContainer.innerHTML = '';
+
+      if (clearBtn) clearBtn.style.display = (canReview && reviewTasks.length > 0) ? 'inline-flex' : 'none';
+
+      if (reviewTasks.length === 0) {
+        listContainer.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:18px;">Hiện không có báo cáo nào đang chờ duyệt.</div>';
+      } else {
+        reviewTasks.forEach(t => {
+          const leader = users.find(u => String(u.id) === String(t.leader_id)) || { full_name: 'Nhóm trưởng' };
+          const isDismissed = dismissedReviewTaskIds.includes(String(t.id));
+          const item = document.createElement('div');
+          item.style.background = 'var(--bg-surface)';
+          item.style.border = '1px solid var(--border-color)';
+          item.style.borderRadius = '8px';
+          item.style.padding = '10px 14px';
+          item.style.display = 'flex';
+          item.style.justifyContent = 'space-between';
+          item.style.alignItems = 'center';
+          item.style.gap = '8px';
+
+          item.innerHTML = `
+            <div>
+              <div style="font-size:11px; color:var(--accent-light); font-weight:700;">${t.task_code || 'TSK'} · ⭐ ${leader.full_name}</div>
+              <div style="font-size:13px; font-weight:700; color:var(--text-main); margin-top:2px;">${escapeHtml(t.title)}</div>
+              <span class="tag-boss-review" style="margin-top:4px;">📢 Sếp ơi duyệt đi</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-primary btn-sm" onclick="closeModal('modalReviewInbox'); openTaskDetailModal('${t.id}')">Xem</button>
+              ${canReview ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="dismissSingleReview('${t.id}')">✕ Xóa</button>` : ''}
+            </div>
+          `;
+          listContainer.appendChild(item);
+        });
+      }
+
+      document.getElementById('modalReviewInbox').style.display = 'flex';
+    }
+
+    function dismissSingleReview(taskId) {
+      if (!dismissedReviewTaskIds.includes(String(taskId))) {
+        dismissedReviewTaskIds.push(String(taskId));
+        localStorage.setItem("DSU_DISMISSED_REVIEWS", JSON.stringify(dismissedReviewTaskIds));
+      }
+      openReviewInboxModal();
+      updateReviewInboxUI();
+    }
+
+    function clearAllReviewInbox() {
+      const reviewTasks = tasks.filter(t => t.status === 'review');
+      reviewTasks.forEach(t => {
+        if (!dismissedReviewTaskIds.includes(String(t.id))) {
+          dismissedReviewTaskIds.push(String(t.id));
+        }
+      });
+      localStorage.setItem("DSU_DISMISSED_REVIEWS", JSON.stringify(dismissedReviewTaskIds));
+      closeModal('modalReviewInbox');
+      updateReviewInboxUI();
+      alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
+    }
+
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT BÁO CÁO)
+    async function rejectTaskToInProgress() {
+      if (!selectedTaskIdForDetail) return;
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+
+      const reason = prompt("Nhập nội dung/lý do yêu cầu sửa đổi gửi cho nhóm:", "Báo cáo chưa đủ số liệu, đề nghị bổ sung chi tiết!");
+      if (reason === null) return;
+
+      let desc = task.description || '';
+      desc = `[YÊU CẦU SỬA: ${reason}] \n` + desc;
+
+      closeModal('modalTaskDetail');
+
+      const { error } = await supabaseClient.from('tasks').update({
+        status: 'in_progress',
+        description: desc,
+        fix_requested: true,
+        updated_at: new Date().toISOString()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.status = 'in_progress';
+        task.description = desc;
+        task.fix_requested = true;
+        renderKanban();
+        renderScoreBoard();
+        updateReviewInboxUI();
+        alert("Đã trả về trạng thái 'Đang thực hiện' và gắn nhãn [Yêu cầu sửa lại]!");
+      } else {
+        alert("Lỗi cập nhật Supabase: " + error.message);
+      }
+    }
+
+    // 6. CHAT LIVE & 1-1 LOGIC VÀ THÔNG BÁO NHẤP NHÁY
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
     }
@@ -1568,6 +1882,7 @@
       }
     }
 
+    // ĐĂNG KÝ TÀI KHOẢN & ĐỔI MẬT KHẨU
     function openSignup() {
       closeModal('modalAuth');
       document.getElementById('signupName').value = '';
@@ -1641,9 +1956,16 @@
       }
     }
 
-    // 3. TÍNH DEADLINE & CẢNH BÁO NHẤP NHÁY VÀNG (<6H) / ĐỎ (QUÁ HẠN)
+    // 7. TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO" HOẶC "HOÀN THÀNH"
     function calculateDeadlineAlert(dueDateTimeStr, status) {
-      if (status === 'completed') return { text: '✅ Đã hoàn thành', cardClass: '', type: 'completed' };
+      if (status === 'completed') {
+        return { text: '✅ Đã hoàn thành', cardClass: '', type: 'completed' };
+      }
+      // KHI CHUYỂN SANG CHỜ DUYỆT BÁO CÁO: TỰ ĐỘNG KHÔNG ĐẾM GIỜ NỮA
+      if (status === 'review') {
+        return { text: '⏳ Đang chờ Lãnh đạo duyệt', cardClass: '', type: 'review' };
+      }
+
       if (!dueDateTimeStr) return { text: 'Không giới hạn', cardClass: '', type: 'normal' };
 
       const now = new Date().getTime();
@@ -1668,7 +1990,7 @@
       return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, cardClass: '', type: 'normal' };
     }
 
-    // 4. RENDER KANBAN
+    // 8. RENDER KANBAN
     function renderKanban() {
       const cols = {
         pending: document.getElementById('col-pending'),
@@ -1688,7 +2010,7 @@
         if (alertInfo.type === 'overdue') counts.overdue++;
         if (alertInfo.type === 'warn12h' || alertInfo.type === 'warn6h') counts.warn12h++;
 
-        const leader = users.find(u => u.id === t.leader_id) || { full_name: 'Nhóm trưởng' };
+        const leader = users.find(u => String(u.id) === String(t.leader_id)) || { full_name: 'Nhóm trưởng' };
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
 
         const card = document.createElement('div');
@@ -1698,17 +2020,28 @@
           openTaskDetailModal(t.id);
         });
 
+        // GẮN NHÃN ĐẶC BIỆT: "SẾP ƠI DUYỆT ĐI" HOẶC "YÊU CẦU SỬA LẠI"
+        let statusBadgeHtml = '';
+        if (t.status === 'review') {
+          statusBadgeHtml = `<span class="tag-boss-review">📢 Sếp ơi duyệt đi</span>`;
+        } else if (t.fix_requested) {
+          statusBadgeHtml = `<span class="tag-fix-request">⚠️ Yêu cầu sửa lại</span>`;
+        }
+
         card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:11px; font-weight:700; color:var(--accent-light);">${t.task_code || 'TSK'}</span>
+              ${statusBadgeHtml}
+            </div>
             <span class="leader-badge">⭐ ${leader.full_name}</span>
           </div>
-          <div class="task-title">${t.title || 'Không có tiêu đề'}</div>
-          <div style="font-size:11px; color:var(--text-muted);">${t.description ? t.description.slice(0, 70) + '...' : ''}</div>
+          <div class="task-title">${escapeHtml(t.title || 'Không có tiêu đề')}</div>
+          <div style="font-size:11px; color:var(--text-muted);">${t.description ? escapeHtml(t.description.slice(0, 70)) + '...' : ''}</div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
             <span style="font-size:10px; font-weight:700; color:${alertInfo.type==='overdue'?'#ff1744':(alertInfo.type==='warn6h'?'#ffeb3b':'var(--warn-orange)')};">${alertInfo.text}</span>
             <div style="display:flex; align-items:center; gap:2px;">
-              ${memberIds.map(uid => `<div class="mini-avatar" title="${users.find(u=>u.id===uid)?.full_name || ''}">${(users.find(u=>u.id===uid)?.full_name || 'U').charAt(0)}</div>`).join('')}
+              ${memberIds.map(uid => `<div class="mini-avatar" title="${users.find(u=>String(u.id)===String(uid))?.full_name || ''}">${(users.find(u=>String(u.id)===String(uid))?.full_name || 'U').charAt(0)}</div>`).join('')}
               <span style="font-size:10px; color:var(--text-muted); margin-left:4px;">(${memberIds.length} ng)</span>
             </div>
           </div>
@@ -1728,7 +2061,7 @@
       document.getElementById('badge-completed').textContent = counts.completed;
     }
 
-    // 5. CHI TIẾT CÔNG VIỆC
+    // 9. CHI TIẾT CÔNG VIỆC
     function openTaskDetailModal(taskId) {
       if (!taskId) return;
       selectedTaskIdForDetail = taskId;
@@ -1761,13 +2094,20 @@
         driveWrap.style.display = 'none';
       }
 
-      const currentUser = users.find(u => u.id === currentUserId) || {};
-      const isLeader = task.leader_id === currentUserId;
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const isLeader = String(task.leader_id) === String(currentUserId);
       const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
       const isTaskCompleted = task.status === 'completed';
 
+      // Nút xóa việc vĩnh viễn
       const btnDelete = document.getElementById('btnDeleteTaskPermanent');
       btnDelete.style.display = isLeaderRole ? 'inline-flex' : 'none';
+
+      // Nút trả về yêu cầu sửa lại (chỉ hiện khi việc đang chờ duyệt và người mở là Sếp/Admin)
+      const btnRejectFix = document.getElementById('btnRejectFixTask');
+      if (btnRejectFix) {
+        btnRejectFix.style.display = (isLeaderRole && task.status === 'review') ? 'inline-flex' : 'none';
+      }
 
       const btnAddMember = document.getElementById('btnAddMemberBtn');
       if ((isLeader || isLeaderRole) && !isTaskCompleted) {
@@ -1825,8 +2165,8 @@
       else if (task.assignee_id) memberIds = [task.assignee_id];
 
       memberIds.forEach((uid, index) => {
-        const member = users.find(u => u.id === uid) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
-        const isLeader = uid === task.leader_id;
+        const member = users.find(u => String(u.id) === String(uid)) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
+        const isLeader = String(uid) === String(task.leader_id);
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="font-weight:700;">${index + 1}</td>
@@ -1872,14 +2212,14 @@
     }
 
     async function removeMemberFromTask(userIdToRemove) {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       if (!task) return;
 
-      const member = users.find(u => u.id === userIdToRemove);
+      const member = users.find(u => String(u.id) === String(userIdToRemove));
       if (!confirm(`Bạn có chắc chắn muốn loại bỏ nhân sự [${member?.full_name || 'này'}] khỏi nhóm công việc này?`)) return;
 
       let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
-      memberIds = memberIds.filter(id => id !== userIdToRemove);
+      memberIds = memberIds.filter(id => String(id) !== String(userIdToRemove));
 
       const { error } = await supabaseClient.from('tasks').update({
         assignees_json: memberIds,
@@ -1888,7 +2228,7 @@
 
       if (!error) {
         task.assignees_json = memberIds;
-        const currentUser = users.find(u => u.id === currentUserId) || {};
+        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
         const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
         renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
         renderKanban();
@@ -1899,10 +2239,10 @@
     }
 
     async function submitDeleteTaskPermanent() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       if (!task) return;
 
-      const currentUser = users.find(u => u.id === currentUserId) || {};
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
       if (currentUser.role !== 'hod' && currentUser.role !== 'admin') {
         alert("Chỉ có Lãnh đạo hoặc Admin mới có quyền xóa bỏ công việc này!");
         return;
@@ -1912,10 +2252,11 @@
 
       const { error } = await supabaseClient.from('tasks').delete().eq('id', task.id);
       if (!error) {
-        tasks = tasks.filter(t => t.id !== task.id);
+        tasks = tasks.filter(t => String(t.id) !== String(task.id));
         closeModal('modalTaskDetail');
         renderKanban();
         renderScoreBoard();
+        updateReviewInboxUI();
         alert("Đã xóa công việc thành công!");
       }
     }
@@ -1951,6 +2292,11 @@
         updated_at: new Date().toISOString() 
       };
 
+      // Nếu chuyển trạng thái thì xóa cờ yêu cầu sửa cũ
+      if (newStatus !== 'in_progress') {
+        updateData.fix_requested = false;
+      }
+
       if (newDueDateTimeVal && isLeaderRole) {
         updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
       }
@@ -1961,11 +2307,13 @@
 
       if (!error) {
         task.status = newStatus;
+        if (newStatus !== 'in_progress') task.fix_requested = false;
         if (newDueDateTimeVal && isLeaderRole) {
           task.due_datetime = updateData.due_datetime;
         }
         renderKanban();
         renderScoreBoard();
+        updateReviewInboxUI();
       } else {
         alert("Lỗi khi lưu thay đổi lên cơ sở dữ liệu: " + error.message);
         openTaskDetailModal(task.id);
@@ -1973,7 +2321,7 @@
     }
 
     function openAddMemberSection() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       if (!task) return;
 
       const sec = document.getElementById('addMemberSection');
@@ -1981,7 +2329,7 @@
       select.innerHTML = '';
 
       const currentMemberIds = Array.isArray(task.assignees_json) ? task.assignees_json : (task.assignee_id ? [task.assignee_id] : []);
-      const availableUsers = users.filter(u => !currentMemberIds.includes(u.id));
+      const availableUsers = users.filter(u => !currentMemberIds.includes(String(u.id)));
 
       if (availableUsers.length === 0) {
         alert("Tất cả nhân sự đều đã tham gia nhiệm vụ này!");
@@ -1999,7 +2347,7 @@
     }
 
     async function submitAddMemberToTask() {
-      const task = tasks.find(t => t.id === selectedTaskIdForDetail);
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       const newMemberId = document.getElementById('selectNewMember').value;
       if (!task || !newMemberId) return;
 
@@ -2010,7 +2358,7 @@
       if (!error) {
         task.assignees_json = memberIds;
         document.getElementById('addMemberSection').style.display = 'none';
-        const currentUser = users.find(u => u.id === currentUserId) || {};
+        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
         renderDetailAssigneeTable(task, (currentUser.role === 'hod' || currentUser.role === 'admin') && task.status !== 'completed');
         renderKanban();
         alert("Đã thêm thành viên thành công!");
@@ -2030,8 +2378,8 @@
       subs.forEach(sub => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><b>${sub.userName || 'Thành viên'}</b></td>
-          <td>${sub.note || '(Không)'}</td>
+          <td><b>${escapeHtml(sub.userName || 'Thành viên')}</b></td>
+          <td>${escapeHtml(sub.note || '(Không)')}</td>
           <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
           <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
         `;
@@ -2090,7 +2438,7 @@
       }
     }
 
-    // 6. TẠO VIỆC MỚI
+    // 10. TẠO VIỆC MỚI
     function openCreateTaskModal() {
       document.getElementById('taskTitle').value = '';
       document.getElementById('taskDesc').value = '';
@@ -2107,7 +2455,7 @@
         label.style.alignItems = 'center';
         label.style.gap = '6px';
         label.style.fontSize = '12px';
-        label.innerHTML = `<input type="checkbox" value="${u.id}" onchange="syncLeaderOptions()"> <span>${u.full_name}</span>`;
+        label.innerHTML = `<input type="checkbox" value="${u.id}" onchange="syncLeaderOptions()"> <span>${escapeHtml(u.full_name)}</span>`;
         checkList.appendChild(label);
       });
 
@@ -2120,7 +2468,7 @@
       const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
 
       checkedBoxes.forEach(cb => {
-        const user = users.find(u => u.id === cb.value);
+        const user = users.find(u => String(u.id) === String(cb.value));
         if (user) {
           const opt = document.createElement('option');
           opt.value = user.id;
@@ -2161,7 +2509,8 @@
         status: 'pending',
         due_datetime: dueIsoString,
         drive_link: driveLink || null,
-        member_submissions: []
+        member_submissions: [],
+        fix_requested: false
       };
 
       const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
@@ -2175,7 +2524,7 @@
       }
     }
 
-    // 7. XUẤT BÁO CÁO CSV
+    // 11. XUẤT BÁO CÁO CSV
     function exportTasksReportCSV() {
       if (tasks.length === 0) {
         alert("Chưa có dữ liệu công việc để xuất báo cáo!");
@@ -2186,9 +2535,9 @@
       csvContent += "STT,Mã Việc,Tên Nhiệm Vụ,Mức Ưu Tiên,Nhóm Trưởng (Leader),Thành Viên Phối Hợp,Hạn Chót,Trạng Thái,Link Drive,Kết Quả Báo Cáo\n";
 
       tasks.forEach((t, index) => {
-        const leader = users.find(u => u.id === t.leader_id)?.full_name || 'N/A';
+        const leader = users.find(u => String(u.id) === String(t.leader_id))?.full_name || 'N/A';
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-        const memberNames = memberIds.map(uid => users.find(u => u.id === uid)?.full_name || 'N/A').join(" | ");
+        const memberNames = memberIds.map(uid => users.find(u => String(u.id) === String(uid))?.full_name || 'N/A').join(" | ");
         
         let statusText = "Chờ tiếp nhận";
         if (t.status === 'in_progress') statusText = "Đang thực hiện";
@@ -2224,22 +2573,22 @@
       document.body.removeChild(link);
     }
 
-    // 8. BẢNG ĐIỂM
+    // 12. BẢNG ĐIỂM
     function renderScoreBoard() {
       const tbody = document.getElementById('scoreTableBody');
       if (!tbody) return;
       tbody.innerHTML = '';
 
       users.forEach((u, idx) => {
-        const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(u.id) : t.assignee_id === u.id));
+        const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(String(u.id)) : String(t.assignee_id) === String(u.id)));
         const completed = myTasks.filter(t => t.status === 'completed').length;
         const overdue = myTasks.filter(t => t.status !== 'completed' && calculateDeadlineAlert(t.due_datetime, t.status).type === 'overdue').length;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="text-align:center;"><b>${idx + 1}</b></td>
-          <td><b>${u.full_name}</b></td>
-          <td>${u.title || 'Chuyên viên'}</td>
+          <td><b>${escapeHtml(u.full_name)}</b></td>
+          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
           <td style="text-align:center; font-weight:700;">${myTasks.length}</td>
           <td style="text-align:center; color:var(--succ-green); font-weight:700;">${completed}</td>
           <td style="text-align:center; color:var(--danger-red);">${overdue}</td>
@@ -2249,7 +2598,7 @@
       });
     }
 
-    // 9. QUẢN TRỊ NHÂN SỰ
+    // 13. QUẢN TRỊ NHÂN SỰ
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
       if (!tbody) return;
@@ -2258,10 +2607,10 @@
         const tr = document.createElement('tr');
         let roleName = u.role === 'hod' ? 'Trưởng / Phó TT' : (u.role === 'admin' ? 'Quản trị viên' : 'Nhân viên');
         tr.innerHTML = `
-          <td><b>${u.full_name}</b></td>
+          <td><b>${escapeHtml(u.full_name)}</b></td>
           <td>${u.phone || 'N/A'}</td>
           <td>${u.email || 'N/A'}</td>
-          <td>${u.title || 'Chuyên viên'}</td>
+          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
           <td><span style="font-size:11px; font-weight:700;">${roleName}</span></td>
           <td style="text-align:right; white-space:nowrap;">
             <button class="btn btn-outline btn-sm" onclick="openEditUserModalAdmin('${u.id}')">✏️ Sửa</button>
@@ -2340,12 +2689,12 @@
     async function deleteUser(uid) {
       if (!confirm("Xác nhận xóa nhân sự này?")) return;
       await supabaseClient.from('app_users').delete().eq('id', uid);
-      users = users.filter(u => u.id !== uid);
+      users = users.filter(u => String(u.id) !== String(uid));
       renderAdminUserTable();
       renderScoreBoard();
     }
 
-    // 10. AUTH & TABS
+    // 14. AUTH & TABS
     function logoutUser() {
       localStorage.removeItem("DSU_CURRENT_USER_ID");
       localStorage.removeItem("DSU_ACTIVE_TAB");
@@ -2394,7 +2743,7 @@
     function updateCurrentUserUI() {
       const user = users.find(u => String(u.id) === String(currentUserId));
       if (user) {
-        document.getElementById('currentUserBadge').innerHTML = `<b>${user.full_name}</b><div style="color:var(--accent-light); font-size:9.5px;">${user.title || 'Chuyên viên'}</div>`;
+        document.getElementById('currentUserBadge').innerHTML = `<b>${escapeHtml(user.full_name)}</b><div style="color:var(--accent-light); font-size:9.5px;">${escapeHtml(user.title || 'Chuyên viên')}</div>`;
       }
     }
 
