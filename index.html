@@ -163,7 +163,7 @@
       gap: 5px;
     }
 
-    /* NÚT LỊCH DƯƠNG + ÂM KẾT HỢP */
+    /* NÚT LỊCH DƯƠNG + ÂM */
     .lunar-btn {
       background: rgba(255, 215, 0, 0.12);
       border: 1px solid var(--gold-star);
@@ -1123,7 +1123,7 @@
 
   </main>
 
-  <!-- FOOTER: PACMAN & PHÁO HOA MINI -->
+  <!-- FOOTER -->
   <footer class="app-footer">
     <canvas id="fireworksCanvas"></canvas>
     <div class="pacman-track">
@@ -1152,12 +1152,12 @@
 
     <div class="footer-content">
       <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
-      <div>⚡ Hệ thống DSU v24.1 · Âm & Dương Lịch Song Hành</div>
+      <div>⚡ Hệ thống DSU v24.2 · Âm & Dương Lịch Song Hành</div>
     </div>
   </footer>
 
   <!-- ======================================================== -->
-  <!-- MODALS (TẤT CẢ ĐỀU CÓ STYLE="DISPLAY:NONE;" MẶC ĐỊNH)   -->
+  <!-- MODALS (CỐ ĐỊNH ẨN VỚI STYLE="DISPLAY:NONE;")            -->
   <!-- ======================================================== -->
 
   <!-- MODAL 1: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO (ÂM - DƯƠNG SONG HÀNH) -->
@@ -1176,7 +1176,6 @@
         </div>
 
         <div class="lunar-modal-grid" style="margin-top:6px;">
-          <!-- Khung Ngày Dương & Âm -->
           <div class="lunar-box" style="border-left:4px solid var(--accent-blue);">
             <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">DƯƠNG LỊCH</div>
             <div id="lunarSolarDateText" style="font-size:17px; font-weight:800; color:var(--accent-light); margin-top:2px;"></div>
@@ -1187,7 +1186,6 @@
             <div id="lunarDayTypeText" style="font-size:11.5px; font-weight:700; margin-top:4px;"></div>
           </div>
 
-          <!-- Khung Giờ Hoàng Đạo -->
           <div class="lunar-box" style="border-left:4px solid var(--gold-star);">
             <div style="font-size:11.5px; font-weight:700; color:var(--gold-star); margin-bottom:6px;">⭐ 6 Khung Giờ Hoàng Đạo (Giờ Tốt):</div>
             <div id="lunarAuspiciousHoursList"></div>
@@ -1195,7 +1193,6 @@
           </div>
         </div>
 
-        <!-- Khung Lời khuyên công tác -->
         <div class="lunar-box" style="border-left:4px solid var(--succ-green);">
           <div style="font-size:12px; font-weight:700; color:var(--succ-green); margin-bottom:4px;">💡 Ghi Chú & Lời Khuyên Tác Nghiệp:</div>
           <div id="lunarAdviceText" style="font-size:12.5px; line-height:1.5; color:var(--text-main);"></div>
@@ -1374,6 +1371,7 @@
           </div>
         </div>
 
+        <!-- BẢNG KẾT QUẢ BÁO CÁO CÓ CỘT THAO TÁC XÓA BÁO CÁO NỘP NHẦM -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>📁 Kết quả & Báo cáo đã nộp của các thành viên:</label>
           <div style="overflow-x:auto;">
@@ -1384,6 +1382,7 @@
                   <th>Ghi chú</th>
                   <th>Link Báo cáo</th>
                   <th>Thời gian</th>
+                  <th style="text-align:right; width:70px;">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="detailSubmissionTableBody"></tbody>
@@ -1550,7 +1549,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V24.1                     -->
+  <!-- JAVASCRIPT LOGIC V24.2                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1586,233 +1585,6 @@
 
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
-    // ==========================================
-    // THUẬT TOÁN ÂM LỊCH VIỆT NAM (HỒ NGỌC ĐỨC)
-    // ==========================================
-    const CAN_NAMES = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
-    const CHI_NAMES = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
-
-    function jdFromDate(dd, mm, yy) {
-      let a = Math.floor((14 - mm) / 12);
-      let y = yy + 4800 - a;
-      let m = mm + 12 * a - 3;
-      let jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
-      if (jd < 2299161) jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083;
-      return jd;
-    }
-
-    function getNewMoonDay(k, timeZone) {
-      let T = k / 1236.85;
-      let T2 = T * T;
-      let T3 = T2 * T;
-      let dr = Math.PI / 180;
-      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
-      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
-      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
-      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.0107306 * T3;
-      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
-      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M);
-      C1 -= 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(2 * dr * Mpr);
-      C1 -= 0.0004 * Math.sin(3 * dr * Mpr);
-      C1 += 0.0104 * Math.sin(2 * dr * F) - 0.0051 * Math.sin((M + Mpr) * dr);
-      C1 -= 0.0074 * Math.sin((M - Mpr) * dr) + 0.0004 * Math.sin((2 * F + M) * dr);
-      C1 -= 0.0004 * Math.sin((2 * F - M) * dr) - 0.0006 * Math.sin((2 * F + Mpr) * dr);
-      C1 += 0.0010 * Math.sin((2 * F - Mpr) * dr) + 0.0005 * Math.sin((M + 2 * Mpr) * dr);
-      let JdNew = Jd1 + C1;
-      return Math.floor(JdNew + 0.5 + timeZone / 24);
-    }
-
-    function getSunLongitude(jdn, timeZone) {
-      let T = (jdn - 2451545.5 - timeZone / 24) / 36525;
-      let dr = Math.PI / 180;
-      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T * T - 0.00000048 * T * T * T;
-      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T * T;
-      let DL = (1.914600 - 0.004817 * T - 0.000014 * T * T) * Math.sin(dr * M);
-      DL += (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
-      let L = L0 + DL;
-      L = L * dr;
-      L = L - Math.PI * 2 * Math.floor(L / (Math.PI * 2));
-      return Math.floor(L / (Math.PI / 6));
-    }
-
-    function getLunarMonth11(yy, timeZone) {
-      let off = jdFromDate(31, 12, yy) - 2415021;
-      let k = Math.floor(off / 29.530588853);
-      let nm = getNewMoonDay(k, timeZone);
-      let sunLong = getSunLongitude(nm, timeZone);
-      if (sunLong >= 9) nm = getNewMoonDay(k - 1, timeZone);
-      return nm;
-    }
-
-    function getLeapMonthOffset(a11, timeZone) {
-      let k = Math.floor((a11 - 2415021.076998695) / 29.530588853 + 0.5);
-      let last = 0;
-      let i = 1;
-      let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
-      while (true) {
-        last = arc;
-        i++;
-        arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
-        if (arc === last || i > 14) break;
-      }
-      return i - 1;
-    }
-
-    function convertSolarToLunar(dd, mm, yy, timeZone = 7) {
-      let dayNumber = jdFromDate(dd, mm, yy);
-      let k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
-      let monthStart = getNewMoonDay(k + 1, timeZone);
-      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
-      let a11 = getLunarMonth11(yy, timeZone);
-      let b11 = a11;
-      let lunarYear = yy;
-      if (a11 >= monthStart) {
-        lunarYear = yy;
-        a11 = getLunarMonth11(yy - 1, timeZone);
-      } else {
-        lunarYear = yy + 1;
-        b11 = getLunarMonth11(yy + 1, timeZone);
-      }
-      let lunarDay = dayNumber - monthStart + 1;
-      let diff = Math.floor((monthStart - a11) / 29);
-      let lunarLeap = false;
-      let lunarMonth = diff + 11;
-      if ((b11 - a11) > 365) {
-        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
-        if (diff >= leapMonthDiff) {
-          lunarMonth = diff + 10;
-          if (diff === leapMonthDiff) lunarLeap = true;
-        }
-      }
-      if (lunarMonth > 12) lunarMonth -= 12;
-      if (lunarMonth >= 11 && diff < 4) lunarYear--;
-      return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap, jd: dayNumber };
-    }
-
-    function getLunarDetails(dd, mm, yy) {
-      const lunar = convertSolarToLunar(dd, mm, yy, 7);
-      const jd = lunar.jd;
-
-      const canYear = CAN_NAMES[(lunar.year - 4) % 10];
-      const chiYear = CHI_NAMES[(lunar.year - 4) % 12];
-      const canChiYear = `${canYear} ${chiYear}`;
-
-      const canDay = CAN_NAMES[(jd + 9) % 10];
-      const chiDay = CHI_NAMES[(jd + 1) % 12];
-      const canChiDay = `${canDay} ${chiDay}`;
-
-      const canMonth = CAN_NAMES[((lunar.year * 12 + lunar.month + 3) % 10)];
-      const chiMonth = CHI_NAMES[(lunar.month + 1) % 12];
-      const canChiMonth = `${canMonth} ${chiMonth}`;
-
-      const chiDayIndex = (jd + 1) % 12;
-      const auspiciousHourMap = {
-        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
-        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
-        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ],
-        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
-        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
-        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]
-      };
-
-      const groupIdx = chiDayIndex % 6;
-      const hoursList = auspiciousHourMap[groupIdx] || [];
-      const isHoangDaoDay = (jd % 2 === 0);
-
-      return {
-        lunarDay: lunar.day,
-        lunarMonth: lunar.month,
-        lunarYear: lunar.year,
-        isLeap: lunar.leap,
-        canChiDay,
-        canChiMonth,
-        canChiYear,
-        hoursList,
-        isHoangDaoDay
-      };
-    }
-
-    // CẬP NHẬT NÚT HEADER: HIỂN THỊ CẢ NGÀY DƯƠNG VÀ ÂM (VD: 📅 28/10 · 19/9 Âm)
-    function updateHeaderLunarBadge() {
-      const now = new Date();
-      const d = now.getDate();
-      const m = now.getMonth() + 1;
-      const y = now.getFullYear();
-      const info = getLunarDetails(d, m, y);
-      const btnText = document.getElementById('headerLunarText');
-      if (btnText) {
-        btnText.innerHTML = `📅 ${d}/${m} · ${info.lunarDay}/${info.lunarMonth} Âm`;
-      }
-    }
-
-    function openLunarModal(selectedDateStr) {
-      const picker = document.getElementById('lunarDatePicker');
-      let targetDate = new Date();
-      if (selectedDateStr) {
-        const parts = selectedDateStr.split('-');
-        if (parts.length === 3) {
-          targetDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-        }
-      }
-      const y = targetDate.getFullYear();
-      const m = targetDate.getMonth() + 1;
-      const d = targetDate.getDate();
-
-      if (picker) {
-        picker.value = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      }
-
-      const info = getLunarDetails(d, m, y);
-      const dayNames = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
-      const dayName = dayNames[targetDate.getDay()];
-
-      document.getElementById('lunarSolarDateText').textContent = `${dayName}, ${d}/${m}/${y}`;
-      document.getElementById('lunarDateText').textContent = `Ngày ${info.lunarDay} Tháng ${info.lunarMonth} ${info.isLeap ? '(Nhuận)' : ''}`;
-      document.getElementById('lunarCanChiText').textContent = `Can chi: Ngày ${info.canChiDay} · Tháng ${info.canChiMonth} · Năm ${info.canChiYear}`;
-
-      const dayTypeEl = document.getElementById('lunarDayTypeText');
-      if (info.isHoangDaoDay) {
-        dayTypeEl.innerHTML = `<span style="color:#00e676; font-weight:700;">● Ngày Hoàng Đạo (Tốt lành, thuận lợi)</span>`;
-      } else {
-        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange); font-weight:700;">● Ngày Hắc Đạo (Cẩn trọng quy trình)</span>`;
-      }
-
-      const currH = new Date().getHours();
-      const isToday = (new Date().toDateString() === targetDate.toDateString());
-      const hoursBox = document.getElementById('lunarAuspiciousHoursList');
-      hoursBox.innerHTML = info.hoursList.map(h => {
-        let isNow = false;
-        if (isToday) {
-          if (h.hStart === 23) isNow = (currH >= 23 || currH < 1);
-          else isNow = (currH >= h.hStart && currH < h.hEnd);
-        }
-        return `<span class="lunar-hour-badge ${isNow ? 'lunar-hour-current' : ''}">Giờ ${h.name} (${h.time})</span>`;
-      }).join(' ');
-
-      const adviceEl = document.getElementById('lunarAdviceText');
-      if (info.isHoangDaoDay) {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, ký duyệt báo cáo, bốc dỡ giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra bảo hộ lao động và an toàn thiết bị cẩu bãi trong các khung giờ cao điểm.`;
-      } else {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường Tân Vũ.`;
-      }
-
-      document.getElementById('modalLunarCalendar').style.display = 'flex';
-    }
-
-    function onLunarDateChange(val) {
-      if (val) openLunarModal(val);
-    }
-
-    function openExternalLunarWeb() {
-      const picker = document.getElementById('lunarDatePicker');
-      const val = picker ? picker.value : '';
-      let url = 'https://vansu.net/lich-am.html';
-      if (val) {
-        url = 'https://vansu.net/lich-van-nien.html';
-      }
-      window.open(url, '_blank');
-    }
-
     // 1. THEME
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
@@ -1834,7 +1606,6 @@
       initTheme();
       updateHeaderLunarBadge();
 
-      // Đóng modal khi bấm ra ngoài vùng nền mờ
       document.querySelectorAll('.modal-backdrop').forEach(mb => {
         mb.addEventListener('click', (e) => {
           if (e.target === mb) mb.style.display = 'none';
@@ -1975,7 +1746,7 @@
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.1')
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.2')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -2736,7 +2507,6 @@
         if (cols[colKey]) cols[colKey].appendChild(card);
       });
 
-      // Nếu cột trống, hiển thị thông báo nhẹ nhàng
       Object.keys(cols).forEach(k => {
         if (cols[k] && cols[k].children.length === 0) {
           cols[k].innerHTML = `<div style="text-align:center; padding:24px 12px; color:var(--text-muted); font-size:12px;">Chưa có nhiệm vụ nào</div>`;
@@ -2761,6 +2531,12 @@
 
       const task = tasks.find(t => String(t.id) === String(taskId));
       if (!task) return;
+
+      // TỰ ĐỘNG RESET TRỐNG Ô DÁN LINK VÀ GHI CHÚ
+      const driveUrlInput = document.getElementById('mySubDriveUrl');
+      const noteInput = document.getElementById('mySubNoteInput');
+      if (driveUrlInput) driveUrlInput.value = '';
+      if (noteInput) noteInput.value = '';
 
       document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
       document.getElementById('detailTaskTitle').textContent = task.title || '(Không có tiêu đề)';
@@ -3059,28 +2835,43 @@
       }
     }
 
+    // HIỂN THỊ DANH SÁCH BÁO CÁO: LỌC CHẶT CHẼ THEO TASK_CODE + NÚT XÓA TỪNG DÒNG
     function renderSubmissionsTable(task) {
       const tbody = document.getElementById('detailSubmissionTableBody');
       tbody.innerHTML = '';
-      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+      const rawSubs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+      
+      // Lọc tách bạch: Chỉ hiển thị các báo cáo đúng của task_code này
+      const subs = rawSubs.filter(sub => !sub.taskCode || sub.taskCode === task.task_code);
 
       if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo cho nhiệm vụ này.</td></tr>';
         return;
       }
 
-      subs.forEach(sub => {
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+
+      subs.forEach((sub, idx) => {
+        const isMySub = String(sub.userId) === String(currentUserId);
+        const canDelete = isMySub || isLeaderRole;
+        const subId = sub.id || ('idx_' + idx);
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><b>${escapeHtml(sub.userName || 'Thành viên')}</b></td>
           <td>${escapeHtml(sub.note || '(Không)')}</td>
-          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
-          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
+          <td>${sub.driveUrl ? `<a href="${escapeHtml(sub.driveUrl)}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${escapeHtml(sub.time || '')}</span></td>
+          <td style="text-align:right;">
+            ${canDelete ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red); padding:2px 6px; font-size:10.5px;" onclick="deleteTaskSubmission('${subId}')" title="Xóa dòng báo cáo này">🗑️ Xóa</button>` : ''}
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
+    // NỘP KẾT QUẢ: ĐÓNG DẤU TASK_CODE + CẬP NHẬT ĐÈ NẾU CÙNG 1 NGƯỜI NỘP LẠI
     async function submitMyTaskResult() {
       if (!selectedTaskIdForDetail) {
         alert("Không tìm thấy mã công việc hiện tại!");
@@ -3105,17 +2896,42 @@
         return;
       }
 
-      const newSub = {
-        userId: currentUserId,
-        userName: currentUser.full_name || "Thành viên",
-        note: note || '(Không có ghi chú)',
-        driveUrl: driveUrl || '',
-        time: new Date().toLocaleString('vi-VN')
-      };
-
       let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
-      currentSubs.push(newSub);
+      
+      // Tìm xem chính tài khoản này đã từng nộp báo cáo cho nhiệm vụ này chưa
+      const existingIndex = currentSubs.findIndex(s => 
+        String(s.userId) === String(currentUserId) && 
+        (!s.taskCode || s.taskCode === task.task_code)
+      );
 
+      const timeStr = new Date().toLocaleString('vi-VN');
+
+      if (existingIndex !== -1) {
+        // Cập nhật đè lên dòng của chính mình thay vì tạo thêm dòng mới
+        currentSubs[existingIndex] = {
+          ...currentSubs[existingIndex],
+          id: currentSubs[existingIndex].id || ('sub_' + Date.now()),
+          taskCode: task.task_code,
+          userName: currentUser.full_name || "Thành viên",
+          note: note || currentSubs[existingIndex].note,
+          driveUrl: driveUrl || currentSubs[existingIndex].driveUrl,
+          time: timeStr + ' (Đã cập nhật)'
+        };
+      } else {
+        // Tạo dòng báo cáo mới gắn kèm taskCode
+        const newSub = {
+          id: 'sub_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          taskCode: task.task_code,
+          userId: currentUserId,
+          userName: currentUser.full_name || "Thành viên",
+          note: note || '(Không có ghi chú)',
+          driveUrl: driveUrl || '',
+          time: timeStr
+        };
+        currentSubs.push(newSub);
+      }
+
+      // Cập nhật tuyệt đối chỉ đúng id của task đang mở
       const { error } = await supabaseClient.from('tasks').update({
         member_submissions: currentSubs,
         updated_at: new Date().toISOString()
@@ -3126,9 +2942,38 @@
         if (driveUrlInput) driveUrlInput.value = '';
         if (noteInput) noteInput.value = '';
         renderSubmissionsTable(task);
-        alert("Đã lưu và gửi báo cáo kết quả thành công!");
+        alert("Đã lưu kết quả báo cáo thành công!");
       } else {
         alert("Lỗi khi lưu kết quả lên Supabase: " + error.message);
+      }
+    }
+
+    // XÓA DÒNG BÁO CÁO NỘP NHẦM
+    async function deleteTaskSubmission(subId) {
+      if (!selectedTaskIdForDetail) return;
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+
+      if (!confirm("Bạn có chắc chắn muốn xóa dòng kết quả báo cáo này không?")) return;
+
+      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
+      
+      const updatedSubs = currentSubs.filter((sub, idx) => {
+        const currentSubId = sub.id || ('idx_' + idx);
+        return String(currentSubId) !== String(subId);
+      });
+
+      const { error } = await supabaseClient.from('tasks').update({
+        member_submissions: updatedSubs,
+        updated_at: new Date().toISOString()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.member_submissions = updatedSubs;
+        renderSubmissionsTable(task);
+        alert("Đã xóa dòng báo cáo thành công!");
+      } else {
+        alert("Lỗi khi xóa báo cáo từ Supabase: " + error.message);
       }
     }
 
@@ -3238,7 +3083,8 @@
         if (t.status === 'review') statusText = "Chờ duyệt báo cáo";
         if (t.status === 'completed') statusText = "Đã hoàn thành";
 
-        const subs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
+        const rawSubs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
+        const subs = rawSubs.filter(s => !s.taskCode || s.taskCode === t.task_code);
         const resultNotes = subs.map(s => `${s.userName}: ${s.note || ''} [${s.driveUrl || ''}]`).join(" ; ");
 
         const row = [
