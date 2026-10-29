@@ -2,7 +2,7 @@
 <html lang="vi" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
@@ -13,10 +13,10 @@
   <style>
     /* THEME SYSTEM */
     html[data-theme="dark"] {
-      --bg-dark: #0A1324;
-      --bg-card: #101F38;
-      --bg-surface: #172A4B;
-      --border-color: #25406C;
+      --bg-dark: #0B1528;
+      --bg-card: #11203B;
+      --bg-surface: #182C4E;
+      --border-color: #263F6A;
       --accent-blue: #2563C9;
       --accent-light: #8DB8FF;
       --warn-orange: #F08A24;
@@ -25,17 +25,16 @@
       --text-main: #F4F6FA;
       --text-muted: #9FB0C9;
       --gold-star: #FFD700;
-      --shadow-color: rgba(0,0,0,0.45);
+      --shadow-color: rgba(0,0,0,0.4);
       --bg-art-opacity: 0.12;
-      --ticker-bg: #122543;
-      --ticker-border: #2B4877;
+      --ticker-bg: #132747;
     }
 
     html[data-theme="light"] {
-      --bg-dark: #EDF2F9;
+      --bg-dark: #EAEFF8;
       --bg-card: #FFFFFF;
-      --bg-surface: #F3F6FA;
-      --border-color: #D3DCED;
+      --bg-surface: #F2F5FA;
+      --border-color: #D6DDE8;
       --accent-blue: #2563C9;
       --accent-light: #1D4C9E;
       --warn-orange: #D47317;
@@ -46,8 +45,7 @@
       --gold-star: #D4A017;
       --shadow-color: rgba(19, 35, 63, 0.08);
       --bg-art-opacity: 0.08;
-      --ticker-bg: #E3EAF7;
-      --ticker-border: #C8D6EC;
+      --ticker-bg: #E1E8F5;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -63,7 +61,7 @@
       transition: background 0.25s, color 0.25s;
     }
 
-    /* BACKGROUND ART */
+    /* ĐỒ HỌA NỀN CẢNG BIỂN */
     .bg-art-item {
       position: fixed;
       pointer-events: none;
@@ -71,8 +69,8 @@
       opacity: var(--bg-art-opacity);
       transition: opacity 0.3s ease;
     }
-    .bg-art-ship { left: 15px; bottom: 60px; width: 170px; height: 140px; }
-    .bg-art-robot { right: 15px; bottom: 65px; width: 160px; height: 140px; }
+    .bg-art-ship { left: 15px; bottom: 10px; width: 170px; height: 140px; }
+    .bg-art-robot { right: 15px; bottom: 15px; width: 160px; height: 140px; }
     @media (max-width: 768px) { .bg-art-item { display: none; } }
 
     /* HEADER */
@@ -80,37 +78,17 @@
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 16px var(--shadow-color);
-    }
-    .header-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-width: 1440px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    @media (min-width: 992px) {
-      .header-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .brand-left {
-      display: flex;
-      align-items: center;
+      box-shadow: 0 4px 20px var(--shadow-color);
+      flex-wrap: wrap;
       gap: 8px;
     }
+    .brand-wrap { display: flex; align-items: center; gap: 10px; }
     .badge-port {
       background: var(--accent-blue);
       color: #fff;
@@ -120,34 +98,14 @@
       border-radius: 4px;
       letter-spacing: 1px;
     }
-    .brand-title {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      line-height: 1.3;
-    }
-    .brand-sub { font-size: 10.5px; color: var(--accent-light); font-weight: 600; display: none; }
+    .brand-title { font-size: 13px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 4px; line-height: 1.3; }
+    .brand-sub { font-size: 10px; color: var(--accent-light); font-weight: 600; display: none; }
     @media (min-width: 768px) {
-      .brand-title { font-size: 15px; }
+      .brand-title { font-size: 14.5px; }
       .brand-sub { display: block; }
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    @media (max-width: 991px) {
-      .header-actions {
-        justify-content: space-between;
-        width: 100%;
-      }
-    }
+    .header-user { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .theme-toggle-btn {
       background: var(--bg-surface);
@@ -155,34 +113,15 @@
       color: var(--text-main);
       padding: 5px 10px;
       border-radius: 20px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
 
-    .lunar-btn {
-      background: rgba(255, 215, 0, 0.12);
-      border: 1px solid var(--gold-star);
-      color: var(--gold-star);
-      padding: 5px 11px;
-      border-radius: 20px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .lunar-btn:hover {
-      background: rgba(255, 215, 0, 0.25);
-      transform: scale(1.02);
-    }
-
+    /* NÚT HỘP THƯ BÁO CÁO CHỜ DUYỆT */
     .inbox-btn-wrap {
       position: relative;
       display: inline-flex;
@@ -192,7 +131,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      font-size: 14px;
+      font-size: 15px;
       padding: 5px 10px;
       border-radius: 8px;
       cursor: pointer;
@@ -215,11 +154,11 @@
       margin-left: 2px;
     }
 
-    /* TICKER THÔNG BÁO VỚI KHỦNG LONG MINI */
+    /* THANH THÔNG BÁO BỀ NGANG DƯỚI HEADER (TICKER TỔNG) */
     .global-announcement-bar {
       background: var(--ticker-bg);
-      border-bottom: 1px solid var(--ticker-border);
-      padding: 7px 14px;
+      border-bottom: 1px solid var(--border-color);
+      padding: 7px 16px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -227,44 +166,24 @@
       overflow: hidden;
       position: relative;
       z-index: 90;
-      box-shadow: inset 0 -1px 3px rgba(0,0,0,0.05);
-      white-space: nowrap;
     }
-    .dino-avatar-wrap {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
+    .speaker-icon {
+      font-size: 16px;
+      animation: speakerPulse 1.5s infinite;
       flex-shrink: 0;
-      user-select: none;
-      z-index: 2;
-      background: var(--ticker-bg);
-      padding-right: 4px;
-      transition: transform 0.2s;
     }
-    .dino-avatar-wrap:hover { transform: scale(1.3) rotate(5deg); }
-    .dino-chomp-anim { animation: dinoBite 0.5s ease-in-out; }
-    @keyframes dinoBite {
-      0% { transform: scale(1) translateX(0); }
-      30% { transform: scale(1.35) rotate(-10deg) translateX(4px); }
-      60% { transform: scale(1.1) rotate(10deg) translateX(8px); }
-      100% { transform: scale(1) translateX(0); }
-    }
-
-    .announcement-container {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
+    @keyframes speakerPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
     .announcement-text-slider {
-      display: inline-block;
+      flex: 1;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: var(--text-main);
       font-weight: 600;
-      will-change: transform;
+      transition: opacity 0.4s ease;
     }
 
     /* NAVIGATION TABS */
@@ -288,7 +207,7 @@
       font-family: inherit;
       font-size: 12.5px;
       font-weight: 600;
-      padding: 11px 15px;
+      padding: 10px 14px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -308,7 +227,7 @@
       font-family: inherit;
       font-size: 12.5px;
       font-weight: 600;
-      padding: 6px 13px;
+      padding: 6px 12px;
       border-radius: 6px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -333,14 +252,16 @@
     /* LAYOUT */
     .container {
       flex: 1;
-      padding: 14px 16px;
+      padding: 16px;
       max-width: 1440px;
       margin: 0 auto;
       width: 100%;
       position: relative;
       z-index: 1;
     }
-    @media (min-width: 768px) { .container { padding: 20px 24px; } }
+    @media (min-width: 768px) {
+      .container { padding: 20px 24px; }
+    }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
@@ -390,7 +311,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      min-height: 140px;
+      height: 520px;
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 8px var(--shadow-color);
@@ -425,7 +346,7 @@
       overflow-y: auto;
     }
 
-    /* NHÃN THẺ TASK */
+    /* NHÃN THẺ TASK ĐẶC BIỆT */
     .tag-boss-review {
       background: linear-gradient(135deg, #FF6B6B, #FF8E53);
       color: #fff;
@@ -437,13 +358,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      animation: pulseAttention 1.5s infinite;
     }
-    @keyframes pulseAttention {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
     .tag-fix-request {
       background: #D93838;
       color: #fff;
@@ -457,7 +372,7 @@
       gap: 4px;
     }
 
-    /* TASK CARD & DEADLINE */
+    /* TASK CARD & HIỆU ỨNG DEADLINE */
     @keyframes taskBlinkYellow {
       0%, 100% { border-color: var(--warn-orange); box-shadow: 0 0 4px rgba(240, 138, 36, 0.4); }
       50% { border-color: #ffeb3b; box-shadow: 0 0 16px rgba(255, 235, 59, 0.9); }
@@ -471,7 +386,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 13px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -543,7 +458,7 @@
     @media (min-width: 992px) { .chat-main-card { height: auto; } }
 
     .chat-list-header {
-      padding: 11px 15px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border-color);
       font-weight: 700;
       font-size: 13px;
@@ -584,7 +499,7 @@
       gap: 12px;
     }
     .chat-bubble {
-      max-width: 82%;
+      max-width: 80%;
       padding: 8px 12px;
       border-radius: 8px;
       font-size: 13px;
@@ -629,199 +544,69 @@
       justify-content: space-between;
     }
 
-    /* TOAST THÔNG BÁO */
-    .task-toast-alert {
-      position: fixed;
-      top: 68px;
-      right: 16px;
-      z-index: 2000;
-      background: linear-gradient(135deg, #1d4f9f, #2563C9);
-      color: #fff;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px solid #8DB8FF;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      animation: slideInToast 0.4s ease-out;
-      max-width: 380px;
-    }
-    @keyframes slideInToast {
-      from { transform: translateY(-40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* FOOTER */
-    footer.app-footer {
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      padding: 10px 16px;
-      margin-top: auto;
-      position: relative;
-      overflow: hidden;
-      z-index: 10;
-    }
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11.5px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-      gap: 8px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .pacman-track {
-      position: relative;
-      width: 100%;
-      height: 24px;
-      margin-bottom: 8px;
-      overflow: hidden;
-      background: rgba(0,0,0,0.15);
-      border-radius: 6px;
-      border: 1px dashed var(--border-color);
-    }
-    .pacman-runner {
-      position: absolute;
-      left: -80px;
-      top: 2px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      animation: pacmanRun 12s linear infinite;
-    }
-    @keyframes pacmanRun {
-      0% { left: -90px; }
-      100% { left: 105%; }
-    }
-    .pacman-character {
-      width: 20px;
-      height: 20px;
-      background: #FFD700;
-      border-radius: 50%;
-      position: relative;
-      animation: pacmanMouth 0.35s infinite alternate;
-    }
-    @keyframes pacmanMouth {
-      0% { clip-path: polygon(100% 74%, 50% 50%, 100% 26%, 100% 0%, 0% 0%, 0% 100%, 100% 100%); }
-      100% { clip-path: polygon(100% 50%, 50% 50%, 100% 50%, 100% 0%, 0% 0%, 0% 100%, 100% 100%); }
-    }
-    .pacman-ghost {
-      font-size: 15px;
-      filter: drop-shadow(0 0 4px #FF6B6B);
-      animation: ghostBob 0.6s infinite alternate;
-    }
-    @keyframes ghostBob {
-      from { transform: translateY(0); }
-      to { transform: translateY(-3px); }
-    }
-    .pacman-dots {
-      position: absolute;
-      top: 9px;
-      left: 0;
-      right: 0;
-      height: 6px;
-      display: flex;
-      justify-content: space-around;
-      pointer-events: none;
-    }
-    .dot-pellet {
-      width: 5px;
-      height: 5px;
-      background: var(--accent-light);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--accent-light);
-      animation: dotTwinkle 1.5s infinite alternate;
-    }
-    @keyframes dotTwinkle {
-      0% { opacity: 0.3; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1.2); }
-    }
-
-    #fireworksCanvas {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.6;
-    }
-
-    /* CỐ ĐỊNH ẨN MODAL BẰNG CSS */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(8, 15, 30, 0.85);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 14px;
-    }
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      max-width: 680px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      position: relative;
-    }
-    .modal-header { padding: 14px 18px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .modal-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
-    .modal-footer { padding: 14px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
-    
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    @media (min-width: 576px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-    .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 100%; }
-
-    /* CARD LỊCH ÂM TRONG MODAL */
-    .lunar-modal-grid {
+    /* GUIDE CARDS */
+    .guide-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 16px;
     }
-    @media (min-width: 576px) {
-      .lunar-modal-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .lunar-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-    .lunar-hour-badge {
-      display: inline-block;
-      padding: 4px 8px;
+    @media (min-width: 768px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
+    .guide-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 11px;
-      margin: 3px 2px;
-      font-weight: 600;
+      border-radius: 10px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 2px 8px var(--shadow-color);
     }
-    .lunar-hour-current {
-      border-color: var(--gold-star) !important;
-      background: rgba(255, 215, 0, 0.15) !important;
-      color: var(--gold-star) !important;
-      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    .guide-role-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-blue);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    .guide-step { font-size: 12.5px; line-height: 1.5; color: var(--text-main); }
+    .guide-step b { color: var(--accent-light); }
+
+    /* TABLES & MODALS */
+    .dsu-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    .dsu-table th { background: var(--bg-surface); color: var(--accent-light); padding: 10px 12px; border-bottom: 2px solid var(--border-color); font-weight: 700; font-size: 12px; }
+    .dsu-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(11, 21, 40, 0.85); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    .modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--accent-light); }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 576px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .form-control { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 100%; }
+    
+    .gdrive-highlight-box {
+      background: rgba(26, 115, 232, 0.12);
+      border: 1px solid #1a73e8;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 6px;
+    }
+
+    .locked-task-notice {
+      background: rgba(240, 138, 36, 0.12);
+      border: 1px solid var(--warn-orange);
+      color: var(--warn-orange);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: none;
     }
   </style>
 </head>
@@ -843,47 +628,36 @@
 
   <!-- HEADER -->
   <header>
-    <div class="header-container">
-      <div class="brand-wrap">
-        <div class="brand-left">
-          <span class="badge-port">HP PORT · DSU</span>
-          <div>
-            <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</div>
-            <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
-          </div>
-        </div>
-        <button class="theme-toggle-btn" onclick="toggleTheme()">
-          <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
+    <div class="brand-wrap">
+      <span class="badge-port">HP PORT · DSU</span>
+      <div>
+        <div class="brand-title">🚢 TT KHAI THÁC & DỊCH VỤ KHÁCH HÀNG - Công ty CP Cảng Hải Phòng</div>
+        <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
+      </div>
+    </div>
+    <div class="header-user">
+      <button class="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
+      </button>
+
+      <!-- HỘP THƯ BÁO CÁO CHỜ DUYỆT (✉️) -->
+      <div class="inbox-btn-wrap">
+        <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
+          ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
         </button>
       </div>
 
-      <div class="header-actions">
-        <!-- NÚT LỊCH DƯƠNG + ÂM HIỂN THỊ ĐỒNG THỜI -->
-        <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
-          <span id="headerLunarText">📅 Đang tải ngày...</span>
-        </button>
-
-        <!-- HỘP THƯ BÁO CÁO CHỜ DUYỆT (✉️) -->
-        <div class="inbox-btn-wrap">
-          <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
-            ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
-          </button>
-        </div>
-
-        <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
-        <div id="currentUserBadge" style="font-size: 11.5px; text-align: right;"></div>
-        <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
-      </div>
+      <div id="currentUserBadge" style="font-size: 11.5px; text-align: right; margin-left:4px;"></div>
+      <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
+      <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
     </div>
   </header>
 
-  <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ & TỰ CUỘN TRÊN ĐIỆN THOẠI -->
+  <!-- THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER TỔNG HỢP) -->
   <div class="global-announcement-bar">
-    <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào chú khủng long để chơi!">🦖</div>
-    <div class="announcement-container" id="announcementContainer">
-      <div id="globalAnnouncementText" class="announcement-text-slider">
-        Đang tải thông tin nhiệm vụ và âm lịch...
-      </div>
+    <span class="speaker-icon">📢</span>
+    <div id="globalAnnouncementText" class="announcement-text-slider">
+      Đang tải thông tin nhiệm vụ và lời chào...
     </div>
   </div>
 
@@ -1006,6 +780,7 @@
           
           <div id="chatMessages" class="chat-messages-area"></div>
           
+          <!-- DÒNG THÔNG BÁO TIN NHẮN MỚI NGAY TRÊN KHUNG GÕ -->
           <div id="chatLiveTicker" class="chat-live-ticker">
             <span id="chatTickerText">⚡ Chú ý có tin nhắn mới!</span>
             <button class="btn btn-sm" style="background:transparent; color:#ffb469; padding:0 4px; font-weight:800;" onclick="hideChatTicker()">✕</button>
@@ -1101,7 +876,7 @@
 
         <div class="guide-card">
           <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
-          <div class="guide-step">1. <b>Trách nhiệm:</b> Đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc. Hãy nhanh chóng tiếp nhận việc từ cột 1 sang cột 2.</div>
+          <div class="guide-step">1. <b>Trách nhiệm:</b> Đại diện nhóm được gắn sao vàng ⭐ trên thẻ việc.</div>
           <div class="guide-step">2. <b>Quyền chuyển trạng thái:</b> Chuyển việc sang <i>"Chờ duyệt báo cáo"</i> khi cả nhóm đã nộp đủ tài liệu. Thẻ sẽ gắn nhãn <i>"Sếp ơi duyệt đi"</i> và dừng đếm giờ.</div>
         </div>
 
@@ -1120,90 +895,12 @@
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="app-footer">
-    <canvas id="fireworksCanvas"></canvas>
-    <div class="pacman-track">
-      <div class="pacman-dots">
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-        <div class="dot-pellet"></div>
-      </div>
-      <div class="pacman-runner">
-        <div class="pacman-character"></div>
-        <span class="pacman-ghost">👻</span>
-        <span class="pacman-ghost" style="filter: drop-shadow(0 0 4px #00e676);">👾</span>
-      </div>
-    </div>
+  <!-- ========================================== -->
+  <!-- MODALS                                     -->
+  <!-- ========================================== -->
 
-    <div class="footer-content">
-      <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
-      <div>⚡ Hệ thống DSU v24.3 · Vận Hành Mượt Mà & Ổn Định</div>
-    </div>
-  </footer>
-
-  <!-- ======================================================== -->
-  <!-- MODALS (CỐ ĐỊNH ẨN VỚI STYLE="DISPLAY:NONE;")            -->
-  <!-- ======================================================== -->
-
-  <!-- MODAL 1: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO -->
-  <div class="modal-backdrop" id="modalLunarCalendar" style="display:none;">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 style="font-size:15px; color:var(--gold-star); display:flex; align-items:center; gap:6px;">
-          📅 Lịch Vạn Niên & Giờ Hoàng Đạo Công Tác
-        </h3>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalLunarCalendar')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-          <div style="font-size:12px; color:var(--accent-light); font-weight:700;">Tra cứu ngày bất kỳ:</div>
-          <input type="date" id="lunarDatePicker" class="form-control" style="max-width:180px; padding:4px 8px;" onchange="onLunarDateChange(this.value)">
-        </div>
-
-        <div class="lunar-modal-grid" style="margin-top:6px;">
-          <div class="lunar-box" style="border-left:4px solid var(--accent-blue);">
-            <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">DƯƠNG LỊCH</div>
-            <div id="lunarSolarDateText" style="font-size:17px; font-weight:800; color:var(--accent-light); margin-top:2px;"></div>
-            <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0;">
-            <div style="font-size:11px; text-transform:uppercase; color:var(--gold-star); font-weight:700;">ÂM LỊCH VIỆT NAM</div>
-            <div id="lunarDateText" style="font-size:19px; font-weight:800; color:var(--gold-star); margin-top:2px;"></div>
-            <div id="lunarCanChiText" style="font-size:12px; font-weight:600; color:var(--text-main); margin-top:4px;"></div>
-            <div id="lunarDayTypeText" style="font-size:11.5px; font-weight:700; margin-top:4px;"></div>
-          </div>
-
-          <div class="lunar-box" style="border-left:4px solid var(--gold-star);">
-            <div style="font-size:11.5px; font-weight:700; color:var(--gold-star); margin-bottom:6px;">⭐ 6 Khung Giờ Hoàng Đạo (Giờ Tốt):</div>
-            <div id="lunarAuspiciousHoursList"></div>
-            <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">* Khung giờ viền vàng rực là giờ hoàng đạo hiện tại.</div>
-          </div>
-        </div>
-
-        <div class="lunar-box" style="border-left:4px solid var(--succ-green);">
-          <div style="font-size:12px; font-weight:700; color:var(--succ-green); margin-bottom:4px;">💡 Ghi Chú & Lời Khuyên Tác Nghiệp:</div>
-          <div id="lunarAdviceText" style="font-size:12.5px; line-height:1.5; color:var(--text-main);"></div>
-        </div>
-      </div>
-      <div class="modal-footer" style="justify-content:space-between;">
-        <button class="btn btn-drive btn-sm" onclick="openExternalLunarWeb()">🌐 Nguồn tra cứu Vansu.net</button>
-        <button class="btn btn-outline btn-sm" onclick="closeModal('modalLunarCalendar')">Đóng</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
-  <div class="modal-backdrop" id="modalReviewInbox" style="display:none;">
+  <!-- MODAL: HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN) -->
+  <div class="modal-backdrop" id="modalReviewInbox">
     <div class="modal-box" style="max-width: 540px;">
       <div class="modal-header">
         <h3 style="font-size:15px; color:var(--accent-blue); display:flex; align-items:center; gap:6px;">
@@ -1213,7 +910,7 @@
       </div>
       <div class="modal-body">
         <p style="font-size:12px; color:var(--text-muted);">
-          Danh sách các nhiệm vụ đang ở trạng thái <b>Chờ duyệt báo cáo</b>:
+          Danh sách các nhiệm vụ vừa chuyển sang trạng thái <b>Chờ duyệt báo cáo</b>:
         </p>
         <div id="inboxReviewList" style="max-height: 320px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;"></div>
       </div>
@@ -1226,8 +923,8 @@
     </div>
   </div>
 
-  <!-- MODAL 3: XÓA LỊCH SỬ CHAT TỔNG HỢP -->
-  <div class="modal-backdrop" id="modalDeleteChatRange" style="display:none;">
+  <!-- MODAL: XÓA LỊCH SỬ CHAT TỔNG HỢP -->
+  <div class="modal-backdrop" id="modalDeleteChatRange">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
         <h3 style="font-size:15px; color:var(--danger-red);">🗑️ Xóa Lịch Sử Chat (Chung & Riêng)</h3>
@@ -1253,8 +950,8 @@
     </div>
   </div>
 
-  <!-- MODAL 4: GIAO VIỆC MỚI -->
-  <div class="modal-backdrop" id="modalCreateTask" style="display:none;">
+  <!-- MODAL: GIAO VIỆC MỚI -->
+  <div class="modal-backdrop" id="modalCreateTask">
     <div class="modal-box">
       <div class="modal-header">
         <h3 style="font-size:15px;">Giao công việc mới</h3>
@@ -1263,7 +960,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Tên công việc *</label>
-          <input type="text" id="taskTitle" class="form-control" placeholder="VD: Triển khai kế hoạch khai thác tuần mới..." required>
+          <input type="text" id="taskTitle" class="form-control" placeholder="VD: Giải phóng tàu container Tân Vũ..." required>
         </div>
         <div class="form-group">
           <label>Nội dung chỉ đạo</label>
@@ -1298,8 +995,8 @@
     </div>
   </div>
 
-  <!-- MODAL 5: CHI TIẾT CÔNG VIỆC -->
-  <div class="modal-backdrop" id="modalTaskDetail" style="display:none;">
+  <!-- MODAL: CHI TIẾT CÔNG VIỆC -->
+  <div class="modal-backdrop" id="modalTaskDetail">
     <div class="modal-box">
       <div class="modal-header">
         <div>
@@ -1368,7 +1065,6 @@
           </div>
         </div>
 
-        <!-- BẢNG BÁO CÁO CÓ CỘT XÓA TỪNG DÒNG -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>📁 Kết quả & Báo cáo đã nộp của các thành viên:</label>
           <div style="overflow-x:auto;">
@@ -1379,7 +1075,6 @@
                   <th>Ghi chú</th>
                   <th>Link Báo cáo</th>
                   <th>Thời gian</th>
-                  <th style="text-align:right; width:70px;">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="detailSubmissionTableBody"></tbody>
@@ -1409,6 +1104,7 @@
       
       <div class="modal-footer" style="justify-content:space-between;">
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <!-- NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT) -->
           <button class="btn btn-warning btn-sm" id="btnRejectFixTask" onclick="rejectTaskToInProgress()" style="display:none;">
             ↩️ Trả về yêu cầu sửa
           </button>
@@ -1424,7 +1120,7 @@
     </div>
   </div>
 
-  <!-- MODAL 6: ĐĂNG NHẬP -->
+  <!-- MODAL: ĐĂNG NHẬP -->
   <div class="modal-backdrop" id="modalAuth" style="display:none;">
     <div class="modal-box" style="max-width: 380px;">
       <div class="modal-header">
@@ -1448,8 +1144,8 @@
     </div>
   </div>
 
-  <!-- MODAL 7: ĐĂNG KÝ TÀI KHOẢN -->
-  <div class="modal-backdrop" id="modalSignup" style="display:none;">
+  <!-- MODAL: ĐĂNG KÝ TÀI KHOẢN -->
+  <div class="modal-backdrop" id="modalSignup">
     <div class="modal-box" style="max-width: 480px;">
       <div class="modal-header">
         <h3 style="font-size:15px;">Đăng ký tài khoản DSU</h3>
@@ -1500,8 +1196,8 @@
     </div>
   </div>
 
-  <!-- MODAL 8: QUẢN TRỊ NHÂN SỰ ADMIN -->
-  <div class="modal-backdrop" id="modalRegister" style="display:none;">
+  <!-- MODAL: QUẢN TRỊ NHÂN SỰ ADMIN -->
+  <div class="modal-backdrop" id="modalRegister">
     <div class="modal-box">
       <div class="modal-header">
         <h3 id="modalRegisterTitle" style="font-size:15px;">Quản trị hồ sơ nhân sự</h3>
@@ -1546,7 +1242,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V24.3                     -->
+  <!-- JAVASCRIPT LOGIC V22.0                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1569,251 +1265,18 @@
     let selectedTaskIdForDetail = null;
 
     let unreadChatCounts = { group: 0 };
-    let lastReadTimeMap = JSON.parse(localStorage.getItem("DSU_LAST_READ_MAP") || "{}");
-
     let activeChatPeerId = localStorage.getItem("DSU_ACTIVE_CHAT_PEER") || null;
     if (activeChatPeerId === "null" || activeChatPeerId === "undefined") activeChatPeerId = null;
 
     let chatRealtimeChannel = null, taskRealtimeChannel = null, presenceChannel = null;
     let onlineUserIds = new Set(), chatMessagesCache = [];
-    let chatPollingTimer = null, taskPollingTimer = null;
+    let chatPollingTimer = null;
     let lastCheckedMessageTime = new Date().toISOString();
-    let knownTaskIds = new Set();
 
+    // Quản lý thông báo chờ duyệt đã đọc
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
-    // ==========================================
-    // THUẬT TOÁN ÂM LỊCH VIỆT NAM (HỒ NGỌC ĐỨC)
-    // ==========================================
-    const CAN_NAMES = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
-    const CHI_NAMES = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
-
-    function jdFromDate(dd, mm, yy) {
-      let a = Math.floor((14 - mm) / 12);
-      let y = yy + 4800 - a;
-      let m = mm + 12 * a - 3;
-      let jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
-      if (jd < 2299161) jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083;
-      return jd;
-    }
-
-    function getNewMoonDay(k, timeZone) {
-      let T = k / 1236.85;
-      let T2 = T * T;
-      let T3 = T2 * T;
-      let dr = Math.PI / 180;
-      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
-      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
-      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
-      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.0107306 * T3;
-      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
-      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M);
-      C1 -= 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(2 * dr * Mpr);
-      C1 -= 0.0004 * Math.sin(3 * dr * Mpr);
-      C1 += 0.0104 * Math.sin(2 * dr * F) - 0.0051 * Math.sin((M + Mpr) * dr);
-      C1 -= 0.0074 * Math.sin((M - Mpr) * dr) + 0.0004 * Math.sin((2 * F + M) * dr);
-      C1 -= 0.0004 * Math.sin((2 * F - M) * dr) - 0.0006 * Math.sin((2 * F + Mpr) * dr);
-      C1 += 0.0010 * Math.sin((2 * F - Mpr) * dr) + 0.0005 * Math.sin((M + 2 * Mpr) * dr);
-      let JdNew = Jd1 + C1;
-      return Math.floor(JdNew + 0.5 + timeZone / 24);
-    }
-
-    function getSunLongitude(jdn, timeZone) {
-      let T = (jdn - 2451545.5 - timeZone / 24) / 36525;
-      let dr = Math.PI / 180;
-      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T * T - 0.00000048 * T * T * T;
-      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T * T;
-      let DL = (1.914600 - 0.004817 * T - 0.000014 * T * T) * Math.sin(dr * M);
-      DL += (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
-      let L = L0 + DL;
-      L = L * dr;
-      L = L - Math.PI * 2 * Math.floor(L / (Math.PI * 2));
-      return Math.floor(L / (Math.PI / 6));
-    }
-
-    function getLunarMonth11(yy, timeZone) {
-      let off = jdFromDate(31, 12, yy) - 2415021;
-      let k = Math.floor(off / 29.530588853);
-      let nm = getNewMoonDay(k, timeZone);
-      let sunLong = getSunLongitude(nm, timeZone);
-      if (sunLong >= 9) nm = getNewMoonDay(k - 1, timeZone);
-      return nm;
-    }
-
-    function getLeapMonthOffset(a11, timeZone) {
-      let k = Math.floor((a11 - 2415021.076998695) / 29.530588853 + 0.5);
-      let last = 0;
-      let i = 1;
-      let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
-      while (true) {
-        last = arc;
-        i++;
-        arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
-        if (arc === last || i > 14) break;
-      }
-      return i - 1;
-    }
-
-    function convertSolarToLunar(dd, mm, yy, timeZone = 7) {
-      let dayNumber = jdFromDate(dd, mm, yy);
-      let k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
-      let monthStart = getNewMoonDay(k + 1, timeZone);
-      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
-      let a11 = getLunarMonth11(yy, timeZone);
-      let b11 = a11;
-      let lunarYear = yy;
-      if (a11 >= monthStart) {
-        lunarYear = yy;
-        a11 = getLunarMonth11(yy - 1, timeZone);
-      } else {
-        lunarYear = yy + 1;
-        b11 = getLunarMonth11(yy + 1, timeZone);
-      }
-      let lunarDay = dayNumber - monthStart + 1;
-      let diff = Math.floor((monthStart - a11) / 29);
-      let lunarLeap = false;
-      let lunarMonth = diff + 11;
-      if ((b11 - a11) > 365) {
-        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
-        if (diff >= leapMonthDiff) {
-          lunarMonth = diff + 10;
-          if (diff === leapMonthDiff) lunarLeap = true;
-        }
-      }
-      if (lunarMonth > 12) lunarMonth -= 12;
-      if (lunarMonth >= 11 && diff < 4) lunarYear--;
-      return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap, jd: dayNumber };
-    }
-
-    function getLunarDetails(dd, mm, yy) {
-      const lunar = convertSolarToLunar(dd, mm, yy, 7);
-      const jd = lunar.jd;
-
-      const canYear = CAN_NAMES[(lunar.year - 4) % 10];
-      const chiYear = CHI_NAMES[(lunar.year - 4) % 12];
-      const canChiYear = `${canYear} ${chiYear}`;
-
-      const canDay = CAN_NAMES[(jd + 9) % 10];
-      const chiDay = CHI_NAMES[(jd + 1) % 12];
-      const canChiDay = `${canDay} ${chiDay}`;
-
-      const canMonth = CAN_NAMES[((lunar.year * 12 + lunar.month + 3) % 10)];
-      const chiMonth = CHI_NAMES[(lunar.month + 1) % 12];
-      const canChiMonth = `${canMonth} ${chiMonth}`;
-
-      const chiDayIndex = (jd + 1) % 12;
-      const auspiciousHourMap = {
-        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
-        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
-        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ],
-        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
-        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
-        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]
-      };
-
-      const groupIdx = chiDayIndex % 6;
-      const hoursList = auspiciousHourMap[groupIdx] || [];
-      const isHoangDaoDay = (jd % 2 === 0);
-
-      return {
-        lunarDay: lunar.day,
-        lunarMonth: lunar.month,
-        lunarYear: lunar.year,
-        isLeap: lunar.leap,
-        canChiDay,
-        canChiMonth,
-        canChiYear,
-        hoursList,
-        isHoangDaoDay
-      };
-    }
-
-    // CẬP NHẬT TIÊU ĐỀ: HIỂN THỊ DƯƠNG VÀ ÂM ĐỒNG THỜI
-    function updateHeaderLunarBadge() {
-      try {
-        const now = new Date();
-        const d = now.getDate();
-        const m = now.getMonth() + 1;
-        const y = now.getFullYear();
-        const info = getLunarDetails(d, m, y);
-        const btnText = document.getElementById('headerLunarText');
-        if (btnText) {
-          btnText.innerHTML = `📅 ${d}/${m} · ${info.lunarDay}/${info.lunarMonth} Âm`;
-        }
-      } catch (err) {
-        console.error("Lỗi updateHeaderLunarBadge:", err);
-      }
-    }
-
-    function openLunarModal(selectedDateStr) {
-      const picker = document.getElementById('lunarDatePicker');
-      let targetDate = new Date();
-      if (selectedDateStr) {
-        const parts = selectedDateStr.split('-');
-        if (parts.length === 3) {
-          targetDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-        }
-      }
-      const y = targetDate.getFullYear();
-      const m = targetDate.getMonth() + 1;
-      const d = targetDate.getDate();
-
-      if (picker) {
-        picker.value = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      }
-
-      const info = getLunarDetails(d, m, y);
-      const dayNames = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
-      const dayName = dayNames[targetDate.getDay()];
-
-      document.getElementById('lunarSolarDateText').textContent = `${dayName}, ${d}/${m}/${y}`;
-      document.getElementById('lunarDateText').textContent = `Ngày ${info.lunarDay} Tháng ${info.lunarMonth} ${info.isLeap ? '(Nhuận)' : ''}`;
-      document.getElementById('lunarCanChiText').textContent = `Can chi: Ngày ${info.canChiDay} · Tháng ${info.canChiMonth} · Năm ${info.canChiYear}`;
-
-      const dayTypeEl = document.getElementById('lunarDayTypeText');
-      if (info.isHoangDaoDay) {
-        dayTypeEl.innerHTML = `<span style="color:#00e676; font-weight:700;">● Ngày Hoàng Đạo (Tốt lành, thuận lợi)</span>`;
-      } else {
-        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange); font-weight:700;">● Ngày Hắc Đạo (Cẩn trọng quy trình)</span>`;
-      }
-
-      const currH = new Date().getHours();
-      const isToday = (new Date().toDateString() === targetDate.toDateString());
-      const hoursBox = document.getElementById('lunarAuspiciousHoursList');
-      hoursBox.innerHTML = info.hoursList.map(h => {
-        let isNow = false;
-        if (isToday) {
-          if (h.hStart === 23) isNow = (currH >= 23 || currH < 1);
-          else isNow = (currH >= h.hStart && currH < h.hEnd);
-        }
-        return `<span class="lunar-hour-badge ${isNow ? 'lunar-hour-current' : ''}">Giờ ${h.name} (${h.time})</span>`;
-      }).join(' ');
-
-      const adviceEl = document.getElementById('lunarAdviceText');
-      if (info.isHoangDaoDay) {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, ký duyệt báo cáo, bốc dỡ giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra bảo hộ lao động và an toàn thiết bị cẩu bãi trong các khung giờ cao điểm.`;
-      } else {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường Tân Vũ.`;
-      }
-
-      document.getElementById('modalLunarCalendar').style.display = 'flex';
-    }
-
-    function onLunarDateChange(val) {
-      if (val) openLunarModal(val);
-    }
-
-    function openExternalLunarWeb() {
-      const picker = document.getElementById('lunarDatePicker');
-      const val = picker ? picker.value : '';
-      let url = 'https://vansu.net/lich-am.html';
-      if (val) {
-        url = `https://vansu.net/lich-van-nien.html`;
-      }
-      window.open(url, '_blank');
-    }
-
-    // THEME SYSTEM
+    // 1. THEME
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
       document.documentElement.setAttribute("data-theme", saved);
@@ -1829,30 +1292,19 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Sáng" : "Tối";
     }
 
-    // KHỞI TẠO APP
+    // 2. KHỞI TẠO APP & ĐỒNG BỘ
     async function initApp() {
       initTheme();
-      updateHeaderLunarBadge();
-
-      document.querySelectorAll('.modal-backdrop').forEach(mb => {
-        mb.addEventListener('click', (e) => {
-          if (e.target === mb) mb.style.display = 'none';
-        });
-      });
-
       if (!currentUserId) {
         logoutUser();
         return;
       }
-
       await loadInitialData();
       setupRealtime();
       setupPresence();
       await loadChatMessages();
       startChatPolling();
-      startTasksPolling();
       startAnnouncementTicker();
-      initFireworks();
 
       updatePresenceHeartbeat();
       setInterval(updatePresenceHeartbeat, 60000);
@@ -1861,15 +1313,6 @@
       switchMainTab(savedTab);
       if (savedTab === 'chatTab' && activeChatPeerId) {
         openDirectChat(activeChatPeerId);
-      }
-
-      const dino = document.getElementById('dinoMascot');
-      if (dino) {
-        dino.addEventListener('click', () => {
-          dino.classList.remove('dino-chomp-anim');
-          void dino.offsetWidth;
-          dino.classList.add('dino-chomp-anim');
-        });
       }
     }
 
@@ -1883,85 +1326,17 @@
             localStorage.setItem("DSU_CURRENT_USER_ID", currentUserId);
           }
         }
-        await fetchTasks(true);
+        await fetchTasks();
         updateCurrentUserUI();
       } catch (e) {
         console.error("Lỗi tải data ban đầu:", e);
       }
     }
 
-    function playNotificationChime() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = ctx.currentTime;
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(587.33, now);
-        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.15);
-
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(880, now + 0.15);
-        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.35);
-
-        gain.gain.setValueAtTime(0.18, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start(now);
-        osc2.start(now + 0.15);
-        osc1.stop(now + 0.15);
-        osc2.stop(now + 0.45);
-      } catch (e) {
-        console.log("Audio ctx:", e);
-      }
-    }
-
-    function showNewTaskToast(task) {
-      playNotificationChime();
-      const toast = document.createElement('div');
-      toast.className = 'task-toast-alert';
-      toast.innerHTML = `
-        <span style="font-size:22px;">🔔</span>
-        <div>
-          <div style="font-size:11px; text-transform:uppercase; color:#FFD700;">Nhiệm vụ mới vừa được giao!</div>
-          <div style="font-size:13px; font-weight:800; margin-top:2px;">${escapeHtml(task.title || 'Nhiệm vụ')}</div>
-          <div style="font-size:11px; opacity:0.9;">Hạn: ${task.due_datetime ? new Date(task.due_datetime).toLocaleString('vi-VN') : 'Không hạn'}</div>
-        </div>
-      `;
-      document.body.appendChild(toast);
-      setTimeout(() => {
-        toast.style.transition = 'opacity 0.4s, transform 0.4s';
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(-20px)';
-        setTimeout(() => toast.remove(), 400);
-      }, 5000);
-    }
-
-    async function fetchTasks(isInitial = false) {
+    async function fetchTasks() {
       try {
         const { data, error } = await supabaseClient.from('tasks').select('*').order('created_at', { ascending: false });
-        if (!error && data) {
-          if (!isInitial) {
-            data.forEach(t => {
-              if (!knownTaskIds.has(String(t.id))) {
-                const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-                const isForMe = memberIds.includes(String(currentUserId)) || String(t.leader_id) === String(currentUserId);
-                if (isForMe && String(t.creator_id) !== String(currentUserId)) {
-                  showNewTaskToast(t);
-                }
-              }
-            });
-          }
-
-          tasks = data;
-          knownTaskIds = new Set(data.map(t => String(t.id)));
-        }
+        if (!error && data) tasks = data;
       } catch (err) {
         console.error("Lỗi fetchTasks:", err);
       }
@@ -1970,13 +1345,15 @@
       updateReviewInboxUI();
     }
 
+    // TỰ ĐỘNG TẢI LẠI TRANG / CẬP NHẬT KHI CÓ TASK MỚI HOẶC ĐỔI TRẠNG THÁI
     function setupRealtime() {
       try {
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.3')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v22')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+            console.log("⚡ Nhận thay đổi task realtime:", payload);
             fetchTasks();
           })
           .subscribe();
@@ -1985,132 +1362,80 @@
       }
     }
 
-    function startTasksPolling() {
-      if (taskPollingTimer) clearInterval(taskPollingTimer);
-      taskPollingTimer = setInterval(() => {
-        if (currentUserId) {
-          fetchTasks();
-        }
-      }, 5000);
-    }
-
     async function updatePresenceHeartbeat() {
       if (!currentUserId) return;
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // TICKER THÔNG BÁO VỚI KHỦNG LONG
+    // 3. THANH THÔNG BÁO DÀI BỀ NGANG DƯỚI HEADER (TICKER)
     let tickerIndex = 0;
-    let tickerTimeout = null;
-
     function startAnnouncementTicker() {
-      showNextAnnouncement();
+      updateAnnouncementMessage();
+      setInterval(updateAnnouncementMessage, 7000);
     }
 
-    function getAnnouncementContent() {
-      if (!currentUserId) return "Chúc bạn một ca làm việc thuận lợi và hiệu quả!";
+    function updateAnnouncementMessage() {
+      const el = document.getElementById('globalAnnouncementText');
+      if (!el || !currentUserId) return;
+
       const user = users.find(u => String(u.id) === String(currentUserId));
       const userName = user ? user.full_name : "Đồng chí";
 
-      const now = new Date();
-      const currentHour = now.getHours();
-      let greeting = "Chào buổi sáng!";
-      if (currentHour >= 12 && currentHour < 18) greeting = "Chào buổi chiều!";
-      else if (currentHour >= 18 || currentHour < 5) greeting = "Chào buổi tối!";
+      // 1. Phân tích các task của người dùng
+      const myActiveTasks = tasks.filter(t => {
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
+        return memberIds.includes(currentUserId) && t.status !== 'completed';
+      });
 
-      const lunarToday = getLunarDetails(now.getDate(), now.getMonth() + 1, now.getFullYear());
+      // Lời chúc ngẫu nhiên theo thời gian thực
+      const hour = new Date().getHours();
+      let greeting = "Chào buổi sáng!";
+      if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều!";
+      else if (hour >= 18) greeting = "Chào buổi tối!";
 
       const wishes = [
-        "chúc bạn một ca làm việc an toàn, phối hợp nhịp nhàng và hiệu quả cao!",
-        "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc các chỉ tiêu công tác đề ra!",
-        "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn chuẩn xác và đúng hạn!",
-        "chúc bạn luôn tràn đầy năng lượng tích cực trong công việc!"
+        "chúc bạn một ca làm việc thuận lợi, an toàn và hiệu quả cao!",
+        "chúc Trung tâm Khai thác & DVKH hoàn thành xuất sắc mọi chỉ tiêu!",
+        "chúc bạn luôn tràn đầy năng lượng, giải phóng tàu nhanh chóng!",
+        "chúc ngày làm việc thành công, tiến độ các nhiệm vụ luôn đúng hạn!"
       ];
       const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
 
-      const pendingTasksForLeader = tasks.filter(t => t.status === 'pending' && String(t.leader_id) === String(currentUserId));
-      const myActiveTasks = tasks.filter(t => {
-        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-        return memberIds.includes(String(currentUserId)) && t.status !== 'completed';
-      });
-
-      const step = tickerIndex % 4;
-      tickerIndex++;
-
-      if (pendingTasksForLeader.length > 0 && step === 0) {
-        const firstPending = pendingTasksForLeader[0];
-        return `📥 <b>Nhắc việc mới:</b> Đồng chí <b>${userName}</b> (Leader) hãy tiếp nhận công việc <b>[${escapeHtml(firstPending.title)}]</b> để chuyển sang trạng thái <i>Đang thực hiện</i>!`;
-      } else if (step === 1) {
-        const hoursStr = lunarToday.hoursList.map(h => `${h.name} (${h.time})`).join(", ");
-        return `🌙 <b>Hôm nay:</b> ${now.getDate()}/${now.getMonth() + 1} Dương lịch (Ngày ${lunarToday.lunarDay}/${lunarToday.lunarMonth} Âm lịch - ${lunarToday.canChiDay}) · <b>Giờ Hoàng Đạo:</b> ${hoursStr}`;
-      } else if (step === 2) {
-        return `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
+      let message = "";
+      if (tickerIndex % 2 === 0) {
+        // Lời chào & lời chúc
+        message = `✨ ${greeting} <b>${userName}</b>, ${randomWish}`;
       } else {
+        // Lời nhắc nhở công việc cá nhân
         if (myActiveTasks.length === 0) {
-          return `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn một ngày làm việc tuyệt vời!`;
+          message = `📋 <b>${userName}</b> hiện không có nhiệm vụ tồn đọng. Chúc bạn có một ngày làm việc tuyệt vời!`;
         } else {
-          const taskNames = myActiveTasks.map(t => `[${escapeHtml(t.title)}]`).join("; ");
+          const taskNames = myActiveTasks.map(t => `[${t.title}]`).join("; ");
+          
+          // Tìm task sắp hết hạn (<12h) hoặc quá hạn
           const urgentTask = myActiveTasks.find(t => {
             const al = calculateDeadlineAlert(t.due_datetime, t.status);
             return al.type === 'overdue' || al.type === 'warn6h' || al.type === 'warn12h';
           });
 
           if (urgentTask) {
-            return `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó nhiệm vụ <b>[${escapeHtml(urgentTask.title)}]</b> sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
+            message = `⚠️ Nhắc nhở <b>${userName}</b> đang tham gia: ${taskNames} — trong đó task <b>[${urgentTask.title}]</b> đang sắp đến hạn/quá hạn, vui lòng nhanh chóng hoàn thành!`;
           } else {
-            return `📌 <b>${userName}</b> đang phụ trách các nhiệm vụ: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
+            message = `📌 <b>${userName}</b> đang phụ trách các task: ${taskNames}. Hãy duy trì tiến độ hoàn thành đúng hạn nhé!`;
           }
         }
       }
-    }
 
-    function showNextAnnouncement() {
-      const container = document.getElementById('announcementContainer');
-      const textEl = document.getElementById('globalAnnouncementText');
-      const dino = document.getElementById('dinoMascot');
-      if (!container || !textEl) return;
-
-      if (tickerTimeout) clearTimeout(tickerTimeout);
-
-      if (dino) {
-        dino.classList.remove('dino-chomp-anim');
-        void dino.offsetWidth;
-        dino.classList.add('dino-chomp-anim');
-      }
-
-      textEl.style.transition = 'none';
-      textEl.style.transform = 'translateX(0px)';
-      textEl.innerHTML = getAnnouncementContent();
-
+      el.style.opacity = 0;
       setTimeout(() => {
-        const containerWidth = container.offsetWidth;
-        const textWidth = textEl.scrollWidth;
+        el.innerHTML = message;
+        el.style.opacity = 1;
+      }, 300);
 
-        if (textWidth > containerWidth) {
-          const distanceToScroll = textWidth - containerWidth + 50;
-          const scrollSpeed = 38;
-          const duration = distanceToScroll / scrollSpeed;
-
-          setTimeout(() => {
-            textEl.style.transition = `transform ${duration}s linear`;
-            textEl.style.transform = `translateX(-${distanceToScroll}px)`;
-
-            tickerTimeout = setTimeout(() => {
-              showNextAnnouncement();
-            }, (duration + 2) * 1000);
-          }, 1200);
-
-        } else {
-          textEl.style.transition = 'none';
-          textEl.style.transform = 'translateX(0px)';
-          tickerTimeout = setTimeout(() => {
-            showNextAnnouncement();
-          }, 6500);
-        }
-      }, 100);
+      tickerIndex++;
     }
 
-    // HỘP THƯ BÁO CÁO CHỜ DUYỆT
+    // 4. HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN)
     function updateReviewInboxUI() {
       const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
       const canReview = ['admin', 'hod'].includes(currentUser.role);
@@ -2146,6 +1471,7 @@
       } else {
         reviewTasks.forEach(t => {
           const leader = users.find(u => String(u.id) === String(t.leader_id)) || { full_name: 'Nhóm trưởng' };
+          const isDismissed = dismissedReviewTaskIds.includes(String(t.id));
           const item = document.createElement('div');
           item.style.background = 'var(--bg-surface)';
           item.style.border = '1px solid var(--border-color)';
@@ -2196,13 +1522,13 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // NÚT TRẢ VỀ YÊU CẦU SỬA LẠI
+    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI (CHO SẾP KHI DUYỆT BÁO CÁO)
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
       if (!task) return;
 
-      const reason = prompt("Nhập nội dung/lý do yêu cầu sửa đổi gửi cho nhóm:", "Báo cáo chưa đủ nội dung, đề nghị rà soát và bổ sung!");
+      const reason = prompt("Nhập nội dung/lý do yêu cầu sửa đổi gửi cho nhóm:", "Báo cáo chưa đủ số liệu, đề nghị bổ sung chi tiết!");
       if (reason === null) return;
 
       let desc = task.description || '';
@@ -2210,17 +1536,12 @@
 
       closeModal('modalTaskDetail');
 
-      let updatePayload = {
+      const { error } = await supabaseClient.from('tasks').update({
         status: 'in_progress',
         description: desc,
+        fix_requested: true,
         updated_at: new Date().toISOString()
-      };
-
-      let { error } = await supabaseClient.from('tasks').update({ ...updatePayload, fix_requested: true }).eq('id', task.id);
-      if (error && error.message.includes('fix_requested')) {
-        const retryRes = await supabaseClient.from('tasks').update(updatePayload).eq('id', task.id);
-        error = retryRes.error;
-      }
+      }).eq('id', task.id);
 
       if (!error) {
         task.status = 'in_progress';
@@ -2231,11 +1552,11 @@
         updateReviewInboxUI();
         alert("Đã trả về trạng thái 'Đang thực hiện' và gắn nhãn [Yêu cầu sửa lại]!");
       } else {
-        alert("Lỗi cập nhật: " + error.message);
+        alert("Lỗi cập nhật Supabase: " + error.message);
       }
     }
 
-    // CHAT LIVE & 1-1
+    // 6. CHAT LIVE & 1-1 LOGIC VÀ THÔNG BÁO NHẤP NHÁY
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
     }
@@ -2243,8 +1564,9 @@
     function openGroupChat() {
       activeChatPeerId = null;
       localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
+      unreadChatCounts['group'] = 0;
       document.getElementById('chatRoomTitle').textContent = '🌐 Chat Nhóm chung';
-      markCurrentRoomAsRead('group');
+      hideChatTicker();
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
@@ -2254,20 +1576,13 @@
       if (String(uid) === String(currentUserId)) return;
       activeChatPeerId = uid;
       localStorage.setItem("DSU_ACTIVE_CHAT_PEER", uid);
+      unreadChatCounts[String(uid)] = 0;
       const u = users.find(x => String(x.id) === String(uid));
       document.getElementById('chatRoomTitle').textContent = '🔒 Chat riêng — ' + (u?.full_name || 'Đồng nghiệp');
-      markCurrentRoomAsRead(String(uid));
+      hideChatTicker();
       loadChatMessages();
       renderChatUsers();
       updateTabChatAlertUI();
-    }
-
-    function markCurrentRoomAsRead(targetKey) {
-      const key = targetKey || (activeChatPeerId === null ? 'group' : String(activeChatPeerId));
-      unreadChatCounts[key] = 0;
-      lastReadTimeMap[key] = new Date().toISOString();
-      localStorage.setItem("DSU_LAST_READ_MAP", JSON.stringify(lastReadTimeMap));
-      hideChatTicker();
     }
 
     function setupPresence() {
@@ -2297,6 +1612,7 @@
       const btnDelChat = document.getElementById('btnDeleteChatRange');
       if (btnDelChat) btnDelChat.style.display = canDeleteChat ? 'inline-flex' : 'none';
 
+      // Nút Chat Nhóm chung
       const groupUnread = unreadChatCounts['group'] || 0;
       const groupBtn = document.createElement('button');
       groupBtn.className = 'user-presence-item' + (activeChatPeerId === null ? ' active' : '') + (groupUnread > 0 ? ' peer-unread-alert' : '');
@@ -2304,6 +1620,7 @@
       groupBtn.onclick = () => openGroupChat();
       box.appendChild(groupBtn);
 
+      // Danh sách nhân sự 1-1
       users.filter(u => String(u.id) !== String(currentUserId)).forEach(u => {
         const uidStr = String(u.id);
         const unreadNum = unreadChatCounts[uidStr] || 0;
@@ -2332,43 +1649,32 @@
       const isGroupMsg = !msg.recipient_id || msg.room_key === 'group';
       const senderObj = users.find(x => String(x.id) === senderIdStr) || { full_name: 'Đồng nghiệp' };
 
-      const msgTime = new Date(msg.created_at).getTime();
-
       if (isGroupMsg) {
-        const lastRead = lastReadTimeMap['group'] ? new Date(lastReadTimeMap['group']).getTime() : 0;
-        if (msgTime > lastRead) {
-          if (activeChatPeerId !== null || !document.getElementById('chatTab').classList.contains('active')) {
-            unreadChatCounts['group'] = (unreadChatCounts['group'] || 0) + 1;
-          }
+        if (activeChatPeerId !== null || !document.getElementById('chatTab').classList.contains('active')) {
+          unreadChatCounts['group'] = (unreadChatCounts['group'] || 0) + 1;
         }
       } else {
         if (String(msg.recipient_id) === String(currentUserId)) {
-          const lastRead = lastReadTimeMap[senderIdStr] ? new Date(lastReadTimeMap[senderIdStr]).getTime() : 0;
-          if (msgTime > lastRead) {
-            if (String(activeChatPeerId) !== senderIdStr || !document.getElementById('chatTab').classList.contains('active')) {
-              unreadChatCounts[senderIdStr] = (unreadChatCounts[senderIdStr] || 0) + 1;
-            }
+          if (String(activeChatPeerId) !== senderIdStr || !document.getElementById('chatTab').classList.contains('active')) {
+            unreadChatCounts[senderIdStr] = (unreadChatCounts[senderIdStr] || 0) + 1;
           }
         }
       }
 
       const chatTabBtn = document.getElementById('tabBtn-chat');
-      const totalUnread = Object.values(unreadChatCounts).reduce((a, b) => a + b, 0);
-      if (chatTabBtn && totalUnread > 0 && !chatTabBtn.classList.contains('active')) {
+      if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
         chatTabBtn.classList.add('chat-tab-alert');
         chatTabBtn.innerHTML = '💬 Chat Live & Chat 1-1 <span class="unread-badge-pill">MỚI</span>';
       }
 
       const ticker = document.getElementById('chatLiveTicker');
       const tickerText = document.getElementById('chatTickerText');
-      if (ticker && tickerText && totalUnread > 0) {
+      if (ticker && tickerText) {
         tickerText.textContent = `⚡ Chú ý có tin nhắn từ [${senderObj.full_name}] gửi cho bạn!`;
         ticker.style.display = 'flex';
       }
 
-      if (totalUnread > 0) {
-        document.title = `💬 Có tin nhắn từ ${senderObj.full_name}!`;
-      }
+      document.title = `💬 Có tin nhắn từ ${senderObj.full_name}!`;
       renderChatUsers();
     }
 
@@ -2378,7 +1684,12 @@
     }
 
     function markCurrentChatAsRead() {
-      markCurrentRoomAsRead();
+      if (activeChatPeerId === null) {
+        unreadChatCounts['group'] = 0;
+      } else {
+        unreadChatCounts[String(activeChatPeerId)] = 0;
+      }
+      hideChatTicker();
       renderChatUsers();
       updateTabChatAlertUI();
       alert("Đã đánh dấu xem xong! Sẽ không báo tin mới cho đến khi có tin nhắn tiếp theo.");
@@ -2400,7 +1711,8 @@
       localStorage.setItem("DSU_ACTIVE_TAB", tabId);
       if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
       if (tabId === 'chatTab') {
-        markCurrentRoomAsRead();
+        if (activeChatPeerId === null) unreadChatCounts['group'] = 0;
+        else unreadChatCounts[String(activeChatPeerId)] = 0;
         renderChatUsers(); 
         updateTabChatAlertUI();
         loadChatMessages(); 
@@ -2525,7 +1837,6 @@
           renderChatMessages();
         }
         lastCheckedMessageTime = data[0].created_at;
-        markCurrentRoomAsRead();
       }
       i.value = '';
     }
@@ -2571,6 +1882,7 @@
       }
     }
 
+    // ĐĂNG KÝ TÀI KHOẢN & ĐỔI MẬT KHẨU
     function openSignup() {
       closeModal('modalAuth');
       document.getElementById('signupName').value = '';
@@ -2644,11 +1956,12 @@
       }
     }
 
-    // TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO"
+    // 7. TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO" HOẶC "HOÀN THÀNH"
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') {
         return { text: '✅ Đã hoàn thành', cardClass: '', type: 'completed' };
       }
+      // KHI CHUYỂN SANG CHỜ DUYỆT BÁO CÁO: TỰ ĐỘNG KHÔNG ĐẾM GIỜ NỮA
       if (status === 'review') {
         return { text: '⏳ Đang chờ Lãnh đạo duyệt', cardClass: '', type: 'review' };
       }
@@ -2677,7 +1990,7 @@
       return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, cardClass: '', type: 'normal' };
     }
 
-    // RENDER KANBAN
+    // 8. RENDER KANBAN
     function renderKanban() {
       const cols = {
         pending: document.getElementById('col-pending'),
@@ -2707,6 +2020,7 @@
           openTaskDetailModal(t.id);
         });
 
+        // GẮN NHÃN ĐẶC BIỆT: "SẾP ƠI DUYỆT ĐI" HOẶC "YÊU CẦU SỬA LẠI"
         let statusBadgeHtml = '';
         if (t.status === 'review') {
           statusBadgeHtml = `<span class="tag-boss-review">📢 Sếp ơi duyệt đi</span>`;
@@ -2736,12 +2050,6 @@
         if (cols[colKey]) cols[colKey].appendChild(card);
       });
 
-      Object.keys(cols).forEach(k => {
-        if (cols[k] && cols[k].children.length === 0) {
-          cols[k].innerHTML = `<div style="text-align:center; padding:24px 12px; color:var(--text-muted); font-size:12px;">Chưa có nhiệm vụ nào</div>`;
-        }
-      });
-
       document.getElementById('totalTasksCount').textContent = counts.total;
       document.getElementById('overdueCount').textContent = counts.overdue;
       document.getElementById('warn12hCount').textContent = counts.warn12h;
@@ -2753,18 +2061,13 @@
       document.getElementById('badge-completed').textContent = counts.completed;
     }
 
-    // CHI TIẾT CÔNG VIỆC
+    // 9. CHI TIẾT CÔNG VIỆC
     function openTaskDetailModal(taskId) {
       if (!taskId) return;
       selectedTaskIdForDetail = taskId;
 
       const task = tasks.find(t => String(t.id) === String(taskId));
       if (!task) return;
-
-      const driveUrlInput = document.getElementById('mySubDriveUrl');
-      const noteInput = document.getElementById('mySubNoteInput');
-      if (driveUrlInput) driveUrlInput.value = '';
-      if (noteInput) noteInput.value = '';
 
       document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
       document.getElementById('detailTaskTitle').textContent = task.title || '(Không có tiêu đề)';
@@ -2796,9 +2099,11 @@
       const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
       const isTaskCompleted = task.status === 'completed';
 
+      // Nút xóa việc vĩnh viễn
       const btnDelete = document.getElementById('btnDeleteTaskPermanent');
       btnDelete.style.display = isLeaderRole ? 'inline-flex' : 'none';
 
+      // Nút trả về yêu cầu sửa lại (chỉ hiện khi việc đang chờ duyệt và người mở là Sếp/Admin)
       const btnRejectFix = document.getElementById('btnRejectFixTask');
       if (btnRejectFix) {
         btnRejectFix.style.display = (isLeaderRole && task.status === 'review') ? 'inline-flex' : 'none';
@@ -2822,3 +2127,639 @@
           selectStatus.disabled = false;
           dueInput.disabled = false;
           btnSaveStatus.disabled = false;
+          mySubWrap.style.display = 'block';
+        } else {
+          selectStatus.disabled = true;
+          dueInput.disabled = true;
+          btnSaveStatus.disabled = true;
+          mySubWrap.style.display = 'none';
+        }
+      } else {
+        noticeBox.style.display = 'none';
+        dueInput.disabled = !isLeaderRole;
+        mySubWrap.style.display = 'block';
+
+        if (isLeader || isLeaderRole) {
+          selectStatus.disabled = false;
+          btnSaveStatus.disabled = false;
+        } else {
+          selectStatus.disabled = true;
+          btnSaveStatus.disabled = true;
+        }
+      }
+
+      document.getElementById('addMemberSection').style.display = 'none';
+
+      renderDetailAssigneeTable(task, isLeaderRole && !isTaskCompleted);
+      renderSubmissionsTable(task);
+
+      document.getElementById('modalTaskDetail').style.display = 'flex';
+    }
+
+    function renderDetailAssigneeTable(task, canManageMembers) {
+      const assigneeTable = document.getElementById('detailAssigneeTableBody');
+      assigneeTable.innerHTML = '';
+      
+      let memberIds = [];
+      if (Array.isArray(task.assignees_json)) memberIds = task.assignees_json;
+      else if (task.assignee_id) memberIds = [task.assignee_id];
+
+      memberIds.forEach((uid, index) => {
+        const member = users.find(u => String(u.id) === String(uid)) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
+        const isLeader = String(uid) === String(task.leader_id);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700;">${index + 1}</td>
+          <td><b>${member.full_name}</b></td>
+          <td>${member.phone || 'N/A'}</td>
+          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
+          <td style="text-align:right;">
+            ${(canManageMembers ? `<button class="btn btn-outline btn-sm" onclick="setTaskLeader('${uid}')">${isLeader ? '⭐ Leader' : 'Đặt Leader'}</button>` : '')}
+            ${(canManageMembers && !isLeader) ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="removeMemberFromTask('${uid}')">🗑️ Xóa</button>` : ''}
+          </td>
+        `;
+        assigneeTable.appendChild(tr);
+      });
+    }
+
+    async function setTaskLeader(uid) {
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+      const me = users.find(u => String(u.id) === String(currentUserId)) || {};
+      if (!['hod', 'admin'].includes(me.role)) {
+        alert('Chỉ Trưởng/Phó hoặc Admin được đổi Nhóm trưởng.');
+        return;
+      }
+      if (task.status === 'completed') {
+        alert('Việc đã hoàn thành đang khóa chỉnh sửa. Lãnh đạo/Admin cần mở lại việc trước.');
+        return;
+      }
+      const ids = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
+      if (!ids.includes(uid)) {
+        alert('Nhóm trưởng phải là thành viên được phân công.');
+        return;
+      }
+      const { error } = await supabaseClient.from('tasks').update({ leader_id: uid, assignee_id: uid, updated_at: new Date().toISOString() }).eq('id', task.id);
+      if (error) {
+        alert('Không đổi được Nhóm trưởng: ' + error.message);
+        return;
+      }
+      task.leader_id = uid;
+      task.assignee_id = uid;
+      renderDetailAssigneeTable(task, true);
+      renderKanban();
+      alert('Đã đổi Nhóm trưởng thành công.');
+    }
+
+    async function removeMemberFromTask(userIdToRemove) {
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+
+      const member = users.find(u => String(u.id) === String(userIdToRemove));
+      if (!confirm(`Bạn có chắc chắn muốn loại bỏ nhân sự [${member?.full_name || 'này'}] khỏi nhóm công việc này?`)) return;
+
+      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
+      memberIds = memberIds.filter(id => String(id) !== String(userIdToRemove));
+
+      const { error } = await supabaseClient.from('tasks').update({
+        assignees_json: memberIds,
+        updated_at: new Date()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.assignees_json = memberIds;
+        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+        const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+        renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
+        renderKanban();
+        alert("Đã xóa thành viên khỏi nhóm thành công!");
+      } else {
+        alert("Lỗi xóa thành viên: " + error.message);
+      }
+    }
+
+    async function submitDeleteTaskPermanent() {
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      if (currentUser.role !== 'hod' && currentUser.role !== 'admin') {
+        alert("Chỉ có Lãnh đạo hoặc Admin mới có quyền xóa bỏ công việc này!");
+        return;
+      }
+
+      if (!confirm(`CẢNH BÁO: XÓA VĨNH VIỄN công việc [${task.title}]?`)) return;
+
+      const { error } = await supabaseClient.from('tasks').delete().eq('id', task.id);
+      if (!error) {
+        tasks = tasks.filter(t => String(t.id) !== String(task.id));
+        closeModal('modalTaskDetail');
+        renderKanban();
+        renderScoreBoard();
+        updateReviewInboxUI();
+        alert("Đã xóa công việc thành công!");
+      }
+    }
+
+    async function saveTaskStatusFromDetail() {
+      if (!selectedTaskIdForDetail) {
+        alert("Không tìm thấy mã công việc!");
+        return;
+      }
+
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) {
+        alert("Không tìm thấy thông tin task trong bộ nhớ!");
+        return;
+      }
+
+      const statusSelect = document.getElementById('detailStatusSelect');
+      const dueInput = document.getElementById('detailDueDateTimeInput');
+
+      const newStatus = statusSelect ? statusSelect.value : task.status;
+      const newDueDateTimeVal = dueInput ? dueInput.value : '';
+
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
+
+      if (task.status === 'completed' && newStatus !== 'completed' && !isLeaderRole) {
+        alert("Chỉ Lãnh đạo hoặc Admin mới có quyền mở lại việc đã hoàn thành!");
+        return;
+      }
+
+      let updateData = { 
+        status: newStatus, 
+        updated_at: new Date().toISOString() 
+      };
+
+      // Nếu chuyển trạng thái thì xóa cờ yêu cầu sửa cũ
+      if (newStatus !== 'in_progress') {
+        updateData.fix_requested = false;
+      }
+
+      if (newDueDateTimeVal && isLeaderRole) {
+        updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
+      }
+
+      closeModal('modalTaskDetail');
+
+      const { error } = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
+
+      if (!error) {
+        task.status = newStatus;
+        if (newStatus !== 'in_progress') task.fix_requested = false;
+        if (newDueDateTimeVal && isLeaderRole) {
+          task.due_datetime = updateData.due_datetime;
+        }
+        renderKanban();
+        renderScoreBoard();
+        updateReviewInboxUI();
+      } else {
+        alert("Lỗi khi lưu thay đổi lên cơ sở dữ liệu: " + error.message);
+        openTaskDetailModal(task.id);
+      }
+    }
+
+    function openAddMemberSection() {
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) return;
+
+      const sec = document.getElementById('addMemberSection');
+      const select = document.getElementById('selectNewMember');
+      select.innerHTML = '';
+
+      const currentMemberIds = Array.isArray(task.assignees_json) ? task.assignees_json : (task.assignee_id ? [task.assignee_id] : []);
+      const availableUsers = users.filter(u => !currentMemberIds.includes(String(u.id)));
+
+      if (availableUsers.length === 0) {
+        alert("Tất cả nhân sự đều đã tham gia nhiệm vụ này!");
+        return;
+      }
+
+      availableUsers.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
+        select.appendChild(opt);
+      });
+
+      sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function submitAddMemberToTask() {
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      const newMemberId = document.getElementById('selectNewMember').value;
+      if (!task || !newMemberId) return;
+
+      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
+      if (!memberIds.includes(newMemberId)) memberIds.push(newMemberId);
+
+      const { error } = await supabaseClient.from('tasks').update({ assignees_json: memberIds, updated_at: new Date() }).eq('id', task.id);
+      if (!error) {
+        task.assignees_json = memberIds;
+        document.getElementById('addMemberSection').style.display = 'none';
+        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
+        renderDetailAssigneeTable(task, (currentUser.role === 'hod' || currentUser.role === 'admin') && task.status !== 'completed');
+        renderKanban();
+        alert("Đã thêm thành viên thành công!");
+      }
+    }
+
+    function renderSubmissionsTable(task) {
+      const tbody = document.getElementById('detailSubmissionTableBody');
+      tbody.innerHTML = '';
+      const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+
+      if (subs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo.</td></tr>';
+        return;
+      }
+
+      subs.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${escapeHtml(sub.userName || 'Thành viên')}</b></td>
+          <td>${escapeHtml(sub.note || '(Không)')}</td>
+          <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function submitMyTaskResult() {
+      if (!selectedTaskIdForDetail) {
+        alert("Không tìm thấy mã công việc hiện tại!");
+        return;
+      }
+      
+      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
+      if (!task) {
+        alert("Không tìm thấy thông tin task trong bộ nhớ!");
+        return;
+      }
+
+      const driveUrlInput = document.getElementById('mySubDriveUrl');
+      const noteInput = document.getElementById('mySubNoteInput');
+      
+      const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : '';
+      const note = noteInput ? noteInput.value.trim() : '';
+      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || { full_name: "Thành viên" };
+
+      if (!driveUrl && !note) {
+        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú kết quả!");
+        return;
+      }
+
+      const newSub = {
+        userId: currentUserId,
+        userName: currentUser.full_name || "Thành viên",
+        note: note || '(Không có ghi chú)',
+        driveUrl: driveUrl || '',
+        time: new Date().toLocaleString('vi-VN')
+      };
+
+      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
+      currentSubs.push(newSub);
+
+      const { error } = await supabaseClient.from('tasks').update({
+        member_submissions: currentSubs,
+        updated_at: new Date().toISOString()
+      }).eq('id', task.id);
+
+      if (!error) {
+        task.member_submissions = currentSubs;
+        if (driveUrlInput) driveUrlInput.value = '';
+        if (noteInput) noteInput.value = '';
+        renderSubmissionsTable(task);
+        alert("Đã lưu và gửi báo cáo kết quả thành công!");
+      } else {
+        alert("Lỗi khi lưu kết quả lên Supabase: " + error.message);
+      }
+    }
+
+    // 10. TẠO VIỆC MỚI
+    function openCreateTaskModal() {
+      document.getElementById('taskTitle').value = '';
+      document.getElementById('taskDesc').value = '';
+      document.getElementById('taskDriveLink').value = '';
+      
+      const checkList = document.getElementById('assigneeCheckboxList');
+      const leaderSelect = document.getElementById('taskLeaderSelect');
+      checkList.innerHTML = '';
+      leaderSelect.innerHTML = '';
+
+      users.forEach(u => {
+        const label = document.createElement('label');
+        label.style.display = 'flex';
+        label.style.alignItems = 'center';
+        label.style.gap = '6px';
+        label.style.fontSize = '12px';
+        label.innerHTML = `<input type="checkbox" value="${u.id}" onchange="syncLeaderOptions()"> <span>${escapeHtml(u.full_name)}</span>`;
+        checkList.appendChild(label);
+      });
+
+      document.getElementById('modalCreateTask').style.display = 'flex';
+    }
+
+    function syncLeaderOptions() {
+      const leaderSelect = document.getElementById('taskLeaderSelect');
+      leaderSelect.innerHTML = '';
+      const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
+
+      checkedBoxes.forEach(cb => {
+        const user = users.find(u => String(u.id) === String(cb.value));
+        if (user) {
+          const opt = document.createElement('option');
+          opt.value = user.id;
+          opt.textContent = `${user.full_name} (Leader)`;
+          leaderSelect.appendChild(opt);
+        }
+      });
+    }
+
+    async function submitCreateTask() {
+      const title = document.getElementById('taskTitle').value.trim();
+      const desc = document.getElementById('taskDesc').value.trim();
+      const leaderId = document.getElementById('taskLeaderSelect').value;
+      const dueDateTimeVal = document.getElementById('taskDueDateTime').value;
+      const driveLink = document.getElementById('taskDriveLink').value.trim();
+
+      const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
+      const assigneeIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+      if (!title || assigneeIds.length === 0 || !leaderId || !dueDateTimeVal) {
+        alert("Vui lòng nhập tên việc, chọn ít nhất 1 thành viên phối hợp, chỉ định Nhóm trưởng và chọn hạn chót!");
+        return;
+      }
+
+      const dueIsoString = new Date(dueDateTimeVal).toISOString();
+      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const randomCode = 'TSK-' + dateStr + '-' + Math.floor(100 + Math.random() * 900);
+
+      const newTaskPayload = {
+        task_code: randomCode,
+        title: title,
+        description: desc,
+        assignee_id: leaderId,
+        leader_id: leaderId,
+        creator_id: currentUserId || null,
+        assignees_json: assigneeIds,
+        priority: 'medium',
+        status: 'pending',
+        due_datetime: dueIsoString,
+        drive_link: driveLink || null,
+        member_submissions: [],
+        fix_requested: false
+      };
+
+      const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
+
+      if (!error) {
+        closeModal('modalCreateTask');
+        await fetchTasks();
+        alert("Đã tạo công việc mới thành công!");
+      } else {
+        alert("Lỗi khi tạo việc trên cơ sở dữ liệu: " + error.message);
+      }
+    }
+
+    // 11. XUẤT BÁO CÁO CSV
+    function exportTasksReportCSV() {
+      if (tasks.length === 0) {
+        alert("Chưa có dữ liệu công việc để xuất báo cáo!");
+        return;
+      }
+
+      let csvContent = "\uFEFF";
+      csvContent += "STT,Mã Việc,Tên Nhiệm Vụ,Mức Ưu Tiên,Nhóm Trưởng (Leader),Thành Viên Phối Hợp,Hạn Chót,Trạng Thái,Link Drive,Kết Quả Báo Cáo\n";
+
+      tasks.forEach((t, index) => {
+        const leader = users.find(u => String(u.id) === String(t.leader_id))?.full_name || 'N/A';
+        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
+        const memberNames = memberIds.map(uid => users.find(u => String(u.id) === String(uid))?.full_name || 'N/A').join(" | ");
+        
+        let statusText = "Chờ tiếp nhận";
+        if (t.status === 'in_progress') statusText = "Đang thực hiện";
+        if (t.status === 'review') statusText = "Chờ duyệt báo cáo";
+        if (t.status === 'completed') statusText = "Đã hoàn thành";
+
+        const subs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
+        const resultNotes = subs.map(s => `${s.userName}: ${s.note || ''} [${s.driveUrl || ''}]`).join(" ; ");
+
+        const row = [
+          index + 1,
+          `"${t.task_code || 'TSK'}"`,
+          `"${(t.title || '').replace(/"/g, '""')}"`,
+          `"${t.priority || 'medium'}"`,
+          `"${leader}"`,
+          `"${memberNames}"`,
+          `"${t.due_datetime ? new Date(t.due_datetime).toLocaleString('vi-VN') : ''}"`,
+          `"${statusText}"`,
+          `"${t.drive_link || ''}"`,
+          `"${resultNotes.replace(/"/g, '""')}"`
+        ];
+
+        csvContent += row.join(",") + "\n";
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `DSU_BaoCao_TTKTDVKH_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 12. BẢNG ĐIỂM
+    function renderScoreBoard() {
+      const tbody = document.getElementById('scoreTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      users.forEach((u, idx) => {
+        const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(String(u.id)) : String(t.assignee_id) === String(u.id)));
+        const completed = myTasks.filter(t => t.status === 'completed').length;
+        const overdue = myTasks.filter(t => t.status !== 'completed' && calculateDeadlineAlert(t.due_datetime, t.status).type === 'overdue').length;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:center;"><b>${idx + 1}</b></td>
+          <td><b>${escapeHtml(u.full_name)}</b></td>
+          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
+          <td style="text-align:center; font-weight:700;">${myTasks.length}</td>
+          <td style="text-align:center; color:var(--succ-green); font-weight:700;">${completed}</td>
+          <td style="text-align:center; color:var(--danger-red);">${overdue}</td>
+          <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:16px;">${completed * 10}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 13. QUẢN TRỊ NHÂN SỰ
+    function renderAdminUserTable() {
+      const tbody = document.getElementById('adminUserTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        let roleName = u.role === 'hod' ? 'Trưởng / Phó TT' : (u.role === 'admin' ? 'Quản trị viên' : 'Nhân viên');
+        tr.innerHTML = `
+          <td><b>${escapeHtml(u.full_name)}</b></td>
+          <td>${u.phone || 'N/A'}</td>
+          <td>${u.email || 'N/A'}</td>
+          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
+          <td><span style="font-size:11px; font-weight:700;">${roleName}</span></td>
+          <td style="text-align:right; white-space:nowrap;">
+            <button class="btn btn-outline btn-sm" onclick="openEditUserModalAdmin('${u.id}')">✏️ Sửa</button>
+            <button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="deleteUser('${u.id}')">Xóa</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openRegisterModalAdmin() {
+      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới (Admin)";
+      document.getElementById('editUserId').value = '';
+      document.getElementById('regFullName').value = '';
+      document.getElementById('regPhone').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
+      document.getElementById('regRole').value = 'staff';
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    function openEditUserModalAdmin(userId) {
+      const user = users.find(u => String(u.id) === String(userId));
+      if (!user) return;
+
+      document.getElementById('modalRegisterTitle').textContent = `✏️ Chỉnh sửa hồ sơ: ${user.full_name}`;
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('regFullName').value = user.full_name || '';
+      document.getElementById('regPhone').value = user.phone || '';
+      document.getElementById('regEmail').value = user.email || '';
+      document.getElementById('regTitle').value = user.title || '';
+      document.getElementById('regRole').value = user.role || 'staff';
+      document.getElementById('modalRegister').style.display = 'flex';
+    }
+
+    async function submitSaveUserAdmin() {
+      const editId = document.getElementById('editUserId').value;
+      const name = document.getElementById('regFullName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const title = document.getElementById('regTitle').value.trim();
+      const role = document.getElementById('regRole').value;
+
+      if (!name || !phone) {
+        alert("Vui lòng điền đủ Họ tên và Số điện thoại!");
+        return;
+      }
+
+      if (editId) {
+        const { error } = await supabaseClient.from('app_users').update({
+          full_name: name, phone, email, title, role
+        }).eq('id', editId);
+
+        if (!error) {
+          alert("Cập nhật thông tin nhân sự thành công!");
+          closeModal('modalRegister');
+          await loadInitialData();
+        } else {
+          alert("Lỗi cập nhật: " + error.message);
+        }
+      } else {
+        const { error } = await supabaseClient.from('app_users').insert([{
+          full_name: name, phone, email, title, role, password_hash: '123456'
+        }]);
+
+        if (!error) {
+          alert("Thêm nhân sự mới thành công!");
+          closeModal('modalRegister');
+          await loadInitialData();
+        } else {
+          alert("Lỗi thêm nhân sự: " + error.message);
+        }
+      }
+    }
+
+    async function deleteUser(uid) {
+      if (!confirm("Xác nhận xóa nhân sự này?")) return;
+      await supabaseClient.from('app_users').delete().eq('id', uid);
+      users = users.filter(u => String(u.id) !== String(uid));
+      renderAdminUserTable();
+      renderScoreBoard();
+    }
+
+    // 14. AUTH & TABS
+    function logoutUser() {
+      localStorage.removeItem("DSU_CURRENT_USER_ID");
+      localStorage.removeItem("DSU_ACTIVE_TAB");
+      localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
+      currentUserId = null;
+      document.getElementById('modalAuth').style.display = 'flex';
+    }
+
+    async function submitLogin() {
+      const phone = document.getElementById('loginPhoneInput').value.trim();
+      const pass = document.getElementById('loginPasswordInput').value.trim();
+
+      const { data } = await supabaseClient.from('app_users').select('*').eq('phone', phone).eq('password_hash', pass);
+      if (data && data.length > 0) {
+        currentUserId = data[0].id;
+        localStorage.setItem("DSU_CURRENT_USER_ID", data[0].id);
+        closeModal('modalAuth');
+        await initApp();
+      } else {
+        alert("Sai số điện thoại hoặc mật khẩu!");
+      }
+    }
+
+    function switchMainTab(tabId) {
+      localStorage.setItem("DSU_ACTIVE_TAB", tabId);
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      const activeBtn = document.getElementById('tabBtn-' + tabId.replace('Tab', ''));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabId === 'scoreTab') renderScoreBoard();
+      if (tabId === 'adminTab') renderAdminUserTable();
+      if (tabId === 'chatTab') { 
+        if (activeChatPeerId === null) unreadChatCounts['group'] = 0;
+        else unreadChatCounts[String(activeChatPeerId)] = 0;
+        renderChatUsers(); 
+        updateTabChatAlertUI();
+        loadChatMessages(); 
+      }
+    }
+
+    function updateCurrentUserUI() {
+      const user = users.find(u => String(u.id) === String(currentUserId));
+      if (user) {
+        document.getElementById('currentUserBadge').innerHTML = `<b>${escapeHtml(user.full_name)}</b><div style="color:var(--accent-light); font-size:9.5px;">${escapeHtml(user.title || 'Chuyên viên')}</div>`;
+      }
+    }
+
+    function promptAdminPasswordAndOpen() {
+      const pass = prompt("Nhập mật khẩu Quản trị để mở khóa:");
+      if (pass === ADMIN_SECRET_KEY) {
+        switchMainTab('adminTab');
+      } else if (pass !== null) {
+        alert("Sai mật khẩu!");
+      }
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
