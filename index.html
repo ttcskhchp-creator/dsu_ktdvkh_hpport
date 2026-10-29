@@ -936,7 +936,7 @@
       <!-- THANH TÁC VỤ -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">
+          <button class="btn btn-outline btn-sm" id="loopToggle" onclick="toggleLoop()">⏸ Tắt tự cuộn</button><button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">
             📊 Xuất Báo Cáo (CSV)
           </button>
           <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">
@@ -1015,7 +1015,7 @@
           </div>
 
           <form onsubmit="sendChatMessage(event)" style="display:flex; gap:6px; padding:10px; border-top:1px solid var(--border-color); background:var(--bg-card);">
-            <input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required>
+            <input type="file" id="chatFile" hidden onchange="uploadChatFile(this.files[0]);this.value=''"> <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFile').click()">📎</button><input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required>
             <button class="btn btn-primary" type="submit" style="padding:6px 12px;">Gửi ➤</button>
           </form>
         </section>
@@ -1383,7 +1383,7 @@
                   <th>Người nộp</th>
                   <th>Ghi chú</th>
                   <th>Link Báo cáo</th>
-                  <th>Thời gian</th>
+                  <th>Thời gian</th><th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="detailSubmissionTableBody"></tbody>
@@ -1793,7 +1793,7 @@
       if (info.isHoangDaoDay) {
         adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, ký duyệt báo cáo, bốc dỡ giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra bảo hộ lao động và an toàn thiết bị cẩu bãi trong các khung giờ cao điểm.`;
       } else {
-        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường.`;
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường Tân Vũ.`;
       }
 
       document.getElementById('modalLunarCalendar').style.display = 'flex';
@@ -1960,6 +1960,7 @@
           }
 
           tasks = data;
+          cleanupOldTasks();
           knownTaskIds = new Set(data.map(t => String(t.id)));
         }
       } catch (err) {
@@ -1968,6 +1969,7 @@
       renderKanban();
       renderScoreBoard();
       updateReviewInboxUI();
+      setTimeout(startLoop,100);
     }
 
     function setupRealtime() {
@@ -2495,7 +2497,7 @@
       if (!area) return;
       area.innerHTML = chatMessagesCache.map(m => {
         const me = String(m.sender_id) === String(currentUserId), u = users.find(x => String(x.id) === String(m.sender_id));
-        return `<div class="chat-bubble ${me ? 'bubble-me' : 'bubble-other'}"><div style="font-size:10px;opacity:.8;margin-bottom:3px">${me ? 'Bạn' : escapeHtml(u?.full_name || 'Đồng nghiệp')} · ${m.created_at ? new Date(m.created_at).toLocaleString('vi-VN') : ''}</div>${escapeHtml(m.message).replace(/\n/g, '<br>')}</div>`;
+        return `<div class="chat-bubble ${me ? 'bubble-me' : 'bubble-other'}"><div style="font-size:10px;opacity:.8;margin-bottom:3px">${me ? 'Bạn' : escapeHtml(u?.full_name || 'Đồng nghiệp')} · ${m.created_at ? new Date(m.created_at).toLocaleString('vi-VN') : ''}</div>${renderChatFile(m.message)}</div>`;
       }).join('');
       area.scrollTop = area.scrollHeight;
     }
@@ -2555,6 +2557,10 @@
       const endIso = new Date(endVal).toISOString();
 
       if (confirm(`CẢNH BÁO: Xóa sạch toàn bộ tin nhắn (chung và riêng) từ [${new Date(startVal).toLocaleString('vi-VN')}] đến [${new Date(endVal).toLocaleString('vi-VN')}]?`)) {
+        const {data:files,error:scanError}=await supabaseClient.from('chat_messages').select('message').gte('created_at',startIso).lte('created_at',endIso).limit(10000);
+        if(scanError){alert(scanError.message);return;}
+        const paths=(files||[]).map(x=>parseAttachment(x.message)?.path).filter(Boolean);
+        for(let k=0;k<paths.length;k+=100){const {error:e}=await supabaseClient.storage.from('dsu-attachments').remove(paths.slice(k,k+100));if(e){alert('Lỗi dọn Storage: '+e.message);return;}}
         const { error } = await supabaseClient.from('chat_messages')
           .delete()
           .gte('created_at', startIso)
@@ -3000,6 +3006,8 @@
         updated_at: new Date().toISOString() 
       };
 
+      if(newStatus==='completed' && task.status!=='completed') updateData.completed_at=new Date().toISOString();
+      if(newStatus!=='completed' && task.status==='completed') updateData.completed_at=null;
       if (newStatus !== 'in_progress') {
         updateData.fix_requested = false;
       }
@@ -3082,7 +3090,7 @@
       const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
 
       if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo.</td></tr>';
         return;
       }
 
@@ -3092,7 +3100,7 @@
           <td><b>${escapeHtml(sub.userName || 'Thành viên')}</b></td>
           <td>${escapeHtml(sub.note || '(Không)')}</td>
           <td>${sub.driveUrl ? `<a href="${sub.driveUrl}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
-          <td><span style="font-size:10px; color:var(--text-muted);">${sub.time || ''}</span></td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${escapeHtml(sub.time || '')}</span></td><td>${(String(sub.userId)===String(currentUserId)||['admin','hod'].includes((users.find(u=>String(u.id)===String(currentUserId))||{}).role))?`<button class="btn btn-danger btn-sm" onclick="deleteSubmission(${subs.indexOf(sub)})">🗑️ Xóa</button>`:'—'}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -3577,6 +3585,16 @@
     }
 
     window.onload = initApp;
-  </script>
+  
+const FILE_BUCKET='dsu-attachments';
+function parseAttachment(s){try{const x=JSON.parse(s);return x?.kind==='dsu-attachment'&&typeof x.path==='string'&&x.path.startsWith('chat/')&&!x.path.includes('..')?x:null}catch{return null}}
+function renderChatFile(s){const x=parseAttachment(s);if(!x)return escapeHtml(s).replace(/\n/g,'<br>');const url=supabaseClient.storage.from(FILE_BUCKET).getPublicUrl(x.path).data.publicUrl;const name=escapeHtml(x.name);const size=(x.size/1024/1024).toFixed(2)+' MB';return x.mime.startsWith('image/')?`<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img src="${escapeHtml(url)}" alt="${name}" style="max-width:260px;max-height:220px;border-radius:10px;display:block"></a><small>${name} · ${size}</small>`:`<a href="${escapeHtml(url)}" download="${name}" target="_blank" rel="noopener" style="display:block;padding:12px;border:1px solid;border-radius:10px;color:inherit">📄 ${name}<br><small>${size} · ⬇ Tải về</small></a>`}
+async function uploadChatFile(file){if(!file)return;if(file.size>5*1024*1024){alert('Tệp vượt quá 5MB');return;}if(!currentUserId)return;const path='chat/'+currentUserId+'/'+crypto.randomUUID()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(-80);const {error:e}=await supabaseClient.storage.from(FILE_BUCKET).upload(path,file,{contentType:file.type||'application/octet-stream'});if(e){alert(e.message);return;}const message=JSON.stringify({kind:'dsu-attachment',path,name:file.name,size:file.size,mime:file.type||'application/octet-stream'});const {error:err}=await supabaseClient.from('chat_messages').insert({room_key:chatRoomKey(),sender_id:currentUserId,recipient_id:activeChatPeerId,message});if(err){await supabaseClient.storage.from(FILE_BUCKET).remove([path]);alert(err.message);return;}await loadChatMessages();}
+async function deleteSubmission(index){const task=tasks.find(t=>String(t.id)===String(selectedTaskIdForDetail));if(!task)return;const target=task.member_submissions?.[index];if(!target)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(String(target.userId)!==String(currentUserId)&&!['admin','hod'].includes(role))return;if(!confirm('Xóa báo cáo này để nộp lại?'))return;const {data,error:e}=await supabaseClient.from('tasks').select('member_submissions').eq('id',task.id).single();if(e){alert(e.message);return;}const arr=data.member_submissions||[];const ix=arr.findIndex(x=>String(x.userId)===String(target.userId)&&x.time===target.time&&x.driveUrl===target.driveUrl);if(ix<0){alert('Dữ liệu đã thay đổi, vui lòng tải lại');return;}arr.splice(ix,1);const {error}=await supabaseClient.from('tasks').update({member_submissions:arr,updated_at:new Date().toISOString()}).eq('id',task.id);if(error){alert(error.message);return;}task.member_submissions=arr;renderSubmissionsTable(task);if(String(target.userId)===String(currentUserId)){document.getElementById('mySubDriveUrl').value='';document.getElementById('mySubNoteInput').value='';}}
+let loopOn=true,loopTimer;function toggleLoop(){loopOn=!loopOn;document.getElementById('loopToggle').textContent=loopOn?'⏸ Tắt tự cuộn':'▶ Bật tự cuộn';startLoop()}
+function startLoop(){clearInterval(loopTimer);if(!loopOn||matchMedia('(prefers-reduced-motion: reduce)').matches)return;loopTimer=setInterval(()=>{if(!document.getElementById('tasksTab').classList.contains('active'))return;document.querySelectorAll('.kanban-col .col-body').forEach(el=>{if(el.matches(':hover')||el.dataset.pause==='1'||el.scrollHeight<=el.clientHeight)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-2)el.scrollTo({top:0,behavior:'smooth'});else el.scrollTop+=1})},60)}
+document.querySelectorAll('.kanban-col .col-body').forEach(el=>{el.addEventListener('touchstart',()=>el.dataset.pause='1',{passive:true});el.addEventListener('touchend',()=>setTimeout(()=>el.dataset.pause='0',3000),{passive:true})});
+let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{const threshold=new Date(Date.now()-14*86400000).toISOString();for(const t of tasks.filter(x=>x.status==='completed'&&x.completed_at&&x.completed_at<threshold)){const {error}=await supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed').lt('completed_at',threshold);if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
+</script>
 </body>
 </html>
