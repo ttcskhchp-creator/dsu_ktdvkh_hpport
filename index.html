@@ -1995,9 +1995,10 @@
     }
 
     async function updatePresenceHeartbeat() {
-      if (!currentUserId) return;
-      await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
-    }
+  // Tránh bắn PATCH vào app_users khi bảng chưa có cột last_seen
+  if (!currentUserId) return;
+  // Trạng thái online/offline đã được xử lý tự động qua setupPresence()
+}
 
     // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & THANH THÔNG BÁO TỔNG HỢP ÂM LỊCH
     let tickerIndex = 0;
@@ -2762,6 +2763,7 @@
       const task = tasks.find(t => String(t.id) === String(taskId));
       if (!task) return;
 
+
       document.getElementById('detailTaskCode').textContent = task.task_code || 'TSK';
       document.getElementById('detailTaskTitle').textContent = task.title || '(Không có tiêu đề)';
       document.getElementById('detailTaskDesc').textContent = task.description || '(Không có ghi chú chỉ đạo)';
@@ -2843,6 +2845,20 @@
 
       renderDetailAssigneeTable(task, isLeaderRole && !isTaskCompleted);
       renderSubmissionsTable(task);
+      // Tự động kiểm tra và điền lại báo cáo của chính tài khoản này (nếu đã nộp trong task này),
+    // hoặc làm sạch ô nhập nếu chuyển sang task khác mà người này chưa nộp.
+    const subs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
+    const myExistingSub = subs.find(s => String(s.userId) === String(currentUserId));
+    const driveUrlInput = document.getElementById('mySubDriveUrl');
+    const noteInput = document.getElementById('mySubNoteInput');
+
+    if (myExistingSub) {
+      if (driveUrlInput) driveUrlInput.value = myExistingSub.driveUrl || '';
+      if (noteInput) noteInput.value = myExistingSub.note || '';
+    } else {
+      if (driveUrlInput) driveUrlInput.value = '';
+      if (noteInput) noteInput.value = '';
+    }
 
       document.getElementById('modalTaskDetail').style.display = 'flex';
     }
@@ -2914,7 +2930,8 @@
 
       const { error } = await supabaseClient.from('tasks').update({
         assignees_json: memberIds,
-        updated_at: new Date()
+        // Thay thế dòng: updated_at: new Date()
+        updated_at: new Date().toISOString()
       }).eq('id', task.id);
 
       if (!error) {
@@ -3048,7 +3065,7 @@
       let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
       if (!memberIds.includes(newMemberId)) memberIds.push(newMemberId);
 
-      const { error } = await supabaseClient.from('tasks').update({ assignees_json: memberIds, updated_at: new Date() }).eq('id', task.id);
+      const { error } = await supabaseClient.from('tasks').update({ assignees_json: memberIds, updated_at: new Date().toISOString() }).eq('id', task.id);
       if (!error) {
         task.assignees_json = memberIds;
         document.getElementById('addMemberSection').style.display = 'none';
@@ -3081,57 +3098,91 @@
       });
     }
 
-    async function submitMyTaskResult() {
-      if (!selectedTaskIdForDetail) {
-        alert("Không tìm thấy mã công việc hiện tại!");
-        return;
-      }
-      
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) {
-        alert("Không tìm thấy thông tin task trong bộ nhớ!");
-        return;
-      }
+   async function submitMyTaskResult() {
+  if (!selectedTaskIdForDetail) {
+    alert("Không tìm thấy mã công việc hiện tại!");
+    return;
+  }
 
-      const driveUrlInput = document.getElementById('mySubDriveUrl');
-      const noteInput = document.getElementById('mySubNoteInput');
-      
-      const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : '';
-      const note = noteInput ? noteInput.value.trim() : '';
-      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || { full_name: "Thành viên" };
+  // Khóa nút bấm để chống double-click gây nhân bản dữ liệu
+  const btnSave = document.querySelector('#mySubSectionWrap button');
+  if (btnSave) {
+    btnSave.disabled = true;
+    btnSave.textContent = "Đang lưu...";
+  }
 
-      if (!driveUrl && !note) {
-        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú kết quả!");
-        return;
-      }
+  try {
+    // 1. Luôn truy vấn dữ liệu mới nhất của task từ Supabase để tránh xung đột ghi đè giữa các thành viên
+    const { data: latestTask, error: fetchErr } = await supabaseClient
+      .from('tasks')
+      .select('*')
+      .eq('id', selectedTaskIdForDetail)
+      .single();
 
-      const newSub = {
-        userId: currentUserId,
-        userName: currentUser.full_name || "Thành viên",
-        note: note || '(Không có ghi chú)',
-        driveUrl: driveUrl || '',
-        time: new Date().toLocaleString('vi-VN')
-      };
-
-      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
-      currentSubs.push(newSub);
-
-      const { error } = await supabaseClient.from('tasks').update({
-        member_submissions: currentSubs,
-        updated_at: new Date().toISOString()
-      }).eq('id', task.id);
-
-      if (!error) {
-        task.member_submissions = currentSubs;
-        if (driveUrlInput) driveUrlInput.value = '';
-        if (noteInput) noteInput.value = '';
-        renderSubmissionsTable(task);
-        alert("Đã lưu và gửi báo cáo kết quả thành công!");
-      } else {
-        alert("Lỗi khi lưu kết quả lên Supabase: " + error.message);
-      }
+    if (fetchErr || !latestTask) {
+      alert("Không tìm thấy dữ liệu công việc từ máy chủ!");
+      return;
     }
 
+    const driveUrlInput = document.getElementById('mySubDriveUrl');
+    const noteInput = document.getElementById('mySubNoteInput');
+    const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : '';
+    const note = noteInput ? noteInput.value.trim() : '';
+    const currentUser = users.find(u => String(u.id) === String(currentUserId)) || { full_name: "Thành viên" };
+
+    if (!driveUrl && !note) {
+      alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú kết quả!");
+      return;
+    }
+
+    const newSub = {
+      userId: String(currentUserId),
+      userName: currentUser.full_name || "Thành viên",
+      note: note || '(Không có ghi chú)',
+      driveUrl: driveUrl || '',
+      time: new Date().toLocaleString('vi-VN')
+    };
+
+    let currentSubs = Array.isArray(latestTask.member_submissions) ? [...latestTask.member_submissions] : [];
+
+    // 2. LOGIC UPSERT: Kiểm tra xem user này đã từng nộp trong task này chưa
+    const existingIndex = currentSubs.findIndex(s => String(s.userId) === String(currentUserId));
+    if (existingIndex !== -1) {
+      // Đã nộp trước đó -> Cập nhật lại bản ghi cũ của người này (tránh tạo bản ghi thứ 2)
+      currentSubs[existingIndex] = newSub;
+    } else {
+      // Chưa từng nộp -> Thêm mới vào danh sách
+      currentSubs.push(newSub);
+    }
+
+    // 3. Cập nhật lên Supabase
+    const { error: updateErr } = await supabaseClient.from('tasks').update({
+      member_submissions: currentSubs,
+      updated_at: new Date().toISOString()
+    }).eq('id', latestTask.id);
+
+    if (!updateErr) {
+      // Đồng bộ vào cache mảng tasks trên giao diện
+      const localTask = tasks.find(t => String(t.id) === String(latestTask.id));
+      if (localTask) {
+        localTask.member_submissions = currentSubs;
+      }
+
+      renderSubmissionsTable(localTask || latestTask);
+      alert(existingIndex !== -1 ? "Đã cập nhật lại báo cáo kết quả của bạn!" : "Đã lưu báo cáo kết quả thành công!");
+    } else {
+      alert("Lỗi khi lưu kết quả lên Supabase: " + updateErr.message);
+    }
+  } catch (err) {
+    console.error("Lỗi submitMyTaskResult:", err);
+    alert("Có lỗi xảy ra trong quá trình lưu dữ liệu!");
+  } finally {
+    if (btnSave) {
+      btnSave.disabled = false;
+      btnSave.textContent = "Lưu kết quả";
+    }
+  }
+}
     // 10. TẠO VIỆC MỚI
     function openCreateTaskModal() {
       document.getElementById('taskTitle').value = '';
