@@ -63,7 +63,7 @@
       transition: background 0.25s, color 0.25s;
     }
 
-    /* ĐỒ HỌA NỀN CẢNG BIỂN */
+    /* BACKGROUND ART */
     .bg-art-item {
       position: fixed;
       pointer-events: none;
@@ -75,7 +75,7 @@
     .bg-art-robot { right: 15px; bottom: 65px; width: 160px; height: 140px; }
     @media (max-width: 768px) { .bg-art-item { display: none; } }
 
-    /* HEADER RESPONSIVE */
+    /* HEADER */
     header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
@@ -163,7 +163,6 @@
       gap: 5px;
     }
 
-    /* NÚT LỊCH DƯƠNG + ÂM */
     .lunar-btn {
       background: rgba(255, 215, 0, 0.12);
       border: 1px solid var(--gold-star);
@@ -216,7 +215,7 @@
       margin-left: 2px;
     }
 
-    /* THANH THÔNG BÁO KHỦNG LONG MINI ĐỚP CHỮ & TỰ CUỘN TRÊN ĐIỆN THOẠI */
+    /* TICKER THÔNG BÁO VỚI KHỦNG LONG MINI */
     .global-announcement-bar {
       background: var(--ticker-bg);
       border-bottom: 1px solid var(--ticker-border);
@@ -458,7 +457,7 @@
       gap: 4px;
     }
 
-    /* TASK CARD & HIỆU ỨNG DEADLINE */
+    /* TASK CARD & DEADLINE */
     @keyframes taskBlinkYellow {
       0%, 100% { border-color: var(--warn-orange); box-shadow: 0 0 4px rgba(240, 138, 36, 0.4); }
       50% { border-color: #ffeb3b; box-shadow: 0 0 16px rgba(255, 235, 59, 0.9); }
@@ -755,9 +754,7 @@
       opacity: 0.6;
     }
 
-    /* ======================================================== */
-    /* MODAL OVERLAY: CỐ ĐỊNH ẨN TUYỆT ĐỐI BẰNG CSS           */
-    /* ======================================================== */
+    /* CỐ ĐỊNH ẨN MODAL BẰNG CSS */
     .modal-backdrop {
       position: fixed;
       top: 0;
@@ -768,7 +765,7 @@
       height: 100vh;
       background: rgba(8, 15, 30, 0.85);
       backdrop-filter: blur(4px);
-      display: none; /* CỐ ĐỊNH ẨN MẶC ĐỊNH */
+      display: none;
       align-items: center;
       justify-content: center;
       z-index: 9999;
@@ -1152,7 +1149,7 @@
 
     <div class="footer-content">
       <div>🚢 <b>Công ty CP Cảng Hải Phòng</b> · TT Khai thác & Dịch vụ khách hàng</div>
-      <div>⚡ Hệ thống DSU v24.2 · Âm & Dương Lịch Song Hành</div>
+      <div>⚡ Hệ thống DSU v24.3 · Vận Hành Mượt Mà & Ổn Định</div>
     </div>
   </footer>
 
@@ -1160,7 +1157,7 @@
   <!-- MODALS (CỐ ĐỊNH ẨN VỚI STYLE="DISPLAY:NONE;")            -->
   <!-- ======================================================== -->
 
-  <!-- MODAL 1: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO (ÂM - DƯƠNG SONG HÀNH) -->
+  <!-- MODAL 1: LỊCH VẠN NIÊN & GIỜ HOÀNG ĐẠO -->
   <div class="modal-backdrop" id="modalLunarCalendar" style="display:none;">
     <div class="modal-box">
       <div class="modal-header">
@@ -1371,7 +1368,7 @@
           </div>
         </div>
 
-        <!-- BẢNG KẾT QUẢ BÁO CÁO CÓ CỘT THAO TÁC XÓA BÁO CÁO NỘP NHẦM -->
+        <!-- BẢNG BÁO CÁO CÓ CỘT XÓA TỪNG DÒNG -->
         <div class="form-group" style="border-top:1px solid var(--border-color); padding-top:10px;">
           <label>📁 Kết quả & Báo cáo đã nộp của các thành viên:</label>
           <div style="overflow-x:auto;">
@@ -1549,7 +1546,7 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC V24.2                     -->
+  <!-- JAVASCRIPT LOGIC V24.3                     -->
   <!-- ========================================== -->
   <script>
     const SUPABASE_URL = "https://podssgxpyllhiurpcbos.supabase.co";
@@ -1585,7 +1582,238 @@
 
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
-    // 1. THEME
+    // ==========================================
+    // THUẬT TOÁN ÂM LỊCH VIỆT NAM (HỒ NGỌC ĐỨC)
+    // ==========================================
+    const CAN_NAMES = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const CHI_NAMES = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+
+    function jdFromDate(dd, mm, yy) {
+      let a = Math.floor((14 - mm) / 12);
+      let y = yy + 4800 - a;
+      let m = mm + 12 * a - 3;
+      let jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083;
+      return jd;
+    }
+
+    function getNewMoonDay(k, timeZone) {
+      let T = k / 1236.85;
+      let T2 = T * T;
+      let T3 = T2 * T;
+      let dr = Math.PI / 180;
+      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.0107306 * T3;
+      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M);
+      C1 -= 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(2 * dr * Mpr);
+      C1 -= 0.0004 * Math.sin(3 * dr * Mpr);
+      C1 += 0.0104 * Math.sin(2 * dr * F) - 0.0051 * Math.sin((M + Mpr) * dr);
+      C1 -= 0.0074 * Math.sin((M - Mpr) * dr) + 0.0004 * Math.sin((2 * F + M) * dr);
+      C1 -= 0.0004 * Math.sin((2 * F - M) * dr) - 0.0006 * Math.sin((2 * F + Mpr) * dr);
+      C1 += 0.0010 * Math.sin((2 * F - Mpr) * dr) + 0.0005 * Math.sin((M + 2 * Mpr) * dr);
+      let JdNew = Jd1 + C1;
+      return Math.floor(JdNew + 0.5 + timeZone / 24);
+    }
+
+    function getSunLongitude(jdn, timeZone) {
+      let T = (jdn - 2451545.5 - timeZone / 24) / 36525;
+      let dr = Math.PI / 180;
+      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T * T - 0.00000048 * T * T * T;
+      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T * T;
+      let DL = (1.914600 - 0.004817 * T - 0.000014 * T * T) * Math.sin(dr * M);
+      DL += (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      let L = L0 + DL;
+      L = L * dr;
+      L = L - Math.PI * 2 * Math.floor(L / (Math.PI * 2));
+      return Math.floor(L / (Math.PI / 6));
+    }
+
+    function getLunarMonth11(yy, timeZone) {
+      let off = jdFromDate(31, 12, yy) - 2415021;
+      let k = Math.floor(off / 29.530588853);
+      let nm = getNewMoonDay(k, timeZone);
+      let sunLong = getSunLongitude(nm, timeZone);
+      if (sunLong >= 9) nm = getNewMoonDay(k - 1, timeZone);
+      return nm;
+    }
+
+    function getLeapMonthOffset(a11, timeZone) {
+      let k = Math.floor((a11 - 2415021.076998695) / 29.530588853 + 0.5);
+      let last = 0;
+      let i = 1;
+      let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+      while (true) {
+        last = arc;
+        i++;
+        arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+        if (arc === last || i > 14) break;
+      }
+      return i - 1;
+    }
+
+    function convertSolarToLunar(dd, mm, yy, timeZone = 7) {
+      let dayNumber = jdFromDate(dd, mm, yy);
+      let k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
+      let monthStart = getNewMoonDay(k + 1, timeZone);
+      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
+      let a11 = getLunarMonth11(yy, timeZone);
+      let b11 = a11;
+      let lunarYear = yy;
+      if (a11 >= monthStart) {
+        lunarYear = yy;
+        a11 = getLunarMonth11(yy - 1, timeZone);
+      } else {
+        lunarYear = yy + 1;
+        b11 = getLunarMonth11(yy + 1, timeZone);
+      }
+      let lunarDay = dayNumber - monthStart + 1;
+      let diff = Math.floor((monthStart - a11) / 29);
+      let lunarLeap = false;
+      let lunarMonth = diff + 11;
+      if ((b11 - a11) > 365) {
+        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
+        if (diff >= leapMonthDiff) {
+          lunarMonth = diff + 10;
+          if (diff === leapMonthDiff) lunarLeap = true;
+        }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear--;
+      return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap, jd: dayNumber };
+    }
+
+    function getLunarDetails(dd, mm, yy) {
+      const lunar = convertSolarToLunar(dd, mm, yy, 7);
+      const jd = lunar.jd;
+
+      const canYear = CAN_NAMES[(lunar.year - 4) % 10];
+      const chiYear = CHI_NAMES[(lunar.year - 4) % 12];
+      const canChiYear = `${canYear} ${chiYear}`;
+
+      const canDay = CAN_NAMES[(jd + 9) % 10];
+      const chiDay = CHI_NAMES[(jd + 1) % 12];
+      const canChiDay = `${canDay} ${chiDay}`;
+
+      const canMonth = CAN_NAMES[((lunar.year * 12 + lunar.month + 3) % 10)];
+      const chiMonth = CHI_NAMES[(lunar.month + 1) % 12];
+      const canChiMonth = `${canMonth} ${chiMonth}`;
+
+      const chiDayIndex = (jd + 1) % 12;
+      const auspiciousHourMap = {
+        0: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
+        1: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
+        2: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21} ],
+        3: [ {name:"Tý", time:"23h-01h", hStart:23, hEnd:1}, {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Mão", time:"05h-07h", hStart:5, hEnd:7}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19} ],
+        4: [ {name:"Dần", time:"03h-05h", hStart:3, hEnd:5}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Tỵ", time:"09h-11h", hStart:9, hEnd:11}, {name:"Thân", time:"15h-17h", hStart:15, hEnd:17}, {name:"Dậu", time:"17h-19h", hStart:17, hEnd:19}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ],
+        5: [ {name:"Sửu", time:"01h-03h", hStart:1, hEnd:3}, {name:"Thìn", time:"07h-09h", hStart:7, hEnd:9}, {name:"Ngọ", time:"11h-13h", hStart:11, hEnd:13}, {name:"Mùi", time:"13h-15h", hStart:13, hEnd:15}, {name:"Tuất", time:"19h-21h", hStart:19, hEnd:21}, {name:"Hợi", time:"21h-23h", hStart:21, hEnd:23} ]
+      };
+
+      const groupIdx = chiDayIndex % 6;
+      const hoursList = auspiciousHourMap[groupIdx] || [];
+      const isHoangDaoDay = (jd % 2 === 0);
+
+      return {
+        lunarDay: lunar.day,
+        lunarMonth: lunar.month,
+        lunarYear: lunar.year,
+        isLeap: lunar.leap,
+        canChiDay,
+        canChiMonth,
+        canChiYear,
+        hoursList,
+        isHoangDaoDay
+      };
+    }
+
+    // CẬP NHẬT TIÊU ĐỀ: HIỂN THỊ DƯƠNG VÀ ÂM ĐỒNG THỜI
+    function updateHeaderLunarBadge() {
+      try {
+        const now = new Date();
+        const d = now.getDate();
+        const m = now.getMonth() + 1;
+        const y = now.getFullYear();
+        const info = getLunarDetails(d, m, y);
+        const btnText = document.getElementById('headerLunarText');
+        if (btnText) {
+          btnText.innerHTML = `📅 ${d}/${m} · ${info.lunarDay}/${info.lunarMonth} Âm`;
+        }
+      } catch (err) {
+        console.error("Lỗi updateHeaderLunarBadge:", err);
+      }
+    }
+
+    function openLunarModal(selectedDateStr) {
+      const picker = document.getElementById('lunarDatePicker');
+      let targetDate = new Date();
+      if (selectedDateStr) {
+        const parts = selectedDateStr.split('-');
+        if (parts.length === 3) {
+          targetDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        }
+      }
+      const y = targetDate.getFullYear();
+      const m = targetDate.getMonth() + 1;
+      const d = targetDate.getDate();
+
+      if (picker) {
+        picker.value = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      }
+
+      const info = getLunarDetails(d, m, y);
+      const dayNames = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+      const dayName = dayNames[targetDate.getDay()];
+
+      document.getElementById('lunarSolarDateText').textContent = `${dayName}, ${d}/${m}/${y}`;
+      document.getElementById('lunarDateText').textContent = `Ngày ${info.lunarDay} Tháng ${info.lunarMonth} ${info.isLeap ? '(Nhuận)' : ''}`;
+      document.getElementById('lunarCanChiText').textContent = `Can chi: Ngày ${info.canChiDay} · Tháng ${info.canChiMonth} · Năm ${info.canChiYear}`;
+
+      const dayTypeEl = document.getElementById('lunarDayTypeText');
+      if (info.isHoangDaoDay) {
+        dayTypeEl.innerHTML = `<span style="color:#00e676; font-weight:700;">● Ngày Hoàng Đạo (Tốt lành, thuận lợi)</span>`;
+      } else {
+        dayTypeEl.innerHTML = `<span style="color:var(--warn-orange); font-weight:700;">● Ngày Hắc Đạo (Cẩn trọng quy trình)</span>`;
+      }
+
+      const currH = new Date().getHours();
+      const isToday = (new Date().toDateString() === targetDate.toDateString());
+      const hoursBox = document.getElementById('lunarAuspiciousHoursList');
+      hoursBox.innerHTML = info.hoursList.map(h => {
+        let isNow = false;
+        if (isToday) {
+          if (h.hStart === 23) isNow = (currH >= 23 || currH < 1);
+          else isNow = (currH >= h.hStart && currH < h.hEnd);
+        }
+        return `<span class="lunar-hour-badge ${isNow ? 'lunar-hour-current' : ''}">Giờ ${h.name} (${h.time})</span>`;
+      }).join(' ');
+
+      const adviceEl = document.getElementById('lunarAdviceText');
+      if (info.isHoangDaoDay) {
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Khởi công ca mới, họp bàn giao quy trình nghiệp vụ, ký duyệt báo cáo, bốc dỡ giải tỏa bãi container, phối hợp các bộ phận thuận buồm xuôi gió.<br>• <b>Chú ý:</b> Duy trì kiểm tra bảo hộ lao động và an toàn thiết bị cẩu bãi trong các khung giờ cao điểm.`;
+      } else {
+        adviceEl.innerHTML = `• <b>Nên làm:</b> Tập trung xử lý các nhiệm vụ tồn đọng, rà soát đối soát số liệu báo cáo, kiểm tra hồ sơ kỹ thuật, trao đổi kỹ lưỡng trước khi phê duyệt kết quả.<br>• <b>Chú ý:</b> Cẩn trọng khi tác nghiệp dưới thời tiết phức tạp; tuân thủ nghiêm ngặt bảo hộ lao động tại hiện trường Tân Vũ.`;
+      }
+
+      document.getElementById('modalLunarCalendar').style.display = 'flex';
+    }
+
+    function onLunarDateChange(val) {
+      if (val) openLunarModal(val);
+    }
+
+    function openExternalLunarWeb() {
+      const picker = document.getElementById('lunarDatePicker');
+      const val = picker ? picker.value : '';
+      let url = 'https://vansu.net/lich-am.html';
+      if (val) {
+        url = `https://vansu.net/lich-van-nien.html`;
+      }
+      window.open(url, '_blank');
+    }
+
+    // THEME SYSTEM
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
       document.documentElement.setAttribute("data-theme", saved);
@@ -1601,7 +1829,7 @@
       document.getElementById("themeLabel").textContent = next === "dark" ? "Sáng" : "Tối";
     }
 
-    // 2. KHỞI TẠO APP
+    // KHỞI TẠO APP
     async function initApp() {
       initTheme();
       updateHeaderLunarBadge();
@@ -1616,6 +1844,7 @@
         logoutUser();
         return;
       }
+
       await loadInitialData();
       setupRealtime();
       setupPresence();
@@ -1746,7 +1975,7 @@
         if (taskRealtimeChannel) {
           supabaseClient.removeChannel(taskRealtimeChannel);
         }
-        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.2')
+        taskRealtimeChannel = supabaseClient.channel('dsu-realtime-tasks-v24.3')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
             fetchTasks();
           })
@@ -1770,7 +1999,7 @@
       await supabaseClient.from('app_users').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }
 
-    // 3. HIỆU ỨNG KHỦNG LONG ĐỚP CHỮ & THANH THÔNG BÁO TỔNG HỢP ÂM LỊCH
+    // TICKER THÔNG BÁO VỚI KHỦNG LONG
     let tickerIndex = 0;
     let tickerTimeout = null;
 
@@ -1881,7 +2110,7 @@
       }, 100);
     }
 
-    // 4. HỘP THƯ BÁO CÁO CHỜ DUYỆT (CHO SẾP/ADMIN)
+    // HỘP THƯ BÁO CÁO CHỜ DUYỆT
     function updateReviewInboxUI() {
       const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
       const canReview = ['admin', 'hod'].includes(currentUser.role);
@@ -1967,7 +2196,7 @@
       alert("Đã xóa toàn bộ nhắc nhở chờ duyệt!");
     }
 
-    // 5. NÚT TRẢ VỀ YÊU CẦU SỬA LẠI
+    // NÚT TRẢ VỀ YÊU CẦU SỬA LẠI
     async function rejectTaskToInProgress() {
       if (!selectedTaskIdForDetail) return;
       const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
@@ -2006,7 +2235,7 @@
       }
     }
 
-    // 6. CHAT LIVE & 1-1 LOGIC
+    // CHAT LIVE & 1-1
     function chatRoomKey() {
       return activeChatPeerId === null ? 'group' : [String(currentUserId), String(activeChatPeerId)].sort().join(':');
     }
@@ -2415,7 +2644,7 @@
       }
     }
 
-    // 7. TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO"
+    // TÍNH DEADLINE & DỪNG ĐẾM GIỜ KHI CHUYỂN "CHỜ DUYỆT BÁO CÁO"
     function calculateDeadlineAlert(dueDateTimeStr, status) {
       if (status === 'completed') {
         return { text: '✅ Đã hoàn thành', cardClass: '', type: 'completed' };
@@ -2448,7 +2677,7 @@
       return { text: `Hạn: ${new Date(dueDateTimeStr).toLocaleDateString('vi-VN')}`, cardClass: '', type: 'normal' };
     }
 
-    // 8. RENDER KANBAN
+    // RENDER KANBAN
     function renderKanban() {
       const cols = {
         pending: document.getElementById('col-pending'),
@@ -2524,7 +2753,7 @@
       document.getElementById('badge-completed').textContent = counts.completed;
     }
 
-    // 9. CHI TIẾT CÔNG VIỆC
+    // CHI TIẾT CÔNG VIỆC
     function openTaskDetailModal(taskId) {
       if (!taskId) return;
       selectedTaskIdForDetail = taskId;
@@ -2532,7 +2761,6 @@
       const task = tasks.find(t => String(t.id) === String(taskId));
       if (!task) return;
 
-      // TỰ ĐỘNG RESET TRỐNG Ô DÁN LINK VÀ GHI CHÚ
       const driveUrlInput = document.getElementById('mySubDriveUrl');
       const noteInput = document.getElementById('mySubNoteInput');
       if (driveUrlInput) driveUrlInput.value = '';
@@ -2594,784 +2822,3 @@
           selectStatus.disabled = false;
           dueInput.disabled = false;
           btnSaveStatus.disabled = false;
-          mySubWrap.style.display = 'block';
-        } else {
-          selectStatus.disabled = true;
-          dueInput.disabled = true;
-          btnSaveStatus.disabled = true;
-          mySubWrap.style.display = 'none';
-        }
-      } else {
-        noticeBox.style.display = 'none';
-        dueInput.disabled = !isLeaderRole;
-        mySubWrap.style.display = 'block';
-
-        if (isLeader || isLeaderRole) {
-          selectStatus.disabled = false;
-          btnSaveStatus.disabled = false;
-        } else {
-          selectStatus.disabled = true;
-          btnSaveStatus.disabled = true;
-        }
-      }
-
-      document.getElementById('addMemberSection').style.display = 'none';
-
-      renderDetailAssigneeTable(task, isLeaderRole && !isTaskCompleted);
-      renderSubmissionsTable(task);
-
-      document.getElementById('modalTaskDetail').style.display = 'flex';
-    }
-
-    function renderDetailAssigneeTable(task, canManageMembers) {
-      const assigneeTable = document.getElementById('detailAssigneeTableBody');
-      assigneeTable.innerHTML = '';
-      
-      let memberIds = [];
-      if (Array.isArray(task.assignees_json)) memberIds = task.assignees_json;
-      else if (task.assignee_id) memberIds = [task.assignee_id];
-
-      memberIds.forEach((uid, index) => {
-        const member = users.find(u => String(u.id) === String(uid)) || { full_name: 'Nhân sự cảng', phone: 'N/A' };
-        const isLeader = String(uid) === String(task.leader_id);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-weight:700;">${index + 1}</td>
-          <td><b>${member.full_name}</b></td>
-          <td>${member.phone || 'N/A'}</td>
-          <td>${isLeader ? '<span class="leader-badge">⭐ Nhóm trưởng</span>' : 'Thành viên'}</td>
-          <td style="text-align:right;">
-            ${(canManageMembers ? `<button class="btn btn-outline btn-sm" onclick="setTaskLeader('${uid}')">${isLeader ? '⭐ Leader' : 'Đặt Leader'}</button>` : '')}
-            ${(canManageMembers && !isLeader) ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="removeMemberFromTask('${uid}')">🗑️ Xóa</button>` : ''}
-          </td>
-        `;
-        assigneeTable.appendChild(tr);
-      });
-    }
-
-    async function setTaskLeader(uid) {
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) return;
-      const me = users.find(u => String(u.id) === String(currentUserId)) || {};
-      if (!['hod', 'admin'].includes(me.role)) {
-        alert('Chỉ Trưởng/Phó hoặc Admin được đổi Nhóm trưởng.');
-        return;
-      }
-      if (task.status === 'completed') {
-        alert('Việc đã hoàn thành đang khóa chỉnh sửa. Lãnh đạo/Admin cần mở lại việc trước.');
-        return;
-      }
-      const ids = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
-      if (!ids.includes(uid)) {
-        alert('Nhóm trưởng phải là thành viên được phân công.');
-        return;
-      }
-      const { error } = await supabaseClient.from('tasks').update({ leader_id: uid, assignee_id: uid, updated_at: new Date().toISOString() }).eq('id', task.id);
-      if (error) {
-        alert('Không đổi được Nhóm trưởng: ' + error.message);
-        return;
-      }
-      task.leader_id = uid;
-      task.assignee_id = uid;
-      renderDetailAssigneeTable(task, true);
-      renderKanban();
-      alert('Đã đổi Nhóm trưởng thành công.');
-    }
-
-    async function removeMemberFromTask(userIdToRemove) {
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) return;
-
-      const member = users.find(u => String(u.id) === String(userIdToRemove));
-      if (!confirm(`Bạn có chắc chắn muốn loại bỏ nhân sự [${member?.full_name || 'này'}] khỏi nhóm công việc này?`)) return;
-
-      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : [task.assignee_id];
-      memberIds = memberIds.filter(id => String(id) !== String(userIdToRemove));
-
-      const { error } = await supabaseClient.from('tasks').update({
-        assignees_json: memberIds,
-        updated_at: new Date()
-      }).eq('id', task.id);
-
-      if (!error) {
-        task.assignees_json = memberIds;
-        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
-        const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
-        renderDetailAssigneeTable(task, isLeaderRole && task.status !== 'completed');
-        renderKanban();
-        alert("Đã xóa thành viên khỏi nhóm thành công!");
-      } else {
-        alert("Lỗi xóa thành viên: " + error.message);
-      }
-    }
-
-    async function submitDeleteTaskPermanent() {
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) return;
-
-      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
-      if (currentUser.role !== 'hod' && currentUser.role !== 'admin') {
-        alert("Chỉ có Lãnh đạo hoặc Admin mới có quyền xóa bỏ công việc này!");
-        return;
-      }
-
-      if (!confirm(`CẢNH BÁO: XÓA VĨNH VIỄN công việc [${task.title}]?`)) return;
-
-      const { error } = await supabaseClient.from('tasks').delete().eq('id', task.id);
-      if (!error) {
-        tasks = tasks.filter(t => String(t.id) !== String(task.id));
-        closeModal('modalTaskDetail');
-        renderKanban();
-        renderScoreBoard();
-        updateReviewInboxUI();
-        alert("Đã xóa công việc thành công!");
-      }
-    }
-
-    async function saveTaskStatusFromDetail() {
-      if (!selectedTaskIdForDetail) {
-        alert("Không tìm thấy mã công việc!");
-        return;
-      }
-
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) {
-        alert("Không tìm thấy thông tin task trong bộ nhớ!");
-        return;
-      }
-
-      const statusSelect = document.getElementById('detailStatusSelect');
-      const dueInput = document.getElementById('detailDueDateTimeInput');
-
-      const newStatus = statusSelect ? statusSelect.value : task.status;
-      const newDueDateTimeVal = dueInput ? dueInput.value : '';
-
-      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
-      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
-
-      if (task.status === 'completed' && newStatus !== 'completed' && !isLeaderRole) {
-        alert("Chỉ Lãnh đạo hoặc Admin mới có quyền mở lại việc đã hoàn thành!");
-        return;
-      }
-
-      let updateData = { 
-        status: newStatus, 
-        updated_at: new Date().toISOString() 
-      };
-
-      if (newStatus !== 'in_progress') {
-        updateData.fix_requested = false;
-      }
-
-      if (newDueDateTimeVal && isLeaderRole) {
-        updateData.due_datetime = new Date(newDueDateTimeVal).toISOString();
-      }
-
-      closeModal('modalTaskDetail');
-
-      let { error } = await supabaseClient.from('tasks').update({ ...updateData, fix_requested: false }).eq('id', task.id);
-      if (error && error.message.includes('fix_requested')) {
-        const retryRes = await supabaseClient.from('tasks').update(updateData).eq('id', task.id);
-        error = retryRes.error;
-      }
-
-      if (!error) {
-        task.status = newStatus;
-        task.fix_requested = false;
-        if (newDueDateTimeVal && isLeaderRole) {
-          task.due_datetime = updateData.due_datetime;
-        }
-        renderKanban();
-        renderScoreBoard();
-        updateReviewInboxUI();
-      } else {
-        alert("Lỗi khi lưu thay đổi: " + error.message);
-        openTaskDetailModal(task.id);
-      }
-    }
-
-    function openAddMemberSection() {
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) return;
-
-      const sec = document.getElementById('addMemberSection');
-      const select = document.getElementById('selectNewMember');
-      select.innerHTML = '';
-
-      const currentMemberIds = Array.isArray(task.assignees_json) ? task.assignees_json : (task.assignee_id ? [task.assignee_id] : []);
-      const availableUsers = users.filter(u => !currentMemberIds.includes(String(u.id)));
-
-      if (availableUsers.length === 0) {
-        alert("Tất cả nhân sự đều đã tham gia nhiệm vụ này!");
-        return;
-      }
-
-      availableUsers.forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u.id;
-        opt.textContent = `${u.full_name} (${u.title || 'Chuyên viên'})`;
-        select.appendChild(opt);
-      });
-
-      sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
-    }
-
-    async function submitAddMemberToTask() {
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      const newMemberId = document.getElementById('selectNewMember').value;
-      if (!task || !newMemberId) return;
-
-      let memberIds = Array.isArray(task.assignees_json) ? [...task.assignees_json] : (task.assignee_id ? [task.assignee_id] : []);
-      if (!memberIds.includes(newMemberId)) memberIds.push(newMemberId);
-
-      const { error } = await supabaseClient.from('tasks').update({ assignees_json: memberIds, updated_at: new Date() }).eq('id', task.id);
-      if (!error) {
-        task.assignees_json = memberIds;
-        document.getElementById('addMemberSection').style.display = 'none';
-        const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
-        renderDetailAssigneeTable(task, (currentUser.role === 'hod' || currentUser.role === 'admin') && task.status !== 'completed');
-        renderKanban();
-        alert("Đã thêm thành viên thành công!");
-      }
-    }
-
-    // HIỂN THỊ DANH SÁCH BÁO CÁO: LỌC CHẶT CHẼ THEO TASK_CODE + NÚT XÓA TỪNG DÒNG
-    function renderSubmissionsTable(task) {
-      const tbody = document.getElementById('detailSubmissionTableBody');
-      tbody.innerHTML = '';
-      const rawSubs = Array.isArray(task.member_submissions) ? task.member_submissions : [];
-      
-      // Lọc tách bạch: Chỉ hiển thị các báo cáo đúng của task_code này
-      const subs = rawSubs.filter(sub => !sub.taskCode || sub.taskCode === task.task_code);
-
-      if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:10px;">Chưa có thành viên nào nộp báo cáo cho nhiệm vụ này.</td></tr>';
-        return;
-      }
-
-      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || {};
-      const isLeaderRole = currentUser.role === 'hod' || currentUser.role === 'admin';
-
-      subs.forEach((sub, idx) => {
-        const isMySub = String(sub.userId) === String(currentUserId);
-        const canDelete = isMySub || isLeaderRole;
-        const subId = sub.id || ('idx_' + idx);
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${escapeHtml(sub.userName || 'Thành viên')}</b></td>
-          <td>${escapeHtml(sub.note || '(Không)')}</td>
-          <td>${sub.driveUrl ? `<a href="${escapeHtml(sub.driveUrl)}" target="_blank" class="btn btn-drive btn-sm">🌐 Mở Drive</a>` : '(Chưa kèm link)'}</td>
-          <td><span style="font-size:10px; color:var(--text-muted);">${escapeHtml(sub.time || '')}</span></td>
-          <td style="text-align:right;">
-            ${canDelete ? `<button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red); padding:2px 6px; font-size:10.5px;" onclick="deleteTaskSubmission('${subId}')" title="Xóa dòng báo cáo này">🗑️ Xóa</button>` : ''}
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // NỘP KẾT QUẢ: ĐÓNG DẤU TASK_CODE + CẬP NHẬT ĐÈ NẾU CÙNG 1 NGƯỜI NỘP LẠI
-    async function submitMyTaskResult() {
-      if (!selectedTaskIdForDetail) {
-        alert("Không tìm thấy mã công việc hiện tại!");
-        return;
-      }
-      
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) {
-        alert("Không tìm thấy thông tin task trong bộ nhớ!");
-        return;
-      }
-
-      const driveUrlInput = document.getElementById('mySubDriveUrl');
-      const noteInput = document.getElementById('mySubNoteInput');
-      
-      const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : '';
-      const note = noteInput ? noteInput.value.trim() : '';
-      const currentUser = users.find(u => String(u.id) === String(currentUserId)) || { full_name: "Thành viên" };
-
-      if (!driveUrl && !note) {
-        alert("Vui lòng dán Link Google Drive báo cáo hoặc nhập ghi chú kết quả!");
-        return;
-      }
-
-      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
-      
-      // Tìm xem chính tài khoản này đã từng nộp báo cáo cho nhiệm vụ này chưa
-      const existingIndex = currentSubs.findIndex(s => 
-        String(s.userId) === String(currentUserId) && 
-        (!s.taskCode || s.taskCode === task.task_code)
-      );
-
-      const timeStr = new Date().toLocaleString('vi-VN');
-
-      if (existingIndex !== -1) {
-        // Cập nhật đè lên dòng của chính mình thay vì tạo thêm dòng mới
-        currentSubs[existingIndex] = {
-          ...currentSubs[existingIndex],
-          id: currentSubs[existingIndex].id || ('sub_' + Date.now()),
-          taskCode: task.task_code,
-          userName: currentUser.full_name || "Thành viên",
-          note: note || currentSubs[existingIndex].note,
-          driveUrl: driveUrl || currentSubs[existingIndex].driveUrl,
-          time: timeStr + ' (Đã cập nhật)'
-        };
-      } else {
-        // Tạo dòng báo cáo mới gắn kèm taskCode
-        const newSub = {
-          id: 'sub_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-          taskCode: task.task_code,
-          userId: currentUserId,
-          userName: currentUser.full_name || "Thành viên",
-          note: note || '(Không có ghi chú)',
-          driveUrl: driveUrl || '',
-          time: timeStr
-        };
-        currentSubs.push(newSub);
-      }
-
-      // Cập nhật tuyệt đối chỉ đúng id của task đang mở
-      const { error } = await supabaseClient.from('tasks').update({
-        member_submissions: currentSubs,
-        updated_at: new Date().toISOString()
-      }).eq('id', task.id);
-
-      if (!error) {
-        task.member_submissions = currentSubs;
-        if (driveUrlInput) driveUrlInput.value = '';
-        if (noteInput) noteInput.value = '';
-        renderSubmissionsTable(task);
-        alert("Đã lưu kết quả báo cáo thành công!");
-      } else {
-        alert("Lỗi khi lưu kết quả lên Supabase: " + error.message);
-      }
-    }
-
-    // XÓA DÒNG BÁO CÁO NỘP NHẦM
-    async function deleteTaskSubmission(subId) {
-      if (!selectedTaskIdForDetail) return;
-      const task = tasks.find(t => String(t.id) === String(selectedTaskIdForDetail));
-      if (!task) return;
-
-      if (!confirm("Bạn có chắc chắn muốn xóa dòng kết quả báo cáo này không?")) return;
-
-      let currentSubs = Array.isArray(task.member_submissions) ? [...task.member_submissions] : [];
-      
-      const updatedSubs = currentSubs.filter((sub, idx) => {
-        const currentSubId = sub.id || ('idx_' + idx);
-        return String(currentSubId) !== String(subId);
-      });
-
-      const { error } = await supabaseClient.from('tasks').update({
-        member_submissions: updatedSubs,
-        updated_at: new Date().toISOString()
-      }).eq('id', task.id);
-
-      if (!error) {
-        task.member_submissions = updatedSubs;
-        renderSubmissionsTable(task);
-        alert("Đã xóa dòng báo cáo thành công!");
-      } else {
-        alert("Lỗi khi xóa báo cáo từ Supabase: " + error.message);
-      }
-    }
-
-    // 10. TẠO VIỆC MỚI
-    function openCreateTaskModal() {
-      document.getElementById('taskTitle').value = '';
-      document.getElementById('taskDesc').value = '';
-      document.getElementById('taskDriveLink').value = '';
-      
-      const checkList = document.getElementById('assigneeCheckboxList');
-      const leaderSelect = document.getElementById('taskLeaderSelect');
-      checkList.innerHTML = '';
-      leaderSelect.innerHTML = '';
-
-      users.forEach(u => {
-        const label = document.createElement('label');
-        label.style.display = 'flex';
-        label.style.alignItems = 'center';
-        label.style.gap = '6px';
-        label.style.fontSize = '12px';
-        label.innerHTML = `<input type="checkbox" value="${u.id}" onchange="syncLeaderOptions()"> <span>${escapeHtml(u.full_name)}</span>`;
-        checkList.appendChild(label);
-      });
-
-      document.getElementById('modalCreateTask').style.display = 'flex';
-    }
-
-    function syncLeaderOptions() {
-      const leaderSelect = document.getElementById('taskLeaderSelect');
-      leaderSelect.innerHTML = '';
-      const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
-
-      checkedBoxes.forEach(cb => {
-        const user = users.find(u => String(u.id) === String(cb.value));
-        if (user) {
-          const opt = document.createElement('option');
-          opt.value = user.id;
-          opt.textContent = `${user.full_name} (Leader)`;
-          leaderSelect.appendChild(opt);
-        }
-      });
-    }
-
-    async function submitCreateTask() {
-      const title = document.getElementById('taskTitle').value.trim();
-      const desc = document.getElementById('taskDesc').value.trim();
-      const leaderId = document.getElementById('taskLeaderSelect').value;
-      const dueDateTimeVal = document.getElementById('taskDueDateTime').value;
-      const driveLink = document.getElementById('taskDriveLink').value.trim();
-
-      const checkedBoxes = document.querySelectorAll('#assigneeCheckboxList input[type="checkbox"]:checked');
-      const assigneeIds = Array.from(checkedBoxes).map(cb => cb.value);
-
-      if (!title || assigneeIds.length === 0 || !leaderId || !dueDateTimeVal) {
-        alert("Vui lòng nhập tên việc, chọn ít nhất 1 thành viên phối hợp, chỉ định Nhóm trưởng và chọn hạn chót!");
-        return;
-      }
-
-      const dueIsoString = new Date(dueDateTimeVal).toISOString();
-      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      const randomCode = 'TSK-' + dateStr + '-' + Math.floor(100 + Math.random() * 900);
-
-      const newTaskPayload = {
-        task_code: randomCode,
-        title: title,
-        description: desc,
-        assignee_id: leaderId,
-        leader_id: leaderId,
-        creator_id: currentUserId || null,
-        assignees_json: assigneeIds,
-        priority: 'medium',
-        status: 'pending',
-        due_datetime: dueIsoString,
-        drive_link: driveLink || null,
-        member_submissions: [],
-        fix_requested: false
-      };
-
-      const { error } = await supabaseClient.from('tasks').insert([newTaskPayload]);
-
-      if (!error) {
-        closeModal('modalCreateTask');
-        await fetchTasks();
-        alert("Đã tạo công việc mới thành công!");
-      } else {
-        alert("Lỗi khi tạo việc trên cơ sở dữ liệu: " + error.message);
-      }
-    }
-
-    // 11. XUẤT BÁO CÁO CSV
-    function exportTasksReportCSV() {
-      if (tasks.length === 0) {
-        alert("Chưa có dữ liệu công việc để xuất báo cáo!");
-        return;
-      }
-
-      let csvContent = "\uFEFF";
-      csvContent += "STT,Mã Việc,Tên Nhiệm Vụ,Mức Ưu Tiên,Nhóm Trưởng (Leader),Thành Viên Phối Hợp,Hạn Chót,Trạng Thái,Link Drive,Kết Quả Báo Cáo\n";
-
-      tasks.forEach((t, index) => {
-        const leader = users.find(u => String(u.id) === String(t.leader_id))?.full_name || 'N/A';
-        const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
-        const memberNames = memberIds.map(uid => users.find(u => String(u.id) === String(uid))?.full_name || 'N/A').join(" | ");
-        
-        let statusText = "Chờ tiếp nhận";
-        if (t.status === 'in_progress') statusText = "Đang thực hiện";
-        if (t.status === 'review') statusText = "Chờ duyệt báo cáo";
-        if (t.status === 'completed') statusText = "Đã hoàn thành";
-
-        const rawSubs = Array.isArray(t.member_submissions) ? t.member_submissions : [];
-        const subs = rawSubs.filter(s => !s.taskCode || s.taskCode === t.task_code);
-        const resultNotes = subs.map(s => `${s.userName}: ${s.note || ''} [${s.driveUrl || ''}]`).join(" ; ");
-
-        const row = [
-          index + 1,
-          `"${t.task_code || 'TSK'}"`,
-          `"${(t.title || '').replace(/"/g, '""')}"`,
-          `"${t.priority || 'medium'}"`,
-          `"${leader}"`,
-          `"${memberNames}"`,
-          `"${t.due_datetime ? new Date(t.due_datetime).toLocaleString('vi-VN') : ''}"`,
-          `"${statusText}"`,
-          `"${t.drive_link || ''}"`,
-          `"${resultNotes.replace(/"/g, '""')}"`
-        ];
-
-        csvContent += row.join(",") + "\n";
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", `DSU_BaoCao_TTKTDVKH_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    // 12. BẢNG ĐIỂM
-    function renderScoreBoard() {
-      const tbody = document.getElementById('scoreTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      users.forEach((u, idx) => {
-        const myTasks = tasks.filter(t => (Array.isArray(t.assignees_json) ? t.assignees_json.includes(String(u.id)) : String(t.assignee_id) === String(u.id)));
-        const completed = myTasks.filter(t => t.status === 'completed').length;
-        const overdue = myTasks.filter(t => t.status !== 'completed' && calculateDeadlineAlert(t.due_datetime, t.status).type === 'overdue').length;
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="text-align:center;"><b>${idx + 1}</b></td>
-          <td><b>${escapeHtml(u.full_name)}</b></td>
-          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
-          <td style="text-align:center; font-weight:700;">${myTasks.length}</td>
-          <td style="text-align:center; color:var(--succ-green); font-weight:700;">${completed}</td>
-          <td style="text-align:center; color:var(--danger-red);">${overdue}</td>
-          <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:16px;">${completed * 10}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // 13. QUẢN TRỊ NHÂN SỰ
-    function renderAdminUserTable() {
-      const tbody = document.getElementById('adminUserTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      users.forEach(u => {
-        const tr = document.createElement('tr');
-        let roleName = u.role === 'hod' ? 'Trưởng / Phó TT' : (u.role === 'admin' ? 'Quản trị viên' : 'Nhân viên');
-        tr.innerHTML = `
-          <td><b>${escapeHtml(u.full_name)}</b></td>
-          <td>${u.phone || 'N/A'}</td>
-          <td>${u.email || 'N/A'}</td>
-          <td>${escapeHtml(u.title || 'Chuyên viên')}</td>
-          <td><span style="font-size:11px; font-weight:700;">${roleName}</span></td>
-          <td style="text-align:right; white-space:nowrap;">
-            <button class="btn btn-outline btn-sm" onclick="openEditUserModalAdmin('${u.id}')">✏️ Sửa</button>
-            <button class="btn btn-outline btn-sm" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="deleteUser('${u.id}')">Xóa</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function openRegisterModalAdmin() {
-      document.getElementById('modalRegisterTitle').textContent = "Thêm nhân sự mới (Admin)";
-      document.getElementById('editUserId').value = '';
-      document.getElementById('regFullName').value = '';
-      document.getElementById('regPhone').value = '';
-      document.getElementById('regEmail').value = '';
-      document.getElementById('regTitle').value = 'Chuyên viên Khai thác';
-      document.getElementById('regRole').value = 'staff';
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    function openEditUserModalAdmin(userId) {
-      const user = users.find(u => String(u.id) === String(userId));
-      if (!user) return;
-
-      document.getElementById('modalRegisterTitle').textContent = `✏️ Chỉnh sửa hồ sơ: ${user.full_name}`;
-      document.getElementById('editUserId').value = user.id;
-      document.getElementById('regFullName').value = user.full_name || '';
-      document.getElementById('regPhone').value = user.phone || '';
-      document.getElementById('regEmail').value = user.email || '';
-      document.getElementById('regTitle').value = user.title || '';
-      document.getElementById('regRole').value = user.role || 'staff';
-      document.getElementById('modalRegister').style.display = 'flex';
-    }
-
-    async function submitSaveUserAdmin() {
-      const editId = document.getElementById('editUserId').value;
-      const name = document.getElementById('regFullName').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const title = document.getElementById('regTitle').value.trim();
-      const role = document.getElementById('regRole').value;
-
-      if (!name || !phone) {
-        alert("Vui lòng điền đủ Họ tên và Số điện thoại!");
-        return;
-      }
-
-      if (editId) {
-        const { error } = await supabaseClient.from('app_users').update({
-          full_name: name, phone, email, title, role
-        }).eq('id', editId);
-
-        if (!error) {
-          alert("Cập nhật thông tin nhân sự thành công!");
-          closeModal('modalRegister');
-          await loadInitialData();
-        } else {
-          alert("Lỗi cập nhật: " + error.message);
-        }
-      } else {
-        const { error } = await supabaseClient.from('app_users').insert([{
-          full_name: name, phone, email, title, role, password_hash: '123456'
-        }]);
-
-        if (!error) {
-          alert("Thêm nhân sự mới thành công!");
-          closeModal('modalRegister');
-          await loadInitialData();
-        } else {
-          alert("Lỗi thêm nhân sự: " + error.message);
-        }
-      }
-    }
-
-    async function deleteUser(uid) {
-      if (!confirm("Xác nhận xóa nhân sự này?")) return;
-      await supabaseClient.from('app_users').delete().eq('id', uid);
-      users = users.filter(u => String(u.id) !== String(uid));
-      renderAdminUserTable();
-      renderScoreBoard();
-    }
-
-    // 14. AUTH & TABS
-    function logoutUser() {
-      localStorage.removeItem("DSU_CURRENT_USER_ID");
-      localStorage.removeItem("DSU_ACTIVE_TAB");
-      localStorage.removeItem("DSU_ACTIVE_CHAT_PEER");
-      currentUserId = null;
-      document.getElementById('modalAuth').style.display = 'flex';
-    }
-
-    async function submitLogin() {
-      const phone = document.getElementById('loginPhoneInput').value.trim();
-      const pass = document.getElementById('loginPasswordInput').value.trim();
-
-      const { data } = await supabaseClient.from('app_users').select('*').eq('phone', phone).eq('password_hash', pass);
-      if (data && data.length > 0) {
-        currentUserId = data[0].id;
-        localStorage.setItem("DSU_CURRENT_USER_ID", data[0].id);
-        closeModal('modalAuth');
-        await initApp();
-      } else {
-        alert("Sai số điện thoại hoặc mật khẩu!");
-      }
-    }
-
-    function switchMainTab(tabId) {
-      localStorage.setItem("DSU_ACTIVE_TAB", tabId);
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
-
-      const target = document.getElementById(tabId);
-      if (target) target.classList.add('active');
-
-      const activeBtn = document.getElementById('tabBtn-' + tabId.replace('Tab', ''));
-      if (activeBtn) activeBtn.classList.add('active');
-
-      if (tabId === 'scoreTab') renderScoreBoard();
-      if (tabId === 'adminTab') renderAdminUserTable();
-      if (tabId === 'chatTab') { 
-        markCurrentRoomAsRead();
-        renderChatUsers(); 
-        updateTabChatAlertUI();
-        loadChatMessages(); 
-      }
-    }
-
-    function updateCurrentUserUI() {
-      const user = users.find(u => String(u.id) === String(currentUserId));
-      if (user) {
-        document.getElementById('currentUserBadge').innerHTML = `<b>${escapeHtml(user.full_name)}</b><div style="color:var(--accent-light); font-size:9.5px;">${escapeHtml(user.title || 'Chuyên viên')}</div>`;
-      }
-    }
-
-    function promptAdminPasswordAndOpen() {
-      const pass = prompt("Nhập mật khẩu Quản trị để mở khóa:");
-      if (pass === ADMIN_SECRET_KEY) {
-        switchMainTab('adminTab');
-      } else if (pass !== null) {
-        alert("Sai mật khẩu!");
-      }
-    }
-
-    function closeModal(id) {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    }
-
-    function openDriveFolder() { window.open(DRIVE_FOLDER_URL, '_blank'); }
-
-    // 15. HIỆU ỨNG PHÁO HOA MINI DƯỚI FOOTER
-    function initFireworks() {
-      const canvas = document.getElementById('fireworksCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let w = canvas.width = canvas.offsetWidth;
-      let h = canvas.height = canvas.offsetHeight;
-
-      window.addEventListener('resize', () => {
-        w = canvas.width = canvas.offsetWidth;
-        h = canvas.height = canvas.offsetHeight;
-      });
-
-      let particles = [];
-      const colors = ['#FFD700', '#2563C9', '#8DB8FF', '#00e676', '#FF6B6B', '#F08A24'];
-
-      function createFirework() {
-        if (particles.length > 50) return;
-        const x = Math.random() * w;
-        const y = Math.random() * (h * 0.7) + (h * 0.2);
-        const count = 12;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-
-        for (let i = 0; i < count; i++) {
-          const angle = (Math.PI * 2 * i) / count;
-          const speed = Math.random() * 2 + 1;
-          particles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            alpha: 1,
-            color: color,
-            radius: Math.random() * 1.8 + 1
-          });
-        }
-      }
-
-      setInterval(createFirework, 2800);
-
-      function loop() {
-        ctx.clearRect(0, 0, w, h);
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.02;
-          p.alpha -= 0.015;
-
-          if (p.alpha <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-
-          ctx.save();
-          ctx.globalAlpha = p.alpha;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = p.color;
-          ctx.fill();
-          ctx.restore();
-        }
-        requestAnimationFrame(loop);
-      }
-      loop();
-    }
-
-    window.onload = initApp;
-  </script>
-</body>
-</html>
