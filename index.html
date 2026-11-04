@@ -236,23 +236,24 @@
       </div>
 
       <div class="header-actions">
-        <!-- NÚT LỊCH VẠN NIÊN (DƯƠNG + ÂM) -->
-        <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
-          <span id="headerLunarText">📅 Đang tải ngày...</span>
-        </button>
+    <!-- NÚT LỊCH VẠN NIÊN (DƯƠNG + ÂM) -->
+    <button class="lunar-btn" onclick="openLunarModal()" title="Xem lịch vạn niên & giờ hoàng đạo">
+      <span id="headerLunarText">📅 Đang tải ngày...</span>
+    </button>
 
-        <!-- NÚT MAIL HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
-        <div class="inbox-btn-wrap">
-          <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
-            ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
-          </button>
-        </div>
-
-        <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
-        <div id="currentUserBadge" style="font-size: 11.5px; text-align: right;"></div>
-        <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
-      </div>
+    <!-- NÚT MAIL HỘP THƯ BÁO CÁO CHỜ DUYỆT -->
+    <div class="inbox-btn-wrap">
+      <button class="inbox-icon-btn" onclick="openReviewInboxModal()" title="Hộp thư báo cáo chờ duyệt">
+        ✉️ <span id="inboxReviewBadge" class="inbox-badge" style="display:none;">0</span>
+      </button>
     </div>
+
+    <button class="btn btn-primary btn-sm" onclick="openCreateTaskModal()">+ Giao việc</button>
+    <div id="currentUserBadge" style="font-size: 11.5px; text-align: right;"></div>
+    <button class="btn btn-outline btn-sm" onclick="logoutUser()">Thoát</button>
+  </div>
+</div>
+
   </header>
 
   <!-- THANH THÔNG BÁO (ĐÃ THAY KHỦNG LONG BẰNG CÁI LOA 📢) -->
@@ -276,166 +277,166 @@
   <main class="container">
     
     <!-- TAB 1: KANBAN BOARD -->
-    <div id="tasksTab" class="tab-content active">
-      <section class="stats-strip">
-        <div class="stat-card" style="--stat-color: var(--accent-light);">
-          <div class="stat-lbl">📊 Tổng việc</div>
-          <div class="stat-val" id="totalTasksCount">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: var(--danger-red);">
-          <div class="stat-lbl" style="color:#ff7b7b;">⚡ ĐÃ QUÁ HẠN</div>
-          <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: var(--warn-orange);">
-          <div class="stat-lbl" style="color:#ffb469;">⏳ SẮP HẾT (&lt; 12H)</div>
-          <div class="stat-val" id="warn12hCount" style="color:#ffb469;">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: var(--succ-green);">
-          <div class="stat-lbl">✅ Đã hoàn thành</div>
-          <div class="stat-val" id="completedCount">0</div>
-        </div>
-      </section>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
-        <div style="display:flex; gap:10px; align-items:center;">
-          <button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">📊 Xuất Báo Cáo (CSV)</button>
-          <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">📂 Kho Google Drive TT</button>
-        </div>
-      </div>
-
-      <section class="kanban-grid">
-        <div class="kanban-col">
-          <div class="col-header"><span>📥 1. CHỜ TIẾP NHẬN</span><span class="col-badge" id="badge-pending">0</span></div>
-          <div class="col-body" id="col-pending"></div>
-        </div>
-        <div class="kanban-col">
-          <div class="col-header"><span>⚙️ 2. ĐANG THỰC HIỆN</span><span class="col-badge" id="badge-in_progress">0</span></div>
-          <div class="col-body" id="col-in_progress"></div>
-        </div>
-        <div class="kanban-col">
-          <div class="col-header"><span>⏳ 3. CHỜ DUYỆT BÁO CÁO</span><span class="col-badge" id="badge-review">0</span></div>
-          <div class="col-body" id="col-review"></div>
-        </div>
-        <div class="kanban-col">
-          <div class="col-header"><span>🎉 4. ĐÃ HOÀN THÀNH</span><span class="col-badge" id="badge-completed">0</span></div>
-          <div class="col-body" id="col-completed"></div>
-        </div>
-      </section>
+<div id="tasksTab" class="tab-content active">
+  <section class="stats-strip">
+    <div class="stat-card" style="--stat-color: var(--accent-light);">
+      <div class="stat-lbl">📊 Tổng việc</div>
+      <div class="stat-val" id="totalTasksCount">0</div>
     </div>
-
-    <!-- TAB 2: CHAT LIVE & CHAT 1-1 -->
-    <div id="chatTab" class="tab-content">
-      <div class="chat-layout">
-        <section class="user-list-card">
-          <div class="chat-list-header">👥 Nhân sự <span id="onlineCount" style="font-size:11px; color:var(--accent-light);">0 online</span></div>
-          <div id="chatUserList" style="overflow-y:auto; flex:1;"></div>
-        </section>
-        <section class="chat-main-card">
-          <div class="chat-list-header">
-            <span id="chatRoomTitle">🌐 Chat Nhóm chung</span>
-            <div style="display:flex; gap:4px; align-items:center;">
-              <button class="btn btn-success btn-sm" onclick="markCurrentChatAsRead()" style="font-size:10.5px; padding:4px 8px;">✓ Đã xem</button>
-            </div>
-          </div>
-          <div id="chatMessages" class="chat-messages-area"></div>
-          <form onsubmit="sendChatMessage(event)" style="display:flex; gap:6px; padding:10px; border-top:1px solid var(--border-color); background:var(--bg-card);">
-            <input type="file" id="chatFile" hidden onchange="uploadChatFile(this.files[0]);this.value=''">
-            <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFile').click()">📎</button>
-            <input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required>
-            <button class="btn btn-primary" type="submit">Gửi ➤</button>
-          </form>
-        </section>
-      </div>
+    <div class="stat-card" style="--stat-color: var(--danger-red);">
+      <div class="stat-lbl" style="color:#ff7b7b;">⚡ ĐÃ QUÁ HẠN</div>
+      <div class="stat-val" id="overdueCount" style="color:#ff7b7b;">0</div>
     </div>
-
-    <!-- TAB 3: BẢNG TÍNH ĐIỂM -->
-    <div id="scoreTab" class="tab-content">
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; overflow-x:auto;">
-        <h3 style="font-size:15px; margin-bottom:12px;">🏆 Bảng Điểm Hiệu Suất & Xếp Hạng Thi Đua DSU</h3>
-        <table class="dsu-table">
-          <thead><tr><th>Hạng</th><th>Nhân viên</th><th>Chức danh</th><th style="text-align:center;">Tổng việc</th><th style="text-align:center;">Đúng hạn</th><th style="text-align:center; color:var(--gold-star);">Tổng điểm DSU</th></tr></thead>
-          <tbody id="scoreTableBody"></tbody>
-        </table>
-      </div>
+    <div class="stat-card" style="--stat-color: var(--warn-orange);">
+      <div class="stat-lbl" style="color:#ffb469;">⏳ SẮP HẾT (&lt; 12H)</div>
+      <div class="stat-val" id="warn12hCount" style="color:#ffb469;">0</div>
     </div>
-
-    <!-- TAB 4: QUẢN TRỊ & DRIVE -->
-    <div id="adminTab" class="tab-content">
-      <div style="background:var(--bg-card); border:2px solid var(--gold-star); border-radius:10px; padding:16px; margin-bottom:16px;">
-        <h3 style="font-size:15px; color:var(--gold-star); margin-bottom:8px;">🎨 Quản Trị Chủ Đề Giao Diện & Lễ Hội Toàn Cục</h3>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px;">
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('dark')">🌙 Giao diện Tối</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('light')">☀️ Giao diện Sáng</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('christmas')">🎄 Giáng Sinh</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('tet')">🌸 Tết Nguyên Đán</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('independenceday')">⭐ Lễ 2-9</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('womensday')">💐 Ngày Phụ Nữ</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('halloween')">🎃 Halloween</button>
-          <button class="btn btn-outline" onclick="adminSetGlobalTheme('summer')">🏖️ Mùa Hè</button>
-        </div>
-      </div>
-
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; margin-bottom:16px;">
-        <h3 style="font-size:14.5px; color:var(--text-main); margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
-        <button class="btn btn-drive" onclick="openDriveFolder()">Mở Google Drive Trung tâm</button>
-      </div>
-
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; margin-bottom:16px; overflow-x:auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3 style="font-size:14.5px;">Danh Sách Nhân Sự & Phân Quyền</h3>
-          <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự</button>
-        </div>
-        <table class="dsu-table">
-          <thead><tr><th>Họ và Tên</th><th>SĐT (Zalo)</th><th>Email</th><th>Chức danh</th><th>Vai trò</th><th style="text-align:right;">Thao tác</th></tr></thead>
-          <tbody id="adminUserTableBody"></tbody>
-        </table>
-      </div>
-
-      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3 style="font-size:14.5px;">🧹 Quản Lý Task Đã Hoàn Thành & Tự Động Xóa (14 Ngày)</h3>
-          <button class="btn btn-outline btn-sm" onclick="renderCompletedTasksManager()">🔄 Làm mới</button>
-        </div>
-        <div style="overflow-x:auto;">
-          <table class="dsu-table">
-            <thead><tr><th>Mã / Tên công việc</th><th>Thời gian hoàn thành</th><th>Thời hạn tự xóa</th><th>Hiển thị</th><th style="text-align:right;">Thao tác</th></tr></thead>
-            <tbody id="adminCompletedTasksTableBody"></tbody>
-          </table>
-        </div>
-      </div>
+    <div class="stat-card" style="--stat-color: var(--succ-green);">
+      <div class="stat-lbl">✅ Đã hoàn thành</div>
+      <div class="stat-val" id="completedCount">0</div>
     </div>
+  </section>
 
-    <!-- TAB 5: HƯỚNG DẪN (KHÔI PHỤC HOÀN TOÀN GỐC) -->
-    <div id="guideTab" class="tab-content">
-      <div style="background:var(--bg-card); border:1px solid var(--gold-star); border-radius:10px; padding:16px; margin-bottom:16px;">
-        <h3 style="font-size:15px; color:var(--gold-star); margin-bottom:8px;">🏆 Quy Chế & Cách Thức Tính Điểm Hiệu Suất DSU Hàng Ngày</h3>
-        <div style="background:var(--bg-surface); padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:8px; font-size:12.5px;">
-          <b>📐 Công thức tính tổng điểm DSU:</b><br>
-          <span style="font-family:monospace; color:var(--accent-light);">Tổng Điểm = (Đúng hạn × 10đ) + (Trễ × 5đ) - (Quá hạn × -2đ)</span>
-        </div>
-      </div>
-      <div class="guide-grid">
-        <div class="guide-card">
-          <div class="guide-role-title">🎖️ Ban Lãnh Đạo</div>
-          <div class="guide-step">1. Giao việc & Điều chỉnh: Bấm "+ Giao việc", đổi Leader hoặc xóa việc.</div>
-          <div class="guide-step">2. Phê duyệt báo cáo: Duyệt hoàn thành hoặc trả về yêu cầu sửa.</div>
-        </div>
-        <div class="guide-card">
-          <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
-          <div class="guide-step">1. Trách nhiệm: Được gắn sao vàng trên thẻ việc, nhanh chóng tiếp nhận việc.</div>
-          <div class="guide-step">2. Chuyển trạng thái: Chuyển sang "Chờ duyệt báo cáo" khi hoàn thành.</div>
-        </div>
-        <div class="guide-card">
-          <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện</div>
-          <div class="guide-step">1. Theo dõi tiến độ: Chú ý các thẻ nhấp nháy vàng/đỏ.</div>
-          <div class="guide-step">2. Nộp kết quả: Gắn link Google Drive và lưu kết quả.</div>
-        </div>
-        <div class="guide-card">
-          <div class="guide-role-title">⚙️ Quản Trị Viên (Admin)</div>
-          <div class="guide-step">1. Toàn quyền hệ thống: Cấp tài khoản mới, phân quyền nhân sự và chọn chủ đề lễ hội.</div>
-        </div>
-      </div>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
+    <div style="display:flex; gap:10px; align-items:center;">
+      <button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">📊 Xuất Báo Cáo (CSV)</button>
+      <button class="btn btn-drive btn-sm" onclick="openDriveFolder()">📂 Kho Google Drive TT</button>
     </div>
+  </div>
+
+  <section class="kanban-grid">
+    <div class="kanban-col">
+      <div class="col-header"><span>📥 1. CHỜ TIẾP NHẬN</span><span class="col-badge" id="badge-pending">0</span></div>
+      <div class="col-body" id="col-pending"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="col-header"><span>⚙️ 2. ĐANG THỰC HIỆN</span><span class="col-badge" id="badge-in_progress">0</span></div>
+      <div class="col-body" id="col-in_progress"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="col-header"><span>⏳ 3. CHỜ DUYỆT BÁO CÁO</span><span class="col-badge" id="badge-review">0</span></div>
+      <div class="col-body" id="col-review"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="col-header"><span>🎉 4. ĐÃ HOÀN THÀNH</span><span class="col-badge" id="badge-completed">0</span></div>
+      <div class="col-body" id="col-completed"></div>
+    </div>
+  </section>
+</div>
+
+<!-- TAB 2: CHAT LIVE & CHAT 1-1 -->
+<div id="chatTab" class="tab-content">
+  <div class="chat-layout">
+    <section class="user-list-card">
+      <div class="chat-list-header">👥 Nhân sự <span id="onlineCount" style="font-size:11px; color:var(--accent-light);">0 online</span></div>
+      <div id="chatUserList" style="overflow-y:auto; flex:1;"></div>
+    </section>
+    <section class="chat-main-card">
+      <div class="chat-list-header">
+        <span id="chatRoomTitle">🌐 Chat Nhóm chung</span>
+        <div style="display:flex; gap:4px; align-items:center;">
+          <button class="btn btn-success btn-sm" onclick="markCurrentChatAsRead()" style="font-size:10.5px; padding:4px 8px;">✓ Đã xem</button>
+        </div>
+      </div>
+      <div id="chatMessages" class="chat-messages-area"></div>
+      <form onsubmit="sendChatMessage(event)" style="display:flex; gap:6px; padding:10px; border-top:1px solid var(--border-color); background:var(--bg-card);">
+        <input type="file" id="chatFile" hidden onchange="uploadChatFile(this.files[0]);this.value=''">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFile').click()">📎</button>
+        <input id="chatMessageInput" class="form-control" style="flex:1" maxlength="4000" placeholder="Nhập nội dung trao đổi nghiệp vụ…" required>
+        <button class="btn btn-primary" type="submit">Gửi ➤</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<!-- TAB 3: BẢNG TÍNH ĐIỂM -->
+<div id="scoreTab" class="tab-content">
+  <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; overflow-x:auto;">
+    <h3 style="font-size:15px; margin-bottom:12px;">🏆 Bảng Điểm Hiệu Suất & Xếp Hạng Thi Đua DSU</h3>
+    <table class="dsu-table">
+      <thead><tr><th>Hạng</th><th>Nhân viên</th><th>Chức danh</th><th style="text-align:center;">Tổng việc</th><th style="text-align:center;">Đúng hạn</th><th style="text-align:center; color:var(--gold-star);">Tổng điểm DSU</th></tr></thead>
+      <tbody id="scoreTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4: QUẢN TRỊ & DRIVE -->
+<div id="adminTab" class="tab-content">
+  <div style="background:var(--bg-card); border:2px solid var(--gold-star); border-radius:10px; padding:16px; margin-bottom:16px;">
+    <h3 style="font-size:15px; color:var(--gold-star); margin-bottom:8px;">🎨 Quản Trị Chủ Đề Giao Diện & Lễ Hội Toàn Cục</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px;">
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('dark')">🌙 Giao diện Tối</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('light')">☀️ Giao diện Sáng</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('christmas')">🎄 Giáng Sinh</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('tet')">🌸 Tết Nguyên Đán</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('independenceday')">⭐ Lễ 2-9</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('womensday')">💐 Ngày Phụ Nữ</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('halloween')">🎃 Halloween</button>
+      <button class="btn btn-outline" onclick="adminSetGlobalTheme('summer')">🏖️ Mùa Hè</button>
+    </div>
+  </div>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; margin-bottom:16px;">
+    <h3 style="font-size:14.5px; color:var(--text-main); margin-bottom:10px;">☁️ Kho Dữ Liệu Google Drive (Tài khoản 100GB)</h3>
+    <button class="btn btn-drive" onclick="openDriveFolder()">Mở Google Drive Trung tâm</button>
+  </div>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px; margin-bottom:16px; overflow-x:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-size:14.5px;">Danh Sách Nhân Sự & Phân Quyền</h3>
+      <button class="btn btn-primary btn-sm" onclick="openRegisterModalAdmin()">+ Thêm nhân sự</button>
+    </div>
+    <table class="dsu-table">
+      <thead><tr><th>Họ và Tên</th><th>SĐT (Zalo)</th><th>Email</th><th>Chức danh</th><th>Vai trò</th><th style="text-align:right;">Thao tác</th></tr></thead>
+      <tbody id="adminUserTableBody"></tbody>
+    </table>
+  </div>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-size:14.5px;">🧹 Quản Lý Task Đã Hoàn Thành & Tự Động Xóa (14 Ngày)</h3>
+      <button class="btn btn-outline btn-sm" onclick="renderCompletedTasksManager()">🔄 Làm mới</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="dsu-table">
+        <thead><tr><th>Mã / Tên công việc</th><th>Thời gian hoàn thành</th><th>Thời hạn tự xóa</th><th>Hiển thị</th><th style="text-align:right;">Thao tác</th></tr></thead>
+        <tbody id="adminCompletedTasksTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: HƯỚNG DẪN (GỐC) -->
+<div id="guideTab" class="tab-content">
+  <div style="background:var(--bg-card); border:1px solid var(--gold-star); border-radius:10px; padding:16px; margin-bottom:16px;">
+    <h3 style="font-size:15px; color:var(--gold-star); margin-bottom:8px;">🏆 Quy Chế & Cách Thức Tính Điểm Hiệu Suất DSU Hàng Ngày</h3>
+    <div style="background:var(--bg-surface); padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:8px; font-size:12.5px;">
+      <b>📐 Công thức tính tổng điểm DSU:</b><br>
+      <span style="font-family:monospace; color:var(--accent-light);">Tổng Điểm = (Đúng hạn × 10đ) + (Trễ × 5đ) - (Quá hạn × -2đ)</span>
+    </div>
+  </div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="guide-role-title">🎖️ Ban Lãnh Đạo</div>
+      <div class="guide-step">1. Giao việc & Điều chỉnh: Bấm "+ Giao việc", đổi Leader hoặc xóa việc.</div>
+      <div class="guide-step">2. Phê duyệt báo cáo: Duyệt hoàn thành hoặc trả về yêu cầu sửa.</div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-role-title">⭐ Nhóm Trưởng (Task Leader)</div>
+      <div class="guide-step">1. Trách nhiệm: Được gắn sao vàng trên thẻ việc, nhanh chóng tiếp nhận việc.</div>
+      <div class="guide-step">2. Chuyển trạng thái: Chuyển sang "Chờ duyệt báo cáo" khi hoàn thành.</div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-role-title">👨‍💼 Nhân Viên Thực Hiện</div>
+      <div class="guide-step">1. Theo dõi tiến độ: Chú ý các thẻ nhấp nháy vàng/đỏ.</div>
+      <div class="guide-step">2. Nộp kết quả: Gắn link Google Drive và lưu kết quả.</div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-role-title">⚙️ Quản Trị Viên (Admin)</div>
+      <div class="guide-step">1. Toàn quyền hệ thống: Cấp tài khoản mới, phân quyền nhân sự và chọn chủ đề lễ hội.</div>
+    </div>
+  </div>
+</div>
   </main>
 
   <!-- FOOTER -->
