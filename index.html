@@ -494,6 +494,27 @@
       border-width: 2px !important;
     }
 
+    /* ===== THẺ HOÀN THÀNH: ĐẾM GIỜ XÓA + QUẢN LÝ ADMIN ===== */
+    .done-timer {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+      padding: 3px 8px; border-radius: 6px;
+      background: rgba(31,138,85,0.14); border: 1px solid var(--succ-green); color: var(--succ-green);
+      width: fit-content;
+    }
+    .done-timer.soon { background: rgba(240,138,36,0.14); border-color: var(--warn-orange); color: var(--warn-orange); }
+    .done-timer.urgent { background: rgba(217,56,56,0.14); border-color: var(--danger-red); color: var(--danger-red); animation: doneTimerPulse 1.2s infinite ease-in-out; }
+    @keyframes doneTimerPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    .done-actions { display: flex; gap: 6px; flex-wrap: wrap; padding-top: 6px; border-top: 1px dashed var(--border-color); }
+    .done-actions .btn { flex: 1; justify-content: center; min-width: 0; }
+    .task-card-hidden { opacity: 0.55; border-style: dashed; }
+    .tag-hidden { font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--border-color); color: var(--text-muted); }
+    .col-admin-toggle {
+      background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+      font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 99px; cursor: pointer; font-family: inherit;
+    }
+    .col-admin-toggle:hover, .col-admin-toggle.active { border-color: var(--accent-light); color: var(--accent-light); }
+
     .task-title { font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--text-main); }
 
     .leader-badge {
@@ -977,7 +998,10 @@
         <div class="kanban-col">
           <div class="col-header">
             <span>🎉 4. ĐÃ HOÀN THÀNH</span>
-            <span class="col-badge" id="badge-completed">0</span>
+            <span style="display:flex; align-items:center; gap:6px;">
+              <button type="button" class="col-admin-toggle" id="btnToggleHiddenDone" style="display:none;" onclick="toggleShowHiddenDone()" title="Chỉ Admin">👁 Đã ẩn (0)</button>
+              <span class="col-badge" id="badge-completed">0</span>
+            </span>
           </div>
           <div class="col-body" id="col-completed"></div>
         </div>
@@ -1583,6 +1607,79 @@
     let chatPollingTimer = null, taskPollingTimer = null;
     let lastCheckedMessageTime = new Date().toISOString();
     let knownTaskIds = new Set();
+
+    // ==========================================
+    // THẺ HOÀN THÀNH: TỰ XÓA SAU 14 NGÀY + QUẢN LÝ ẨN/HIỆN/XÓA NGAY (ADMIN)
+    // ==========================================
+    const COMPLETED_TTL_MS = 14 * 86400000; // phải khớp với cleanupOldTasks()
+    let showHiddenDone = localStorage.getItem("DSU_SHOW_HIDDEN_DONE") === "1";
+
+    function isAdminUser() {
+      const u = users.find(x => String(x.id) === String(currentUserId));
+      return !!u && u.role === 'admin';
+    }
+    function getCompletedExpiryMs(t) {
+      if (!t || !t.completed_at) return null;
+      const base = new Date(t.completed_at).getTime();
+      return isNaN(base) ? null : base + COMPLETED_TTL_MS;
+    }
+    function formatDoneCountdown(ms) {
+      if (ms <= 0) return { text: '🗑️ Đang chờ dọn dẹp…', cls: 'urgent' };
+      const s = Math.floor(ms / 1000);
+      const d = Math.floor(s / 86400);
+      const hh = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+      const mm = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      const cls = ms <= 86400000 ? 'urgent' : (ms <= 3 * 86400000 ? 'soon' : '');
+      return { text: `🗑️ Tự xóa sau ${d > 0 ? d + ' ngày ' : ''}${hh}:${mm}:${ss}`, cls };
+    }
+    function tickDoneTimers() {
+      document.querySelectorAll('.done-timer[data-exp]').forEach(el => {
+        const exp = Number(el.dataset.exp);
+        if (!exp) return;
+        const r = formatDoneCountdown(exp - Date.now());
+        el.textContent = r.text;
+        el.className = 'done-timer ' + r.cls;
+      });
+    }
+    setInterval(tickDoneTimers, 1000);
+
+    function toggleShowHiddenDone() {
+      if (!isAdminUser()) return;
+      showHiddenDone = !showHiddenDone;
+      localStorage.setItem("DSU_SHOW_HIDDEN_DONE", showHiddenDone ? "1" : "0");
+      renderKanban();
+    }
+
+    async function toggleHideCompletedTask(taskId) {
+      if (!isAdminUser()) { alert('Chỉ Admin mới có quyền ẩn/hiện công việc!'); return; }
+      const t = tasks.find(x => String(x.id) === String(taskId));
+      if (!t || t.status !== 'completed') return;
+      const next = !t.done_hidden;
+      const { error } = await supabaseClient.from('tasks').update({ done_hidden: next }).eq('id', t.id);
+      if (error) {
+        alert('Không cập nhật được trạng thái ẩn/hiện.\n' +
+              'Nếu bảng tasks chưa có cột done_hidden, hãy chạy trong Supabase SQL Editor:\n\n' +
+              'ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS done_hidden boolean NOT NULL DEFAULT false;\n\n' +
+              'Chi tiết lỗi: ' + error.message);
+        return;
+      }
+      t.done_hidden = next;
+      renderKanban();
+    }
+
+    async function deleteCompletedTaskNow(taskId) {
+      if (!isAdminUser()) { alert('Chỉ Admin mới có quyền xóa ngay công việc!'); return; }
+      const t = tasks.find(x => String(x.id) === String(taskId));
+      if (!t || t.status !== 'completed') return;
+      if (!confirm(`XÓA NGAY & VĨNH VIỄN công việc [${t.title}]?\nThao tác này không thể hoàn tác.`)) return;
+      const { error } = await supabaseClient.from('tasks').delete().eq('id', t.id).eq('status', 'completed');
+      if (error) { alert('Lỗi xóa công việc: ' + error.message); return; }
+      tasks = tasks.filter(x => String(x.id) !== String(t.id));
+      renderKanban();
+      renderScoreBoard();
+      updateReviewInboxUI();
+    }
 
     let dismissedReviewTaskIds = JSON.parse(localStorage.getItem("DSU_DISMISSED_REVIEWS") || "[]");
 
@@ -2696,9 +2793,20 @@
 
       let counts = { total: tasks.length, pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, warn12h: 0 };
 
+      const adminNow = isAdminUser();
+      let hiddenDoneCount = 0;
+
       tasks.forEach((t) => {
         const colKey = t.status || 'pending';
-        if (counts[colKey] !== undefined) counts[colKey]++;
+
+        // Task hoàn thành đã bị Admin ẩn: người thường không thấy; Admin chỉ thấy khi bật "Đã ẩn"
+        const isHiddenDone = colKey === 'completed' && !!t.done_hidden;
+        if (isHiddenDone) {
+          hiddenDoneCount++;
+          if (!(adminNow && showHiddenDone)) return;
+        } else if (counts[colKey] !== undefined) {
+          counts[colKey]++;
+        }
 
         const alertInfo = calculateDeadlineAlert(t.due_datetime, t.status);
         if (alertInfo.type === 'overdue') counts.overdue++;
@@ -2708,14 +2816,16 @@
         const memberIds = Array.isArray(t.assignees_json) ? t.assignees_json : (t.assignee_id ? [t.assignee_id] : []);
 
         const card = document.createElement('div');
-        card.className = `task-card ${alertInfo.cardClass}`;
+        card.className = `task-card ${alertInfo.cardClass}${isHiddenDone ? ' task-card-hidden' : ''}`;
         card.addEventListener('click', (e) => {
           e.stopPropagation();
           openTaskDetailModal(t.id);
         });
 
         let statusBadgeHtml = '';
-        if (t.status === 'review') {
+        if (isHiddenDone) {
+          statusBadgeHtml = `<span class="tag-hidden">🙈 Đã ẩn</span>`;
+        } else if (t.status === 'review') {
           statusBadgeHtml = `<span class="tag-boss-review">📢 Sếp ơi duyệt đi</span>`;
         } else if (t.fix_requested) {
           statusBadgeHtml = `<span class="tag-fix-request">⚠️ Yêu cầu sửa lại</span>`;
@@ -2740,6 +2850,34 @@
           </div>
         `;
 
+        // ----- Thanh đếm giờ xóa + nút quản lý (chỉ thẻ Hoàn thành) -----
+        if (colKey === 'completed') {
+          const expMs = getCompletedExpiryMs(t);
+          const timerWrap = document.createElement('div');
+          if (expMs) {
+            const r = formatDoneCountdown(expMs - Date.now());
+            timerWrap.innerHTML = `<span class="done-timer ${r.cls}" data-exp="${expMs}">${r.text}</span>`;
+          } else {
+            timerWrap.innerHTML = `<span class="done-timer" title="Task cũ chưa có mốc thời điểm hoàn thành">🗑️ Chưa có mốc hoàn thành</span>`;
+          }
+          card.appendChild(timerWrap);
+
+          if (adminNow) {
+            const actions = document.createElement('div');
+            actions.className = 'done-actions';
+            actions.innerHTML = `
+              <button type="button" class="btn btn-outline btn-sm" data-act="toggle">${isHiddenDone ? '👁 Hiện' : '🙈 Ẩn'}</button>
+              <button type="button" class="btn btn-danger btn-sm" data-act="delete">🗑️ Xóa ngay</button>`;
+            actions.addEventListener('click', (e) => {
+              e.stopPropagation(); // không mở modal chi tiết
+              const act = e.target.closest('button')?.dataset.act;
+              if (act === 'toggle') toggleHideCompletedTask(t.id);
+              if (act === 'delete') deleteCompletedTaskNow(t.id);
+            });
+            card.appendChild(actions);
+          }
+        }
+
         if (cols[colKey]) cols[colKey].appendChild(card);
       });
 
@@ -2759,6 +2897,15 @@
       document.getElementById('badge-in_progress').textContent = counts.in_progress;
       document.getElementById('badge-review').textContent = counts.review;
       document.getElementById('badge-completed').textContent = counts.completed;
+
+      // Nút bật/tắt xem task đã ẩn: chỉ Admin
+      const btnHidden = document.getElementById('btnToggleHiddenDone');
+      if (btnHidden) {
+        btnHidden.style.display = adminNow ? 'inline-block' : 'none';
+        btnHidden.textContent = `${showHiddenDone ? '👁 Đang hiện' : '🙈 Đã ẩn'} (${hiddenDoneCount})`;
+        btnHidden.classList.toggle('active', showHiddenDone);
+      }
+      tickDoneTimers();
     }
 
     // 9. CHI TIẾT CÔNG VIỆC
@@ -3616,7 +3763,7 @@ async function deleteSubmission(index) {
 let loopOn=true,loopTimer;function toggleLoop(){loopOn=!loopOn;document.getElementById('loopToggle').textContent=loopOn?'⏸ Tắt tự cuộn':'▶ Bật tự cuộn';startLoop()}
 function startLoop(){clearInterval(loopTimer);if(!loopOn||matchMedia('(prefers-reduced-motion: reduce)').matches)return;loopTimer=setInterval(()=>{if(!document.getElementById('tasksTab').classList.contains('active'))return;document.querySelectorAll('.kanban-col .col-body').forEach(el=>{if(el.matches(':hover')||el.dataset.pause==='1'||el.scrollHeight<=el.clientHeight)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-2)el.scrollTo({top:0,behavior:'smooth'});else el.scrollTop+=1})},60)}
 document.querySelectorAll('.kanban-col .col-body').forEach(el=>{el.addEventListener('touchstart',()=>el.dataset.pause='1',{passive:true});el.addEventListener('touchend',()=>setTimeout(()=>el.dataset.pause='0',3000),{passive:true})});
-let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{const threshold=new Date(Date.now()-14*86400000).toISOString();for(const t of tasks.filter(x=>x.status==='completed'&&x.completed_at&&x.completed_at<threshold)){const {error}=await supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed').lt('completed_at',threshold);if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
+let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{const threshold=new Date(Date.now()-COMPLETED_TTL_MS).toISOString();for(const t of tasks.filter(x=>x.status==='completed'&&x.completed_at&&x.completed_at<threshold)){const {error}=await supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed').lt('completed_at',threshold);if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
 </script>
 </body>
 </html>
