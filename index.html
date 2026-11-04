@@ -1740,9 +1740,9 @@
     let knownTaskIds = new Set();
 
     // ==========================================
-    // THẺ HOÀN THÀNH: TỰ XÓA SAU 14 NGÀY + QUẢN LÝ ẨN/HIỆN/XÓA NGAY (ADMIN)
+    // THẺ HOÀN THÀNH: TỰ XÓA SAU 31 NGÀY + QUẢN LÝ ẨN/HIỆN/XÓA NGAY (ADMIN)
     // ==========================================
-    const COMPLETED_TTL_MS = 14 * 86400000; // phải khớp với cleanupOldTasks()
+    const COMPLETED_TTL_MS = 31 * 86400000; // phải khớp với cleanupOldTasks()
     let showHiddenDone = localStorage.getItem("DSU_SHOW_HIDDEN_DONE") === "1";
 
     function isAdminUser() {
@@ -3095,7 +3095,7 @@
           const timerWrap = document.createElement('div');
           if (expMs) {
             const r = formatDoneCountdown(expMs - Date.now());
-            const srcNote = t.completed_at ? 'Tính từ lúc hoàn thành + 14 ngày' : 'Chưa có mốc hoàn thành: tính từ hạn chót + 14 ngày';
+            const srcNote = t.completed_at ? 'Tính từ lúc hoàn thành + 31 ngày' : 'Chưa có mốc hoàn thành: tính từ hạn chót + 31 ngày';
             timerWrap.innerHTML = `<span class="done-timer ${r.cls}" data-exp="${expMs}" title="${srcNote}">${r.text}</span>`;
           } else {
             timerWrap.innerHTML = `<span class="done-timer" title="Không có cả thời điểm hoàn thành lẫn hạn chót nên không tự xóa">🗑️ Không có mốc để đếm giờ</span>`;
