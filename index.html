@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi" data-theme="dark" data-skin="port">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -847,9 +847,86 @@
       color: var(--gold-star) !important;
       box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
     }
+
+    /* ================= HỆ THEME THEO MÙA & NGÀY LỄ ================= */
+    html { --page-art: none; --card-art: none; --col-art: none; --bar-orn: "⚓"; }
+    html[data-skin="spring"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%F0%9F%8C%B8%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8C%BC%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%A6%8B%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%F0%9F%8C%B7%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8C%B8%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%8C%B7%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🌸 🌼"; }
+    html[data-skin="spring"][data-theme="dark"] { --bg-dark:#0F1A14; --bg-card:#162A1F; --bg-surface:#1E3A2A; --border-color:#2F5E43; --accent-blue:#D6336C; --accent-light:#FFB3C8; --ticker-bg:#1B3326; --ticker-border:#3E6F52; --bar-g1:#1B3326; --bar-g2:#3A2230; --bar-accent:#3E6F52; --bar-glow:#FF8FB133; --trim1:#FF8FB1; --trim2:#8FE3A0; }
+    html[data-skin="spring"][data-theme="light"] { --bg-dark:#F3FAF2; --bg-card:#FFFFFF; --bg-surface:#FFF1F5; --border-color:#F2C9D6; --accent-blue:#D6336C; --accent-light:#A61E4D; --ticker-bg:#E9F7E6; --ticker-border:#BFE3BA; --bar-g1:#E9F7E6; --bar-g2:#FFE3EC; --bar-accent:#BFE3BA; --bar-glow:#F0659533; --trim1:#F06595; --trim2:#51CF66; }
+    html[data-skin="summer"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8F%96%EF%B8%8F%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%8C%8A%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%F0%9F%90%9A%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8C%B4%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🌴 ☀️"; }
+    html[data-skin="summer"][data-theme="dark"] { --bg-dark:#07182A; --bg-card:#0C2A44; --bg-surface:#11405F; --border-color:#1F6A8C; --accent-blue:#0B8C99; --accent-light:#7FE3EC; --ticker-bg:#0C3A52; --ticker-border:#2A7CA3; --bar-g1:#0C3A52; --bar-g2:#4A3F10; --bar-accent:#2A7CA3; --bar-glow:#FFD43B33; --trim1:#FFD43B; --trim2:#38D9E0; }
+    html[data-skin="summer"][data-theme="light"] { --bg-dark:#EAF8FB; --bg-card:#FFFFFF; --bg-surface:#E1F5FA; --border-color:#B6E3EE; --accent-blue:#0A8FA0; --accent-light:#08707E; --ticker-bg:#D8F3F8; --ticker-border:#9FD8E6; --bar-g1:#D8F3F8; --bar-g2:#FFF3C4; --bar-accent:#9FD8E6; --bar-glow:#FCC41933; --trim1:#FCC419; --trim2:#22B8CF; }
+    html[data-skin="autumn"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%F0%9F%8D%81%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8D%82%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%8C%B0%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%F0%9F%8D%84%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8D%81%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%8D%82%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🍁 🍂"; }
+    html[data-skin="autumn"][data-theme="dark"] { --bg-dark:#1C120A; --bg-card:#2A1B0F; --bg-surface:#3A2615; --border-color:#6B4524; --accent-blue:#C2620B; --accent-light:#FFC078; --ticker-bg:#3A2410; --ticker-border:#7C5128; --bar-g1:#3A2410; --bar-g2:#4D2A14; --bar-accent:#7C5128; --bar-glow:#F08C0033; --trim1:#F08C00; --trim2:#E03131; }
+    html[data-skin="autumn"][data-theme="light"] { --bg-dark:#FBF3E8; --bg-card:#FFFFFF; --bg-surface:#FFF4E3; --border-color:#EBCFA6; --accent-blue:#C2620B; --accent-light:#8F4508; --ticker-bg:#FBEBD2; --ticker-border:#E5C48F; --bar-g1:#FBEBD2; --bar-g2:#FFE0B8; --bar-accent:#E5C48F; --bar-glow:#F59F0033; --trim1:#F59F00; --trim2:#E8590C; }
+    html[data-skin="winter"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%E2%9B%84%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%A7%A3%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%E2%9B%84%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "❄️ ⛄"; }
+    html[data-skin="winter"][data-theme="dark"] { --bg-dark:#0B1220; --bg-card:#121C30; --bg-surface:#1A2A47; --border-color:#34507F; --accent-blue:#3B82D9; --accent-light:#BFE0FF; --ticker-bg:#16264A; --ticker-border:#3E5F96; --bar-g1:#16264A; --bar-g2:#1C3358; --bar-accent:#3E5F96; --bar-glow:#FFFFFF33; --trim1:#FFFFFF; --trim2:#74C0FC; }
+    html[data-skin="winter"][data-theme="light"] { --bg-dark:#EEF4FB; --bg-card:#FFFFFF; --bg-surface:#E6EFFA; --border-color:#BFD4EC; --accent-blue:#3B82D9; --accent-light:#1C5BA8; --ticker-bg:#E2EDFA; --ticker-border:#B5CCE8; --bar-g1:#E2EDFA; --bar-g2:#D4E6FA; --bar-accent:#B5CCE8; --bar-glow:#74C0FC33; --trim1:#74C0FC; --trim2:#A5D8FF; }
+    html[data-skin="tet"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%F0%9F%A7%A7%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8C%BC%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%8F%AE%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%F0%9F%A7%A8%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8C%BC%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%A7%A7%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🏮 🌼 🏮"; }
+    html[data-skin="tet"][data-theme="dark"] { --bg-dark:#240808; --bg-card:#3A0F0F; --bg-surface:#4E1717; --border-color:#8A2B2B; --accent-blue:#D92D20; --accent-light:#FFD966; --ticker-bg:#5C1010; --ticker-border:#B8892B; --bar-g1:#5C1010; --bar-g2:#6E4B05; --bar-accent:#B8892B; --bar-glow:#FFD43B33; --trim1:#FFD43B; --trim2:#E03131; }
+    html[data-skin="tet"][data-theme="light"] { --bg-dark:#FFF4E0; --bg-card:#FFFFFF; --bg-surface:#FFF0D6; --border-color:#F2CF93; --accent-blue:#C81E1E; --accent-light:#A31515; --ticker-bg:#FFE7B8; --ticker-border:#E8B85A; --bar-g1:#FFE7B8; --bar-g2:#FFD0C9; --bar-accent:#E8B85A; --bar-glow:#FAB00533; --trim1:#FAB005; --trim2:#E03131; }
+    html[data-skin="noel"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%F0%9F%8E%84%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8E%81%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%8E%85%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%E2%AD%90%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8E%84%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%8E%85%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🎄 🎁"; }
+    html[data-skin="noel"][data-theme="dark"] { --bg-dark:#0A1A12; --bg-card:#10281B; --bg-surface:#173826; --border-color:#2D6845; --accent-blue:#C0182B; --accent-light:#FFB3B8; --ticker-bg:#153D27; --ticker-border:#3F8A5C; --bar-g1:#153D27; --bar-g2:#4A1016; --bar-accent:#3F8A5C; --bar-glow:#FF4D4D33; --trim1:#FF4D4D; --trim2:#4DFF88; }
+    html[data-skin="noel"][data-theme="light"] { --bg-dark:#F1F8F2; --bg-card:#FFFFFF; --bg-surface:#FDEFF0; --border-color:#CFE3D5; --accent-blue:#C0182B; --accent-light:#1F6B3C; --ticker-bg:#E3F3E6; --ticker-border:#A9D3B5; --bar-g1:#E3F3E6; --bar-g2:#FFDDE0; --bar-accent:#A9D3B5; --bar-glow:#F03E3E33; --trim1:#F03E3E; --trim2:#37B24D; }
+    html[data-skin="trungthu"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%F0%9F%8F%AE%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8C%95%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%A5%AE%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%F0%9F%90%87%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%F0%9F%8F%AE%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%8C%95%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "🏮 🌕"; }
+    html[data-skin="trungthu"][data-theme="dark"] { --bg-dark:#0B1030; --bg-card:#131A47; --bg-surface:#1D2760; --border-color:#3A4A9C; --accent-blue:#C77700; --accent-light:#FFE08A; --ticker-bg:#1A2260; --ticker-border:#4A5CB8; --bar-g1:#1A2260; --bar-g2:#4A3A08; --bar-accent:#4A5CB8; --bar-glow:#FFD43B33; --trim1:#FFD43B; --trim2:#FF922B; }
+    html[data-skin="trungthu"][data-theme="light"] { --bg-dark:#FFF8E6; --bg-card:#FFFFFF; --bg-surface:#FFF1CC; --border-color:#F0DB9A; --accent-blue:#B86E00; --accent-light:#A85F00; --ticker-bg:#FFEFC2; --ticker-border:#EBD08A; --bar-g1:#FFEFC2; --bar-g2:#FFE3A3; --bar-accent:#EBD08A; --bar-glow:#FAB00533; --trim1:#FAB005; --trim2:#FD7E14; }
+    html[data-skin="quockhanh"] { --page-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg opacity='0.16'%3E%3Crect x='214' y='30' width='42' height='28' rx='3' fill='%23da251d'/%3E%3Cpolygon fill='%23ffff00' points='235,35 237.4,42 244.8,42 238.8,46.3 241.1,53.3 235,49 228.9,53.3 231.2,46.3 225.2,42 232.6,42'/%3E%3C/g%3E%3Cg font-size='34' opacity='0.14' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='52' y='64' transform='rotate(-12 52 64)'%3E%E2%AD%90%3C/text%3E%3Ctext x='190' y='58' transform='rotate(10 190 58)'%3E%F0%9F%8E%86%3C/text%3E%3Ctext x='110' y='160' transform='rotate(8 110 160)'%3E%F0%9F%95%8A%EF%B8%8F%3C/text%3E%3Ctext x='238' y='196' transform='rotate(-14 238 196)'%3E%E2%AD%90%3C/text%3E%3C/g%3E%3C/svg%3E"); --card-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg opacity='0.18' font-size='46' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='32.0' y='49.92'%3E%E2%AD%90%3C/text%3E%3C/g%3E%3C/svg%3E"); --col-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg opacity='0.09' font-size='118' text-anchor='middle' font-family='Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif'%3E%3Ctext x='80.0' y='124.80000000000001'%3E%F0%9F%8E%86%3C/text%3E%3C/g%3E%3C/svg%3E"); --bar-orn: "⭐ 🎆"; }
+    html[data-skin="quockhanh"][data-theme="dark"] { --bg-dark:#2A0A0C; --bg-card:#3F1013; --bg-surface:#55181C; --border-color:#9A2A30; --accent-blue:#D32F2F; --accent-light:#FFD43B; --ticker-bg:#5A1418; --ticker-border:#B8892B; --bar-g1:#5A1418; --bar-g2:#6B5500; --bar-accent:#B8892B; --bar-glow:#E0313133; --trim1:#E03131; --trim2:#FFD43B; }
+    html[data-skin="quockhanh"][data-theme="light"] { --bg-dark:#FFF3F0; --bg-card:#FFFFFF; --bg-surface:#FFEDE8; --border-color:#F3BDB5; --accent-blue:#C92A2A; --accent-light:#A61E1E; --ticker-bg:#FFE3DD; --ticker-border:#EDB0A6; --bar-g1:#FFE3DD; --bar-g2:#FFF0A8; --bar-accent:#EDB0A6; --bar-glow:#E0313133; --trim1:#E03131; --trim2:#FAB005; }
+
+    body { background-image: var(--page-art); background-size: 280px 280px; background-attachment: fixed; }
+    .col-body { background-image: var(--col-art); background-repeat: no-repeat; background-position: center bottom 10px; background-size: 150px; }
+    .task-card { background-image: var(--card-art); background-repeat: no-repeat; background-position: right 6px bottom 4px; background-size: 54px; }
+    html:not([data-skin="port"]) .bg-art-item { display: none; }
+
+    /* KHUNG THÔNG BÁO TRANG TRÍ */
+    .global-announcement-bar {
+      margin: 8px 12px 4px; padding: 10px 14px; border-radius: 14px;
+      background: linear-gradient(90deg, var(--bar-g1, var(--ticker-bg)), var(--bar-g2, var(--bar-g1, var(--ticker-bg))) 50%, var(--bar-g1, var(--ticker-bg)));
+      border: 1.5px solid var(--bar-accent, var(--ticker-border));
+      box-shadow: 0 0 14px var(--bar-glow, transparent), inset 0 0 16px var(--bar-glow, transparent);
+    }
+    .global-announcement-bar::before {
+      content: ''; position: absolute; left: 0; right: 0; top: 0; height: 6px; pointer-events: none;
+      background:
+        radial-gradient(circle at 7px 3px, var(--trim1, #8DB8FF) 2.3px, transparent 3px),
+        radial-gradient(circle at 21px 3px, var(--trim2, #2563C9) 2.3px, transparent 3px);
+      background-size: 28px 6px; background-repeat: repeat-x;
+      animation: trimBlink 1.6s ease-in-out infinite alternate;
+    }
+    .global-announcement-bar::after {
+      content: var(--bar-orn, ""); flex-shrink: 0; font-size: 17px; letter-spacing: 3px; z-index: 2;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    }
+    .theme-toggle-btn { white-space: nowrap; }
+    @keyframes trimBlink { from { opacity: 0.4; } to { opacity: 1; } }
+    .dino-avatar-wrap { background: transparent; font-size: 22px; line-height: 1; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35)); }
+    .mascot-spark { animation: sparkPulse 0.9s ease-in-out infinite alternate; transform-origin: 14px 2.2px; }
+    @keyframes sparkPulse { from { opacity: 0.35; transform: scale(0.6); } to { opacity: 1; transform: scale(1.4); } }
+
+    /* HẠT RƠI THEO MÙA (hoa, lá, tuyết...) */
+    #skinFall { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+    #skinFall span { position: absolute; top: -30px; opacity: 0.4; animation: skinFall linear infinite; will-change: transform; }
+    @keyframes skinFall { from { transform: translate3d(0,-30px,0) rotate(0deg); } to { transform: translate3d(50px,105vh,0) rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { #skinFall { display: none; } .global-announcement-bar::before, .mascot-spark { animation: none; } }
+
+    /* BỘ CHỌN GIAO DIỆN */
+    .skin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; max-height: 52vh; overflow-y: auto; padding: 2px; }
+    .skin-card { border: 2px solid var(--border-color); border-radius: 12px; padding: 8px; cursor: pointer; background: var(--bg-surface); text-align: left; font-family: inherit; color: var(--text-main); transition: all 0.15s; }
+    .skin-card:hover { transform: translateY(-2px); border-color: var(--accent-light); }
+    .skin-card.active { border-color: var(--accent-light); box-shadow: 0 0 0 3px rgba(141,184,255,0.25); }
+    .skin-swatch { height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 6px; }
+    .skin-name { font-size: 12.5px; font-weight: 700; }
+    .skin-desc { font-size: 10.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.3; }
+    .mode-seg { display: inline-flex; border: 1px solid var(--border-color); border-radius: 99px; overflow: hidden; }
+    .mode-seg button { border: none; background: transparent; color: var(--text-muted); padding: 5px 14px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .mode-seg button.active { background: var(--accent-blue); color: #fff; }
   </style>
 </head>
 <body>
+
+  <div id="skinFall" aria-hidden="true"></div>
 
   <!-- BACKGROUND ART -->
   <svg class="bg-art-item bg-art-ship" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
@@ -876,9 +953,12 @@
             <div class="brand-sub">Operations & Customer Service Center - Port of Haiphong</div>
           </div>
         </div>
-        <button class="theme-toggle-btn" onclick="toggleTheme()">
-          <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
-        </button>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button class="theme-toggle-btn" onclick="openThemePicker()" title="Chọn giao diện theo mùa / ngày lễ">🎨 <span id="skinBtnLabel">Giao diện</span></button>
+          <button class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="themeIcon">☀️</span> <span id="themeLabel">Sáng</span>
+          </button>
+        </div>
       </div>
 
       <div class="header-actions">
@@ -903,7 +983,7 @@
 
   <!-- THANH THÔNG BÁO VUI NHỘN: KHỦNG LONG MINI ĐỚP CHỮ & TỰ CUỘN TRÊN ĐIỆN THOẠI -->
   <div class="global-announcement-bar">
-    <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào chú khủng long để chơi!">🦖</div>
+    <div id="dinoMascot" class="dino-avatar-wrap" title="Nhấp vào linh vật để chơi!" onclick="mascotBurst()">🚢</div>
     <div class="announcement-container" id="announcementContainer">
       <div id="globalAnnouncementText" class="announcement-text-slider">
         Đang tải thông tin nhiệm vụ và âm lịch...
@@ -1252,6 +1332,30 @@
           🗑️ Đánh dấu đã đọc tất cả
         </button>
         <button class="btn btn-outline btn-sm" onclick="closeModal('modalReviewInbox')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHỌN GIAO DIỆN THEO MÙA & NGÀY LỄ -->
+  <div class="modal-backdrop" id="modalThemePicker" style="display:none;">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px; color:var(--accent-light); display:flex; align-items:center; gap:6px;">🎨 Chọn giao diện</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalThemePicker')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:12px; color:var(--text-muted);">Chế độ hiển thị (áp dụng cho mọi giao diện):</span>
+          <div class="mode-seg">
+            <button type="button" id="modeBtnLight" onclick="setThemeMode('light')">☀️ Sáng</button>
+            <button type="button" id="modeBtnDark" onclick="setThemeMode('dark')">🌙 Tối</button>
+          </div>
+        </div>
+        <div id="skinGrid" class="skin-grid"></div>
+        <p style="font-size:11px; color:var(--text-muted);">Lựa chọn được lưu riêng trên thiết bị này. Chế độ "Tự động" sẽ đổi theo mùa và các ngày lễ (Tết, Trung thu, Quốc khánh, Giáng sinh).</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalThemePicker')">Đóng</button>
       </div>
     </div>
   </div>
@@ -1618,9 +1722,12 @@
       const u = users.find(x => String(x.id) === String(currentUserId));
       return !!u && u.role === 'admin';
     }
+    // Mốc tính giờ xóa: ưu tiên thời điểm hoàn thành; task cũ chưa có thì lấy theo hạn chót
     function getCompletedExpiryMs(t) {
-      if (!t || !t.completed_at) return null;
-      const base = new Date(t.completed_at).getTime();
+      if (!t) return null;
+      const raw = t.completed_at || t.due_datetime;
+      if (!raw) return null;
+      const base = new Date(raw).getTime();
       return isNaN(base) ? null : base + COMPLETED_TTL_MS;
     }
     function formatDoneCountdown(ms) {
@@ -1910,20 +2017,123 @@
       window.open(url, '_blank');
     }
 
-    // 1. THEME
+    // 1. THEME: CHẾ ĐỘ SÁNG/TỐI + GIAO DIỆN THEO MÙA & NGÀY LỄ
+    const SKINS = {"port": {"name": "Cảng biển", "icon": "⚓", "desc": "Giao diện mặc định", "mname": "tàu container", "mascot": "🚢", "fall": "", "burst": ["⚓", "🚢", "📦"], "sw": ["#2563C9", "#0A1324"]}, "spring": {"name": "Mùa Xuân", "icon": "🌸", "desc": "Hoa đào, bướm, xanh non", "mname": "chú bướm", "mascot": "🦋", "fall": "🌸", "burst": ["🌸", "🦋", "🌼"], "sw": ["#E0577F", "#162A1F"]}, "summer": {"name": "Mùa Hè", "icon": "🏖️", "desc": "Biển xanh, nắng vàng", "mname": "chú cá heo", "mascot": "🐬", "fall": "", "burst": ["🌊", "☀️", "🐚"], "sw": ["#0B8C99", "#0C2A44"]}, "autumn": {"name": "Mùa Thu", "icon": "🍁", "desc": "Lá vàng, nắng dịu", "mname": "chú cáo", "mascot": "🦊", "fall": "🍁🍂", "burst": ["🍁", "🍂", "🌰"], "sw": ["#E07B1F", "#2A1B0F"]}, "winter": {"name": "Mùa Đông", "icon": "❄️", "desc": "Tuyết trắng, trời lạnh", "mname": "người tuyết", "mascot": "⛄", "fall": "❄️", "burst": ["❄️", "⛄", "✨"], "sw": ["#5FA8F5", "#121C30"]}, "tet": {"name": "Tết Nguyên Đán", "icon": "🧧", "desc": "Đỏ vàng, hoa mai, tràng pháo", "mname": "tràng pháo", "mascot": "<svg viewBox=\"0 0 28 36\" width=\"22\" height=\"30\" aria-hidden=\"true\"><line x1=\"14\" y1=\"3\" x2=\"14\" y2=\"35\" stroke=\"#8d5a2b\" stroke-width=\"1.4\"/><g transform=\"rotate(14 14 9.7)\"><rect x=\"6\" y=\"7\" width=\"16\" height=\"5.5\" rx=\"2.2\" fill=\"#d62828\"/><rect x=\"12.6\" y=\"7\" width=\"2.8\" height=\"5.5\" fill=\"#ffd43b\"/></g><g transform=\"rotate(-14 14 17.7)\"><rect x=\"6\" y=\"15\" width=\"16\" height=\"5.5\" rx=\"2.2\" fill=\"#d62828\"/><rect x=\"12.6\" y=\"15\" width=\"2.8\" height=\"5.5\" fill=\"#ffd43b\"/></g><g transform=\"rotate(14 14 25.7)\"><rect x=\"6\" y=\"23\" width=\"16\" height=\"5.5\" rx=\"2.2\" fill=\"#d62828\"/><rect x=\"12.6\" y=\"23\" width=\"2.8\" height=\"5.5\" fill=\"#ffd43b\"/></g><g transform=\"rotate(-14 14 33.7)\"><rect x=\"6\" y=\"31\" width=\"16\" height=\"5.5\" rx=\"2.2\" fill=\"#d62828\"/><rect x=\"12.6\" y=\"31\" width=\"2.8\" height=\"5.5\" fill=\"#ffd43b\"/></g><circle class=\"mascot-spark\" cx=\"14\" cy=\"2.2\" r=\"2.2\" fill=\"#ffd43b\"/></svg>", "fall": "🌼🧧", "burst": ["🧧", "✨", "💥", "🌼"], "sw": ["#D92D20", "#FFD966"]}, "noel": {"name": "Giáng Sinh", "icon": "🎄", "desc": "Ông già Noel, thông & tuyết", "mname": "ông già Noel", "mascot": "🎅", "fall": "❄️❄️⭐", "burst": ["🎁", "❄️", "⭐", "🎄"], "sw": ["#D62839", "#10281B"]}, "trungthu": {"name": "Trung Thu", "icon": "🏮", "desc": "Đèn lồng, trăng rằm", "mname": "đèn lồng", "mascot": "🏮", "fall": "✨", "burst": ["🏮", "🌕", "🥮", "✨"], "sw": ["#F5B301", "#131A47"]}, "quockhanh": {"name": "Quốc khánh 2/9", "icon": "⭐", "desc": "Cờ đỏ sao vàng", "mname": "lá cờ Tổ quốc", "mascot": "<svg viewBox=\"0 0 30 20\" width=\"27\" height=\"18\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" rx=\"2\" fill=\"#da251d\"/><polygon fill=\"#ffff00\" points=\"15,3.5 16.9,9.2 22.9,9.2 18,12.6 19.9,18.3 15,14.8 10.1,18.3 12,12.6 7.1,9.2 13.1,9.2\"/></svg>", "fall": "⭐", "burst": ["⭐", "🎆", "🕊️"], "sw": ["#E03131", "#3F1013"]}};
+
+    function getAutoSkin() {
+      const d = new Date(), dd = d.getDate(), mm = d.getMonth() + 1, yy = d.getFullYear();
+      let l = null;
+      try { l = convertSolarToLunar(dd, mm, yy, 7); } catch (e) {}
+      if (l && !l.leap) {
+        if ((l.month === 12 && l.day >= 23) || (l.month === 1 && l.day <= 10)) return 'tet';
+        if (l.month === 8 && l.day >= 10 && l.day <= 16) return 'trungthu';
+      }
+      if (mm === 12 && dd >= 18 && dd <= 27) return 'noel';
+      if ((mm === 8 && dd >= 27) || (mm === 9 && dd <= 3)) return 'quockhanh';
+      if (mm >= 2 && mm <= 4) return 'spring';
+      if (mm >= 5 && mm <= 7) return 'summer';
+      if (mm >= 8 && mm <= 10) return 'autumn';
+      return 'winter';
+    }
+    function getSkinPref() {
+      const v = localStorage.getItem("DSU_SKIN") || "port";
+      return (v === 'auto' || SKINS[v]) ? v : 'port';
+    }
+    function resolveSkin(pref) { return pref === 'auto' ? getAutoSkin() : pref; }
+
+    function renderSkinFall(key) {
+      const box = document.getElementById('skinFall');
+      if (!box) return;
+      box.innerHTML = '';
+      const syms = Array.from(SKINS[key].fall || '');
+      if (!syms.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const n = window.innerWidth < 768 ? 8 : 16;
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement('span');
+        s.textContent = syms[i % syms.length];
+        s.style.left = (Math.random() * 100) + '%';
+        s.style.fontSize = (11 + Math.random() * 12) + 'px';
+        s.style.animationDuration = (10 + Math.random() * 10) + 's';
+        s.style.animationDelay = (-Math.random() * 18) + 's';
+        box.appendChild(s);
+      }
+    }
+
+    function applySkin() {
+      const pref = getSkinPref();
+      const key = resolveSkin(pref);
+      const sk = SKINS[key];
+      document.documentElement.setAttribute('data-skin', key);
+      const mascot = document.getElementById('dinoMascot');
+      if (mascot) { mascot.innerHTML = sk.mascot; mascot.title = 'Nhấp vào ' + sk.mname + ' để chơi!'; }
+      const lbl = document.getElementById('skinBtnLabel');
+      if (lbl) lbl.textContent = (pref === 'auto' ? '🗓️ ' : sk.icon + ' ') + sk.name;
+      renderSkinFall(key);
+      renderSkinPicker();
+    }
+
+    function setSkin(pref) {
+      localStorage.setItem("DSU_SKIN", pref);
+      applySkin();
+    }
+
+    function renderSkinPicker() {
+      const grid = document.getElementById('skinGrid');
+      if (!grid) return;
+      const pref = getSkinPref();
+      const autoKey = getAutoSkin();
+      const card = (id, icon, name, desc, bg) => `
+        <button type="button" class="skin-card ${pref === id ? 'active' : ''}" onclick="setSkin('${id}')">
+          <div class="skin-swatch" style="background:${bg};">${icon}</div>
+          <div class="skin-name">${name}</div>
+          <div class="skin-desc">${desc}</div>
+        </button>`;
+      let html = card('auto', '🗓️', 'Tự động theo ngày', 'Hiện tại: ' + SKINS[autoKey].name, 'linear-gradient(135deg,' + SKINS[autoKey].sw[0] + ',' + SKINS[autoKey].sw[1] + ')');
+      Object.keys(SKINS).forEach(k => {
+        const s = SKINS[k];
+        html += card(k, s.icon, s.name, s.desc, 'linear-gradient(135deg,' + s.sw[0] + ',' + s.sw[1] + ')');
+      });
+      grid.innerHTML = html;
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.getElementById('modeBtnDark')?.classList.toggle('active', dark);
+      document.getElementById('modeBtnLight')?.classList.toggle('active', !dark);
+    }
+
+    function openThemePicker() {
+      renderSkinPicker();
+      document.getElementById('modalThemePicker').style.display = 'flex';
+    }
+
+    function mascotBurst() {
+      const el = document.getElementById('dinoMascot');
+      if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const sk = SKINS[document.documentElement.getAttribute('data-skin')] || SKINS.port;
+      const r = el.getBoundingClientRect();
+      for (let i = 0; i < 7; i++) {
+        const s = document.createElement('span');
+        s.textContent = sk.burst[i % sk.burst.length];
+        s.style.cssText = `position:fixed;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;font-size:${14 + Math.random() * 8}px;pointer-events:none;z-index:9999;`;
+        document.body.appendChild(s);
+        const dx = (Math.random() - 0.3) * 150, dy = 40 + Math.random() * 90;
+        s.animate([{ transform: 'translate(0,0) scale(0.6)', opacity: 1 }, { transform: `translate(${dx}px,${dy}px) scale(1.2) rotate(${dx}deg)`, opacity: 0 }],
+          { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = () => s.remove();
+      }
+    }
+
+    function setThemeMode(mode) {
+      document.documentElement.setAttribute("data-theme", mode);
+      localStorage.setItem("DSU_APP_THEME", mode);
+      document.getElementById("themeIcon").textContent = mode === "dark" ? "☀️" : "🌙";
+      document.getElementById("themeLabel").textContent = mode === "dark" ? "Sáng" : "Tối";
+      renderSkinPicker();
+    }
     function initTheme() {
       const saved = localStorage.getItem("DSU_APP_THEME") || "dark";
-      document.documentElement.setAttribute("data-theme", saved);
-      document.getElementById("themeIcon").textContent = saved === "dark" ? "☀️" : "🌙";
-      document.getElementById("themeLabel").textContent = saved === "dark" ? "Sáng" : "Tối";
+      setThemeMode(saved);
+      applySkin();
     }
     function toggleTheme() {
-      const cur = document.documentElement.getAttribute("data-theme");
-      const next = cur === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("DSU_APP_THEME", next);
-      document.getElementById("themeIcon").textContent = next === "dark" ? "☀️" : "🌙";
-      document.getElementById("themeLabel").textContent = next === "dark" ? "Sáng" : "Tối";
+      setThemeMode(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
     }
 
     // 2. KHỞI TẠO APP
@@ -2856,9 +3066,10 @@
           const timerWrap = document.createElement('div');
           if (expMs) {
             const r = formatDoneCountdown(expMs - Date.now());
-            timerWrap.innerHTML = `<span class="done-timer ${r.cls}" data-exp="${expMs}">${r.text}</span>`;
+            const srcNote = t.completed_at ? 'Tính từ lúc hoàn thành + 14 ngày' : 'Chưa có mốc hoàn thành: tính từ hạn chót + 14 ngày';
+            timerWrap.innerHTML = `<span class="done-timer ${r.cls}" data-exp="${expMs}" title="${srcNote}">${r.text}</span>`;
           } else {
-            timerWrap.innerHTML = `<span class="done-timer" title="Task cũ chưa có mốc thời điểm hoàn thành">🗑️ Chưa có mốc hoàn thành</span>`;
+            timerWrap.innerHTML = `<span class="done-timer" title="Không có cả thời điểm hoàn thành lẫn hạn chót nên không tự xóa">🗑️ Không có mốc để đếm giờ</span>`;
           }
           card.appendChild(timerWrap);
 
@@ -3763,7 +3974,7 @@ async function deleteSubmission(index) {
 let loopOn=true,loopTimer;function toggleLoop(){loopOn=!loopOn;document.getElementById('loopToggle').textContent=loopOn?'⏸ Tắt tự cuộn':'▶ Bật tự cuộn';startLoop()}
 function startLoop(){clearInterval(loopTimer);if(!loopOn||matchMedia('(prefers-reduced-motion: reduce)').matches)return;loopTimer=setInterval(()=>{if(!document.getElementById('tasksTab').classList.contains('active'))return;document.querySelectorAll('.kanban-col .col-body').forEach(el=>{if(el.matches(':hover')||el.dataset.pause==='1'||el.scrollHeight<=el.clientHeight)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-2)el.scrollTo({top:0,behavior:'smooth'});else el.scrollTop+=1})},60)}
 document.querySelectorAll('.kanban-col .col-body').forEach(el=>{el.addEventListener('touchstart',()=>el.dataset.pause='1',{passive:true});el.addEventListener('touchend',()=>setTimeout(()=>el.dataset.pause='0',3000),{passive:true})});
-let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{const threshold=new Date(Date.now()-COMPLETED_TTL_MS).toISOString();for(const t of tasks.filter(x=>x.status==='completed'&&x.completed_at&&x.completed_at<threshold)){const {error}=await supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed').lt('completed_at',threshold);if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
+let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{for(const t of tasks.filter(x=>x.status==='completed')){const exp=getCompletedExpiryMs(t);if(!exp||exp>Date.now())continue;let q=supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed');if(t.completed_at)q=q.lt('completed_at',new Date(Date.now()-COMPLETED_TTL_MS).toISOString());const {error}=await q;if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
 </script>
 </body>
 </html>
