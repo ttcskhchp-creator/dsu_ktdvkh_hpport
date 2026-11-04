@@ -4222,7 +4222,7 @@ if (window.ResizeObserver) {
     .forEach(sel => { const n = document.querySelector(sel); if (n) ro.observe(n); });
 }
 fitKanbanHeight();
-// Thay đổi cơ chế: Lưu trữ (Archived) thay vì Xóa (Delete)
+// Cơ chế 2 mốc thời gian: Lưu trữ sau 31 ngày, Xóa vĩnh viễn (Hard Delete) sau 366 ngày
 let cleaning = false;
 async function cleanupOldTasks() {
   if (cleaning) return;
@@ -4231,20 +4231,36 @@ async function cleanupOldTasks() {
   
   cleaning = true;
   try {
-    for (const t of tasks.filter(x => x.status === 'completed' && !x.is_archived)) {
-      const exp = getCompletedExpiryMs(t);
-      if (!exp || exp > Date.now()) continue;
+    const now = Date.now();
+    const MS_IN_DAY = 86400000;
+    
+    // Lặp qua TẤT CẢ các task đã hoàn thành (bao gồm cả task đã lưu trữ)
+    for (const t of tasks.filter(x => x.status === 'completed')) {
+      const rawDate = t.completed_at || t.due_datetime;
+      if (!rawDate) continue;
       
-      let q = supabaseClient.from('tasks').update({ is_archived: true }).eq('id', t.id).eq('status', 'completed');
-      if (t.completed_at) {
-        q = q.lt('completed_at', new Date(Date.now() - COMPLETED_TTL_MS).toISOString());
+      const baseTime = new Date(rawDate).getTime();
+      if (isNaN(baseTime)) continue;
+      
+      const ageMs = now - baseTime;
+
+      // 1. Nếu đã quá 366 ngày -> Xóa vĩnh viễn khỏi Database
+      if (ageMs >= 366 * MS_IN_DAY) {
+        const { error } = await supabaseClient.from('tasks').delete().eq('id', t.id);
+        if (error) {
+          console.warn("Lỗi xóa vĩnh viễn:", error);
+        } else {
+          tasks = tasks.filter(x => String(x.id) !== String(t.id)); // Loại bỏ hoàn toàn khỏi RAM
+        }
       }
-      
-      const { error } = await q;
-      if (error) {
-        console.warn(error);
-      } else {
-        t.is_archived = true;
+      // 2. Nếu từ 31 đến 365 ngày -> Chuyển sang Lưu trữ (Archived) nếu chưa chuyển
+      else if (ageMs >= 31 * MS_IN_DAY && !t.is_archived) {
+        const { error } = await supabaseClient.from('tasks').update({ is_archived: true }).eq('id', t.id);
+        if (error) {
+          console.warn("Lỗi lưu trữ:", error);
+        } else {
+          t.is_archived = true;
+        }
       }
     }
   } finally {
