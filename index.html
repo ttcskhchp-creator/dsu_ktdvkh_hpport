@@ -922,6 +922,32 @@
     .mode-seg { display: inline-flex; border: 1px solid var(--border-color); border-radius: 99px; overflow: hidden; }
     .mode-seg button { border: none; background: transparent; color: var(--text-muted); padding: 5px 14px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
     .mode-seg button.active { background: var(--accent-blue); color: #fff; }
+
+    /* ===== BỐ CỤC VỪA KHÍT MÀN HÌNH (THẤY CẢ CHÂN TRANG) + TỰ CUỘN TỪNG CỘT ===== */
+    body { min-height: 100vh; min-height: 100dvh; }
+    @media (min-width: 1024px) { .kanban-col { height: var(--kanban-h, 600px); } }
+    @media (max-width: 1023px) { .kanban-col { max-height: 62vh; max-height: 62dvh; } }
+    @media (min-width: 1024px) and (max-height: 860px) {
+      .container { padding-top: 10px; padding-bottom: 8px; }
+      .global-announcement-bar { margin: 6px 12px 2px; padding: 7px 14px; }
+      .stats-strip { margin-bottom: 8px; gap: 10px; }
+      .stat-card { padding: 6px 12px; }
+      .stat-val { font-size: 20px; margin-top: 1px; }
+      .kanban-toolbar { margin-bottom: 8px !important; padding: 6px 12px !important; }
+      .col-header { padding: 8px 14px; }
+      footer.app-footer { padding: 6px 16px; }
+      .pacman-track { height: 20px; margin-bottom: 4px; }
+    }
+    @media (min-width: 1024px) { .kanban-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .col-header > span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .col-tools { display: flex; align-items: center; gap: 6px; }
+    .col-loop-btn {
+      background: transparent; border: 1px solid var(--border-color); color: var(--accent-light);
+      width: 24px; height: 24px; border-radius: 50%; font-size: 10px; line-height: 1; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; padding: 0; font-family: inherit;
+    }
+    .col-loop-btn:hover { border-color: var(--accent-light); }
+    .col-loop-btn.off { color: var(--text-muted); opacity: 0.75; }
   </style>
 </head>
 <body>
@@ -1035,7 +1061,7 @@
       </section>
 
       <!-- THANH TÁC VỤ -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
+      <div class="kanban-toolbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--bg-card); padding:10px 16px; border-radius:8px; border:1px solid var(--border-color); flex-wrap:wrap; gap:10px;">
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <button class="btn btn-outline btn-sm" id="loopToggle" onclick="toggleLoop()">⏸ Tắt tự cuộn</button><button class="btn btn-success btn-sm" onclick="exportTasksReportCSV()">
             📊 Xuất Báo Cáo (CSV)
@@ -1054,7 +1080,7 @@
         <div class="kanban-col">
           <div class="col-header">
             <span>📥 1. CHỜ TIẾP NHẬN</span>
-            <span class="col-badge" id="badge-pending">0</span>
+            <span class="col-tools"><button type="button" class="col-loop-btn" id="loopBtn-pending" onclick="toggleColLoop('pending')" title="Bật/tắt tự cuộn cột này">⏸</button><span class="col-badge" id="badge-pending">0</span></span>
           </div>
           <div class="col-body" id="col-pending"></div>
         </div>
@@ -1062,7 +1088,7 @@
         <div class="kanban-col">
           <div class="col-header">
             <span>⚙️ 2. ĐANG THỰC HIỆN</span>
-            <span class="col-badge" id="badge-in_progress">0</span>
+            <span class="col-tools"><button type="button" class="col-loop-btn" id="loopBtn-in_progress" onclick="toggleColLoop('in_progress')" title="Bật/tắt tự cuộn cột này">⏸</button><span class="col-badge" id="badge-in_progress">0</span></span>
           </div>
           <div class="col-body" id="col-in_progress"></div>
         </div>
@@ -1070,7 +1096,7 @@
         <div class="kanban-col">
           <div class="col-header">
             <span>⏳ 3. CHỜ DUYỆT BÁO CÁO</span>
-            <span class="col-badge" id="badge-review">0</span>
+            <span class="col-tools"><button type="button" class="col-loop-btn" id="loopBtn-review" onclick="toggleColLoop('review')" title="Bật/tắt tự cuộn cột này">⏸</button><span class="col-badge" id="badge-review">0</span></span>
           </div>
           <div class="col-body" id="col-review"></div>
         </div>
@@ -1079,6 +1105,7 @@
           <div class="col-header">
             <span>🎉 4. ĐÃ HOÀN THÀNH</span>
             <span style="display:flex; align-items:center; gap:6px;">
+              <button type="button" class="col-loop-btn" id="loopBtn-completed" onclick="toggleColLoop('completed')" title="Bật/tắt tự cuộn cột này">⏸</button>
               <button type="button" class="col-admin-toggle" id="btnToggleHiddenDone" style="display:none;" onclick="toggleShowHiddenDone()" title="Chỉ Admin">👁 Đã ẩn (0)</button>
               <span class="col-badge" id="badge-completed">0</span>
             </span>
@@ -2999,6 +3026,8 @@
         review: document.getElementById('col-review'),
         completed: document.getElementById('col-completed')
       };
+      const keepScroll = {};
+      Object.keys(cols).forEach(k => { if (cols[k]) keepScroll[k] = cols[k].scrollTop; });
       Object.keys(cols).forEach(k => { if (cols[k]) cols[k].innerHTML = ''; });
 
       let counts = { total: tasks.length, pending: 0, in_progress: 0, review: 0, completed: 0, overdue: 0, warn12h: 0 };
@@ -3099,6 +3128,8 @@
         }
       });
 
+      Object.keys(cols).forEach(k => { if (cols[k] && keepScroll[k]) cols[k].scrollTop = keepScroll[k]; });
+
       document.getElementById('totalTasksCount').textContent = counts.total;
       document.getElementById('overdueCount').textContent = counts.overdue;
       document.getElementById('warn12hCount').textContent = counts.warn12h;
@@ -3113,7 +3144,8 @@
       const btnHidden = document.getElementById('btnToggleHiddenDone');
       if (btnHidden) {
         btnHidden.style.display = adminNow ? 'inline-block' : 'none';
-        btnHidden.textContent = `${showHiddenDone ? '👁 Đang hiện' : '🙈 Đã ẩn'} (${hiddenDoneCount})`;
+        btnHidden.textContent = `${showHiddenDone ? '👁' : '🙈'} ${hiddenDoneCount}`;
+        btnHidden.title = showHiddenDone ? `Đang hiện ${hiddenDoneCount} task đã ẩn - bấm để giấu lại` : `Có ${hiddenDoneCount} task đã ẩn - bấm để xem (chỉ Admin)`;
         btnHidden.classList.toggle('active', showHiddenDone);
       }
       tickDoneTimers();
@@ -3830,6 +3862,7 @@
       const activeBtn = document.getElementById('tabBtn-' + tabId.replace('Tab', ''));
       if (activeBtn) activeBtn.classList.add('active');
 
+      setTimeout(fitKanbanHeight, 0);
       if (tabId === 'scoreTab') renderScoreBoard();
       if (tabId === 'adminTab') renderAdminUserTable();
       if (tabId === 'chatTab') { 
@@ -3971,9 +4004,101 @@ async function deleteSubmission(index) {
   task.member_submissions = arr;
   renderSubmissionsTable(task);
 }
-let loopOn=true,loopTimer;function toggleLoop(){loopOn=!loopOn;document.getElementById('loopToggle').textContent=loopOn?'⏸ Tắt tự cuộn':'▶ Bật tự cuộn';startLoop()}
-function startLoop(){clearInterval(loopTimer);if(!loopOn||matchMedia('(prefers-reduced-motion: reduce)').matches)return;loopTimer=setInterval(()=>{if(!document.getElementById('tasksTab').classList.contains('active'))return;document.querySelectorAll('.kanban-col .col-body').forEach(el=>{if(el.matches(':hover')||el.dataset.pause==='1'||el.scrollHeight<=el.clientHeight)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-2)el.scrollTo({top:0,behavior:'smooth'});else el.scrollTop+=1})},60)}
-document.querySelectorAll('.kanban-col .col-body').forEach(el=>{el.addEventListener('touchstart',()=>el.dataset.pause='1',{passive:true});el.addEventListener('touchend',()=>setTimeout(()=>el.dataset.pause='0',3000),{passive:true})});
+// ===== TỰ CUỘN: BẬT/TẮT CHUNG VÀ TỪNG CỘT =====
+const LOOP_KEYS = ['pending', 'in_progress', 'review', 'completed'];
+let loopOn = (localStorage.getItem('DSU_LOOP_ON') ?? (matchMedia('(prefers-reduced-motion: reduce)').matches ? '0' : '1')) === '1';
+let loopCols = {};
+try { loopCols = JSON.parse(localStorage.getItem('DSU_LOOP_COLS') || '{}') || {}; } catch (e) { loopCols = {}; }
+let loopTimer = null;
+const loopState = {};
+function loopSt(k) { return loopState[k] || (loopState[k] = { pos: 0, until: 0, hold: 0 }); }
+function colLoopEnabled(k) { return loopCols[k] !== false; }
+
+function syncLoopButtons() {
+  const g = document.getElementById('loopToggle');
+  if (g) g.textContent = loopOn ? '⏸ Tắt tự cuộn' : '▶ Bật tự cuộn';
+  LOOP_KEYS.forEach(k => {
+    const b = document.getElementById('loopBtn-' + k);
+    if (!b) return;
+    const on = loopOn && colLoopEnabled(k);
+    b.textContent = on ? '⏸' : '▶';
+    b.classList.toggle('off', !on);
+    b.title = on ? 'Đang tự cuộn - bấm để dừng cột này' : 'Đã dừng - bấm để bật tự cuộn cột này';
+  });
+}
+function toggleLoop() {
+  loopOn = !loopOn;
+  localStorage.setItem('DSU_LOOP_ON', loopOn ? '1' : '0');
+  syncLoopButtons();
+  startLoop();
+}
+function toggleColLoop(k) {
+  loopCols[k] = !colLoopEnabled(k);
+  localStorage.setItem('DSU_LOOP_COLS', JSON.stringify(loopCols));
+  if (loopCols[k] && !loopOn) { loopOn = true; localStorage.setItem('DSU_LOOP_ON', '1'); }
+  syncLoopButtons();
+  startLoop();
+}
+function loopTick() {
+  if (!loopOn || document.hidden) return;
+  const tab = document.getElementById('tasksTab');
+  if (!tab || !tab.classList.contains('active')) return;
+  const now = Date.now();
+  LOOP_KEYS.forEach(k => {
+    const el = document.getElementById('col-' + k);
+    if (!el || !colLoopEnabled(k)) return;
+    const st = loopSt(k);
+    const max = el.scrollHeight - el.clientHeight;
+    if (max <= 2) { st.pos = 0; return; }
+    if (el.matches(':hover') || now < st.until) { st.pos = el.scrollTop; return; }
+    if (Math.abs(el.scrollTop - st.pos) > 2) st.pos = el.scrollTop;
+    if (st.pos >= max - 1) {
+      if (!st.hold) { st.hold = now + 1500; return; }
+      if (now < st.hold) return;
+      st.hold = 0; st.pos = 0; st.until = now + 2200;
+      el.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    st.pos += 1;
+    el.scrollTop = st.pos;
+  });
+}
+function startLoop() {
+  syncLoopButtons();
+  if (loopTimer) return;
+  loopTimer = setInterval(loopTick, 40);
+}
+LOOP_KEYS.forEach(k => {
+  const el = document.getElementById('col-' + k);
+  if (!el) return;
+  el.addEventListener('touchstart', () => { loopSt(k).until = Date.now() + 1e9; }, { passive: true });
+  el.addEventListener('touchend', () => { loopSt(k).until = Date.now() + 3000; }, { passive: true });
+  el.addEventListener('wheel', () => { loopSt(k).until = Date.now() + 4000; }, { passive: true });
+});
+startLoop();
+
+// ===== CO GIÃN CHIỀU CAO CỘT KANBAN ĐỂ VỪA MÀN HÌNH, THẤY CẢ CHÂN TRANG =====
+function fitKanbanHeight() {
+  const root = document.documentElement;
+  const grid = document.querySelector('.kanban-grid');
+  const tab = document.getElementById('tasksTab');
+  if (!grid || !tab || !tab.classList.contains('active')) return;
+  if (window.innerWidth < 1024) { root.style.removeProperty('--kanban-h'); return; }
+  const footer = document.querySelector('footer.app-footer');
+  const main = document.querySelector('main.container');
+  const top = grid.getBoundingClientRect().top + window.scrollY;
+  const padB = parseFloat(getComputedStyle(main).paddingBottom) || 0;
+  const avail = window.innerHeight - top - padB - (footer ? footer.offsetHeight : 0) - 2;
+  root.style.setProperty('--kanban-h', Math.max(300, Math.min(avail, 1400)) + 'px');
+}
+window.addEventListener('resize', fitKanbanHeight);
+window.addEventListener('load', fitKanbanHeight);
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(fitKanbanHeight);
+  ['header', '.global-announcement-bar', '.nav-tabs-bar', '.stats-strip', '.kanban-toolbar', 'footer.app-footer']
+    .forEach(sel => { const n = document.querySelector(sel); if (n) ro.observe(n); });
+}
+fitKanbanHeight();
 let cleaning=false;async function cleanupOldTasks(){if(cleaning)return;const role=users.find(u=>String(u.id)===String(currentUserId))?.role;if(!['admin','hod'].includes(role))return;cleaning=true;try{for(const t of tasks.filter(x=>x.status==='completed')){const exp=getCompletedExpiryMs(t);if(!exp||exp>Date.now())continue;let q=supabaseClient.from('tasks').delete().eq('id',t.id).eq('status','completed');if(t.completed_at)q=q.lt('completed_at',new Date(Date.now()-COMPLETED_TTL_MS).toISOString());const {error}=await q;if(error)console.warn(error);else tasks=tasks.filter(x=>x.id!==t.id)}}finally{cleaning=false}}
 </script>
 </body>
