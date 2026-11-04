@@ -304,6 +304,28 @@
       background: var(--bg-surface);
     }
 
+    /* CHUẨN HÓA HIỂN THỊ BẢNG (Chống xô chữ, giãn dòng) */
+    .dsu-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .dsu-table th {
+      background: var(--bg-surface);
+      padding: 10px 12px;
+      font-weight: 700;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .dsu-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+      line-height: 1.5;
+    }
+    
     /* BUTTONS */
     .btn {
       font-family: inherit;
@@ -1173,7 +1195,7 @@
               <th style="text-align: center;">Tổng việc<br><small>(Giao/Nhận)</small></th>
               <th style="text-align: center;">Đã xong</th>
               <th style="text-align: center;">Chưa xong<br><small>(hoặc Quá hạn)</small></th>
-              <th style="min-width: 280px;">Công việc / Dự án tham gia<br><small>(Mới nhất ➝ Cũ nhất)</small></th>
+              <th style="text-align: center;">Dự án tham gia</th>
               <th style="text-align: center; color:var(--gold-star);">Tổng điểm</th>
             </tr>
           </thead>
@@ -1664,6 +1686,24 @@
     </div>
   </div>
 
+  <!-- MODAL 9: CHI TIẾT DỰ ÁN THAM GIA CỦA NHÂN SỰ -->
+  <div class="modal-backdrop" id="modalUserProjects" style="display:none;">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px; color:var(--accent-light);" id="modalUserProjectsTitle">Chi tiết dự án tham gia</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalUserProjects')">✕</button>
+      </div>
+      <div class="modal-body" style="background:var(--bg-dark);">
+        <div style="max-height: 420px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;" id="modalUserProjectsList">
+          <!-- Nội dung danh sách dự án -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('modalUserProjects')">Đóng</button>
+      </div>
+    </div>
+  </div>
+  
   <!-- MODAL 8: QUẢN TRỊ NHÂN SỰ ADMIN -->
   <div class="modal-backdrop" id="modalRegister" style="display:none;">
     <div class="modal-box">
@@ -3713,14 +3753,13 @@
       document.body.removeChild(link);
     }
 
-    // 12. BẢNG ĐIỂM & THỐNG KÊ (HỖ TRỢ LỌC THEO THÁNG VÀ VAI TRÒ)
+    // 12. BẢNG ĐIỂM & THỐNG KÊ
     function renderScoreBoard() {
       const tbody = document.getElementById('scoreTableBody');
       const filterInput = document.getElementById('scoreMonthFilter');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      // Tự động gán tháng hiện tại nếu chưa chọn
       if (filterInput && !filterInput.value) {
         const now = new Date();
         filterInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -3731,28 +3770,17 @@
 
       users.forEach(u => {
         const isHod = (u.role === 'hod');
-        let totalScore = 0;
-        let assignedCount = 0;     // Dành cho HOD (Việc đã giao)
-        let receivedCount = 0;     // Dành cho Staff (Việc được nhận)
-        let completedCount = 0;
-        let uncompletedCount = 0;  // Dành cho HOD (Chưa xong)
-        let overdueCount = 0;      // Dành cho Staff (Quá hạn phạt điểm)
-        
-        let userTasks = []; // Lưu trữ các dự án tham gia để in ra cột
+        let totalScore = 0, assignedCount = 0, receivedCount = 0, completedCount = 0, uncompletedCount = 0, overdueCount = 0;
+        let userTasks = []; 
 
         tasks.forEach(t => {
-          // Lọc công việc xem có nằm trong tháng được chọn không
           let matchMonth = false;
           if (selectedMonth) {
             const created = t.created_at ? t.created_at.slice(0, 7) : '';
             const due = t.due_datetime ? t.due_datetime.slice(0, 7) : '';
             const completed = t.completed_at ? t.completed_at.slice(0, 7) : '';
-            if (created === selectedMonth || due === selectedMonth || completed === selectedMonth) {
-              matchMonth = true;
-            }
-          } else {
-            matchMonth = true; 
-          }
+            if (created === selectedMonth || due === selectedMonth || completed === selectedMonth) matchMonth = true;
+          } else matchMonth = true; 
 
           if (!matchMonth) return;
 
@@ -3763,33 +3791,22 @@
           const isCompleted = (t.status === 'completed');
           const alertInfo = calculateDeadlineAlert(t.due_datetime, t.status);
 
-          // LOGIC CHO TRƯỞNG/PHÓ TRUNG TÂM (Chỉ tính số lượng Giao việc, không tính điểm)
           if (isHod) {
             if (isCreator) {
               assignedCount++;
-              if (isCompleted) completedCount++;
-              else uncompletedCount++;
+              if (isCompleted) completedCount++; else uncompletedCount++;
               userTasks.push(t);
             }
-          } 
-          // LOGIC CHO NHÂN VIÊN (Tính điểm thi đua và phạt)
-          else {
+          } else {
             if (isAssignee || isLeader) {
               receivedCount++;
               userTasks.push(t);
-
               if (isCompleted) {
                 completedCount++;
                 let isLate = false;
-                if (t.due_datetime && t.completed_at) {
-                  isLate = new Date(t.completed_at).getTime() > new Date(t.due_datetime).getTime();
-                } else if (t.due_datetime && alertInfo.type === 'overdue') {
-                  isLate = true;
-                }
-                
-                // Nhóm trưởng ăn điểm trọn vẹn, Thành viên hưởng 80%
-                if (isLeader) totalScore += isLate ? 5 : 10;
-                else totalScore += isLate ? 4 : 8;
+                if (t.due_datetime && t.completed_at) isLate = new Date(t.completed_at).getTime() > new Date(t.due_datetime).getTime();
+                else if (t.due_datetime && alertInfo.type === 'overdue') isLate = true;
+                if (isLeader) totalScore += isLate ? 5 : 10; else totalScore += isLate ? 4 : 8;
               } else {
                 if (alertInfo.type === 'overdue') {
                   overdueCount++;
@@ -3800,23 +3817,13 @@
           }
         });
 
-        // Sắp xếp danh sách dự án tham gia từ Mới nhất -> Cũ nhất
         userTasks.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
-        const projectListHtml = userTasks.map(t => {
-          const roleTag = isHod ? '[Đã giao]' : (String(t.leader_id) === String(u.id) ? '⭐[Leader]' : '👥[Mem]');
-          const tagColor = isHod ? 'var(--warn-orange)' : (String(t.leader_id) === String(u.id) ? 'var(--gold-star)' : 'var(--text-muted)');
-          return `<span style="display:inline-block; margin-right:6px; margin-bottom:6px; padding:3px 6px; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:6px; font-size:11px; white-space:nowrap;"><strong style="color:${tagColor}">${roleTag}</strong> ${t.task_code || 'TSK'}: ${escapeHtml(t.title)}</span>`;
-        }).join(' ');
 
         userStats.push({
-          user: u,
-          isHod: isHod,
-          assignedCount, receivedCount, completedCount, uncompletedCount, overdueCount, totalScore,
-          projectListHtml: projectListHtml || '<i style="color:var(--text-muted); font-size:11px;">Chưa có nhiệm vụ trong khoảng thời gian này</i>'
+          user: u, isHod: isHod, assignedCount, receivedCount, completedCount, uncompletedCount, overdueCount, totalScore, userTasks
         });
       });
 
-      // Sắp xếp: Lãnh đạo xếp cuối, Staff xếp theo điểm từ cao xuống thấp
       userStats.sort((a, b) => {
         if (a.isHod && !b.isHod) return 1;
         if (!a.isHod && b.isHod) return -1;
@@ -3824,9 +3831,14 @@
         return b.totalScore - a.totalScore;
       });
 
-      // Render từng hàng
+      window._currentScoreStats = userStats;
+
       userStats.forEach((stat, idx) => {
         const tr = document.createElement('tr');
+        const projectBtn = stat.userTasks.length > 0 
+          ? `<button class="btn btn-outline btn-sm" onclick="showUserProjects(${idx})" style="padding:4px 10px; font-weight:bold;">👁 Xem chi tiết (${stat.userTasks.length})</button>`
+          : `<span style="font-size:11px; color:var(--text-muted);">Chưa có nhiệm vụ</span>`;
+
         if (stat.isHod) {
           tr.innerHTML = `
             <td style="text-align:center;"><b>-</b></td>
@@ -3835,7 +3847,7 @@
             <td style="text-align:center; font-weight:700; color:var(--accent-light);">${stat.assignedCount}</td>
             <td style="text-align:center; color:var(--succ-green); font-weight:700;">${stat.completedCount}</td>
             <td style="text-align:center; color:var(--warn-orange);">${stat.uncompletedCount}</td>
-            <td style="max-width:350px; white-space:normal; line-height:1.4;">${stat.projectListHtml}</td>
+            <td style="text-align:center;">${projectBtn}</td>
             <td style="text-align:center; font-weight:700; color:var(--text-muted); font-size:12px;">(Không tính điểm)</td>
           `;
         } else {
@@ -3846,7 +3858,7 @@
             <td style="text-align:center; font-weight:700;">${stat.receivedCount}</td>
             <td style="text-align:center; color:var(--succ-green); font-weight:700;">${stat.completedCount}</td>
             <td style="text-align:center; color:var(--danger-red);">${stat.overdueCount}</td>
-            <td style="max-width:350px; white-space:normal; line-height:1.4;">${stat.projectListHtml}</td>
+            <td style="text-align:center;">${projectBtn}</td>
             <td style="text-align:center; font-weight:800; color:var(--gold-star); font-size:16px;">${stat.totalScore}</td>
           `;
         }
@@ -3854,6 +3866,37 @@
       });
     }
 
+    function showUserProjects(idx) {
+      if (!window._currentScoreStats || !window._currentScoreStats[idx]) return;
+      const stat = window._currentScoreStats[idx];
+      document.getElementById('modalUserProjectsTitle').innerHTML = `Nhiệm vụ của: <b style="color:#fff;">${escapeHtml(stat.user.full_name)}</b>`;
+      const listContainer = document.getElementById('modalUserProjectsList');
+      listContainer.innerHTML = '';
+      
+      stat.userTasks.forEach(t => {
+        const roleTag = stat.isHod ? '[Đã giao]' : (String(t.leader_id) === String(stat.user.id) ? '⭐ Nhóm trưởng' : '👥 Thành viên');
+        const tagColor = stat.isHod ? 'var(--warn-orange)' : (String(t.leader_id) === String(stat.user.id) ? 'var(--gold-star)' : 'var(--accent-light)');
+        const createdDate = t.created_at ? new Date(t.created_at).toLocaleString('vi-VN') : 'N/A';
+        const completedDate = t.completed_at ? new Date(t.completed_at).toLocaleString('vi-VN') : (t.status === 'completed' ? 'Đã xong' : 'Chưa xong');
+        const statusColor = t.status === 'completed' ? 'var(--succ-green)' : 'var(--warn-orange)';
+
+        const item = document.createElement('div');
+        item.style.background = 'var(--bg-card)';
+        item.style.border = '1px solid var(--border-color)';
+        item.style.borderRadius = '8px';
+        item.style.padding = '12px 14px';
+        item.innerHTML = `
+          <div style="font-size:11px; margin-bottom:4px; font-weight:700; color:${tagColor};">${roleTag} <span style="color:var(--text-muted);">|</span> Mã: ${t.task_code || 'TSK'}</div>
+          <div style="font-size:13.5px; font-weight:700; color:var(--text-main); margin-bottom:8px; line-height:1.4;">${escapeHtml(t.title)}</div>
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:11.5px; color:var(--text-muted); background:var(--bg-surface); padding:8px; border-radius:6px;">
+            <span>📥 <b>Tiếp nhận:</b> ${createdDate}</span>
+            <span style="color:${statusColor};">🏁 <b>Hoàn thành:</b> ${completedDate}</span>
+          </div>`;
+        listContainer.appendChild(item);
+      });
+      document.getElementById('modalUserProjects').style.display = 'flex';
+    }
+    
     // 13. QUẢN TRỊ NHÂN SỰ
     function renderAdminUserTable() {
       const tbody = document.getElementById('adminUserTableBody');
